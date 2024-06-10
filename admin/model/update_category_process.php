@@ -42,11 +42,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     // Check the result of the category update operation
     if ($updateResult === true) {
-        // Category updated successfully
         header("Location: ../all_categories.php?success=" . urlencode("Category updated successfully"));
         exit;
     } else {
-        // Error updating category
         header("Location: ../update_category.php?id=" . urlencode($categoryId) . "&error=" . urlencode("Error updating category: " . $updateResult));
         exit;
     }

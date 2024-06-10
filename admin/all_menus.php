@@ -1,3 +1,14 @@
+<?php
+
+require_once '../connection/connection.php';
+require_once 'model/Food.php';
+
+$food = new Food($conn);
+
+
+$foodItems = $food->getAllFoodItems();
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -100,18 +111,25 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td>English Breakfast</td>
-                                    <td>10</td>
-                                    <td>R10.99</td>
-                                    <td>Eggs, bacon, sausage, black pudding, baked beans, grilled tomatoes, and mushrooms.</td>
-                                    <td><img src="sample_image.jpg" alt="Food Image" class="img-thumbnail"></td>
-                                    <td>Breakfast</td>
-                                    <td>
-                                        <a href="#" class="btn btn-primary">Edit</a>
-                                        <a href="#" class="btn btn-danger">Delete</a>
-                                    </td>
-                                </tr>
+                                <?php foreach ($foodItems as $food): ?>
+                                    <tr>
+                                        <td><?= htmlspecialchars($food['name']); ?></td>
+                                        <td><?= htmlspecialchars($food['quantity']); ?></td>
+                                        <td>R <?= htmlspecialchars($food['price']); ?></td>
+                                        <td><?= htmlspecialchars($food['description']); ?></td>
+                                        <td><img src="foods/<?= htmlspecialchars($food['image']); ?>" alt="Food Image" class="img-thumbnail"></td>
+                                        <td><?= htmlspecialchars($food['Category']); ?></td>
+                                        <td>
+                                            <a href="update_food.php?id=<?= htmlspecialchars($food['id']); ?>" class="btn btn-primary">Edit</a>
+                                            <a href="model/delete_food.php?id=<?= htmlspecialchars($food['id']); ?>" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this food item?')">Delete</a>
+                                        </td>
+                                    </tr>
+                                <?php endforeach; ?>
+                                <?php if (empty($foodItems)): ?>
+                                    <tr>
+                                        <td colspan="7" class="text-center">No food items found.</td>
+                                    </tr>
+                                <?php endif; ?>
                             </tbody>
                         </table>
                     </div>

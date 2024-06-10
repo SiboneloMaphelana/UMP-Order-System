@@ -13,7 +13,6 @@ class Food {
     public function addCategory($name, $imagePath) {
         $name = $this->sanitizeInput($name);
 
-        // Check if the category already exists
         $check_sql = "SELECT * FROM category WHERE name=?";
         $check_stmt = mysqli_prepare($this->conn, $check_sql);
         mysqli_stmt_bind_param($check_stmt, "s", $name);
@@ -24,7 +23,6 @@ class Food {
             return "Category already exists.";
         }
 
-        // Insert category into the database
         $insert_sql = "INSERT INTO category (name, imageName) VALUES (?, ?)";
         $insert_stmt = mysqli_prepare($this->conn, $insert_sql);
         mysqli_stmt_bind_param($insert_stmt, "ss", $name, $imagePath);
@@ -46,7 +44,6 @@ class Food {
     }
 
     public function deleteCategory($categoryId) {
-        // Sanitize the input
         $categoryId = intval($this->sanitizeInput($categoryId));
 
         $delete_sql = "DELETE FROM category WHERE id=?";
@@ -167,6 +164,160 @@ class Food {
             return "Error adding food item: " . mysqli_error($this->conn); // Return error message if failure
         }
     }
+
+    public function getAllFoodItems() {
+        $query = "SELECT F.id, F.name, F.description, F.quantity, F.price, F.image, C.name AS Category
+                  FROM food_items F JOIN category C
+                  ON (F.category_id = C.id);";
+        $result = mysqli_query($this->conn, $query);
+        $foodItems = [];
+    
+        if ($result) {
+            while ($row = mysqli_fetch_assoc($result)) {
+                $foodItems[] = $row;
+            }
+        }
+    
+        return $foodItems;
+    }
+
+    public function foodItemExists($id) {
+        $query = "SELECT id FROM food_items WHERE id = ?";
+        $stmt = $this->conn->prepare($query);
+        $stmt->bind_param('i', $id);
+        $stmt->execute();
+        $stmt->store_result();
+
+        if ($stmt->num_rows > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+    
+
+    public function deleteFoodItem($foodItemId) {
+        // Sanitize the input
+        $foodItemId = intval($this->sanitizeInput($foodItemId));
+    
+        // Retrieve the image name to delete the image file
+        $query = "SELECT image FROM food_items WHERE id = ?";
+        $stmt = mysqli_prepare($this->conn, $query);
+        mysqli_stmt_bind_param($stmt, "i", $foodItemId);
+        mysqli_stmt_execute($stmt);
+        mysqli_stmt_bind_result($stmt, $imageName);
+        mysqli_stmt_fetch($stmt);
+        mysqli_stmt_close($stmt);
+    
+        // Delete the image file if it exists
+        if (!empty($imageName) && file_exists("../foods/" . $imageName)) {
+            unlink("../foods/" . $imageName);
+        }
+    
+        // Delete the food item from the database
+        $delete_sql = "DELETE FROM food_items WHERE id = ?";
+        $delete_stmt = mysqli_prepare($this->conn, $delete_sql);
+        mysqli_stmt_bind_param($delete_stmt, "i", $foodItemId);
+    
+        if (mysqli_stmt_execute($delete_stmt)) {
+            return true;
+        } else {
+            return "Error deleting food item: " . mysqli_error($this->conn);
+        }
+    }
+
+    public function getFoodItemById($foodItemId) {
+        // Sanitize the input
+        $foodItemId = intval($this->sanitizeInput($foodItemId));
+    
+        $select_sql = "SELECT * FROM food_items WHERE id=?";
+        $select_stmt = mysqli_prepare($this->conn, $select_sql);
+        mysqli_stmt_bind_param($select_stmt, "i", $foodItemId);
+        mysqli_stmt_execute($select_stmt);
+        $result = mysqli_stmt_get_result($select_stmt);
+    
+        $foodItem = mysqli_fetch_assoc($result);
+        mysqli_stmt_close($select_stmt);
+    
+        return $foodItem;
+    }
+    
+    public function updateFoodItem($id, $name = null, $quantity = null, $price = null, $description = null, $image = null, $category = null) {
+        $id = intval($this->sanitizeInput($id));
+        $name = $name ? $this->sanitizeInput($name) : null;
+        $quantity = $quantity !== null ? intval($this->sanitizeInput($quantity)) : null;
+        $price = $price !== null ? floatval($this->sanitizeInput($price)) : null;
+        $description = $description ? $this->sanitizeInput($description) : null;
+        $image = $image ? $this->sanitizeInput($image) : null;
+        $category = $category !== null ? intval($this->sanitizeInput($category)) : null;
+    
+        $update_sql = "UPDATE food_items SET ";
+        $set_values = [];
+        $params = [];
+        $param_types = '';
+    
+        if ($name !== null) {
+            $set_values[] = "name = ?";
+            $params[] = $name;
+            $param_types .= 's';
+        }
+        if ($quantity !== null) {
+            $set_values[] = "quantity = ?";
+            $params[] = $quantity;
+            $param_types .= 'i';
+        }
+        if ($price !== null) {
+            $set_values[] = "price = ?";
+            $params[] = $price;
+            $param_types .= 'd';
+        }
+        if ($description !== null) {
+            $set_values[] = "description = ?";
+            $params[] = $description;
+            $param_types .= 's';
+        }
+        if ($image !== null) {
+            $set_values[] = "image = ?";
+            $params[] = $image;
+            $param_types .= 's';
+        }
+        if ($category !== null) {
+            $set_values[] = "category_id = ?";
+            $params[] = $category;
+            $param_types .= 'i';
+        }
+    
+        if (empty($set_values)) {
+            return "No fields to update.";
+        }
+    
+        $update_sql .= implode(", ", $set_values);
+        $update_sql .= " WHERE id = ?";
+        $params[] = $id;
+        $param_types .= 'i';
+    
+        $stmt = mysqli_prepare($this->conn, $update_sql);
+        if (!$stmt) {
+            return "Error preparing statement: " . mysqli_error($this->conn);
+        }
+        mysqli_stmt_bind_param($stmt, $param_types, ...$params);
+    
+        if (mysqli_stmt_execute($stmt)) {
+            if (mysqli_stmt_affected_rows($stmt) > 0) {
+                return true;
+            } else {
+                return "No rows updated. Either the food item does not exist or the new values are the same as the old values.";
+            }
+        } else {
+            return "Error updating food item: " . mysqli_error($this->conn);
+        }
+    }
+    
+    
+    
+    
+    
+
     
     
     

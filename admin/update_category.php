@@ -1,5 +1,4 @@
 <?php 
-include("model/login_check.php"); 
 include_once("../connection/connection.php");
 include("model/Food.php");
 

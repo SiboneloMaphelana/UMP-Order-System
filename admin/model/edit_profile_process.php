@@ -35,7 +35,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     $success = $adminModel->updateAdmin($id, $data);
     if ($success) {
-        // Redirect with success message
         header("Location: ../profile.php");
         exit;
     } else {

@@ -11,7 +11,6 @@ if (!isset($_GET['id']) || empty($_GET['id'])) {
 
 $foodModel = new Food($conn);
 
-// Try to delete the category
 $categoryId = intval($_GET['id']);
 $deleteResult = $foodModel->deleteCategory($categoryId);
 

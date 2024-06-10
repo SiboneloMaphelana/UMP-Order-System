@@ -40,22 +40,27 @@ document.addEventListener('DOMContentLoaded', function () {
             case 0:
                 passwordStrengthText.textContent = "Very Weak";
                 passwordStrength.style.backgroundColor = "#ff6666";
+                passwordStrengthText.style.color = "#ff6666";
                 break;
             case 1:
                 passwordStrengthText.textContent = "Weak";
                 passwordStrength.style.backgroundColor = "#ffcc66";
+                passwordStrengthText.style.color = "#ffcc66"; 
                 break;
             case 2:
                 passwordStrengthText.textContent = "Fair";
                 passwordStrength.style.backgroundColor = "#ffff66";
+                passwordStrengthText.style.color = "#ffff66"; 
                 break;
             case 3:
                 passwordStrengthText.textContent = "Strong";
                 passwordStrength.style.backgroundColor = "#99ff99";
+                passwordStrengthText.style.color = "#99ff99"; 
                 break;
             case 4:
                 passwordStrengthText.textContent = "Very Strong";
                 passwordStrength.style.backgroundColor = "#66ff66";
+                passwordStrengthText.style.color = "#66ff66"; 
                 break;
             default:
                 passwordStrengthText.textContent = "";

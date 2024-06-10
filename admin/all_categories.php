@@ -3,7 +3,7 @@ include("model/login_check.php");
 include_once("../connection/connection.php");
 include("model/food.php");
 
-// Create an instance of the Food class and fetch categories
+
 $food = new Food($conn);
 $categories = $food->getCategories();
 ?>

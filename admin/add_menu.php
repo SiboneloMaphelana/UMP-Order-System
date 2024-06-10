@@ -1,3 +1,12 @@
+<?php
+require_once '../connection/connection.php';
+require_once 'model/Food.php';
+
+
+$food = new Food($conn);
+$categories = $food->getCategories();
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -24,11 +33,9 @@
                 <label for="category" class="form-label">Category</label>
                 <select class="form-select" id="category" name="category" required>
                     <option selected disabled>Select category</option>
-                    <option value="1">Breakfast</option>
-                    <option value="2">Lunch</option>
-                    <option value="3">Dinner</option>
-                    <option value="4">Sweets</option>
-                    <option value="5">Beverages</option>
+                    <?php foreach ($categories as $category): ?>
+                        <option value="<?= $category['id']; ?>"><?= htmlspecialchars($category['name']); ?></option>
+                    <?php endforeach; ?>
                 </select>
             </div>
 
