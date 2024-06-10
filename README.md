@@ -12,6 +12,6 @@ Import the Database:
 
 Select the new database from the left sidebar.
 Click on the "Import" tab at the top.
-Click the "Choose File" button and select the database/techcafe.sql file from the repository.
+Click the "Choose File" button and select the database/test.sql file from the repository.
 Click the "Go" button to import the database.
 Your database should now be set up and ready to use.
