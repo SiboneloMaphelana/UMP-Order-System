@@ -1,28 +1,24 @@
 <?php
 include("connection/connection.php");
 include_once("admin/model/Food.php");
-include_once("model/login_check.php");
+
+$category_id = isset($_GET['id']) ? intval($_GET['id']) : 0;
+
 $food = new Food($conn);
 
-$categories = $food->getCategories();
+$category = $food->getCategoryById($category_id);
+
+$foodItems = $food->getFoodItemsByCategoryId($category_id);
 ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard</title>
+    <title><?php echo htmlspecialchars($category['name']); ?> - Details</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
-    <style>
-        .card {
-            transition: transform 0.2s;
-        }
-        .card:hover {
-            transform: scale(1.05);
-        }
-    </style>
 </head>
 <body>
 <header class="header d-flex justify-content-between align-items-center px-4 py-3">
@@ -71,70 +67,37 @@ $categories = $food->getCategories();
 </header>
 
 <div class="container mt-5">
-    <h2 class="text-center">Here Is A Collection Of Our Delicious Meals</h2>
-    <div class="row justify-content-center row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
-        <div class="col-12 col-md-8">
-            <div class="input-group search-bar mb-4">
-                <input type="text" class="form-control" placeholder="Search for meals..." aria-label="Search for meals">
-                <span class="input-group-text">
-                    <i class="fas fa-search" style="color: green;"></i>
-                </span>
+    <?php if ($category) : ?>
+        <h2 class="text-center"><?php echo htmlspecialchars($category['name']); ?></h2>
+        <div class="row">
+            <div class="col-12">
+            <img src="admin/uploads/<?php echo htmlspecialchars($category['imageName']); ?>" class="img-fluid mb-4" alt="<?php echo htmlspecialchars($category['name']); ?>" style="max-width: 300px; height: auto;">
             </div>
         </div>
-    </div>
-    <div class="row justify-content-center">
-    <?php if (!empty($categories)) : ?>
-        <?php foreach ($categories as $category) : ?>
-            <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-4">
-                <div class="card h-100">
-                    <a href="category_details.php?id=<?php echo htmlspecialchars($category['id']); ?>">
-                        <img src="admin/uploads/<?php echo htmlspecialchars($category['imageName']); ?>" class="card-img-top" alt="<?php echo htmlspecialchars($category['name']); ?>" style="height: 200px;">
-                        <div class="card-body text-center">
-                            <h5 class="card-title"><?php echo htmlspecialchars($category['name']); ?></h5>
+        <h3 class="mt-4">Available Meals</h3>
+        <div class="row justify-content-center row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+            <?php if (!empty($foodItems)) : ?>
+                <?php foreach ($foodItems as $item) : ?>
+                    <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-4">
+                        <div class="card h-100">
+                            <img src="admin/foods/<?php echo htmlspecialchars($item['image']); ?>" class="card-img-top" alt="<?php echo htmlspecialchars($item['name']); ?>" style="height: 200px;">
+                            <div class="card-body text-center">
+                                <h5 class="card-title"><?php echo htmlspecialchars($item['name']); ?></h5>
+                                <p class="card-text"><?php echo htmlspecialchars($item['description']); ?></p>
+                                <p class="card-text text-success">R<?php echo htmlspecialchars($item['price']); ?></p>
+                            </div>
                         </div>
-                    </a>
-                </div>
-            </div>
-        <?php endforeach; ?>
+                    </div>
+                <?php endforeach; ?>
+            <?php else : ?>
+                <p>No meals found in this category.</p>
+            <?php endif; ?>
+        </div>
     <?php else : ?>
-        <p>No categories found.</p>
+        <p>Category not found.</p>
     <?php endif; ?>
 </div>
 
-</div>
-
-<!-- Today's Specials -->
-<section class="container mt-5">
-    <h2>Today's Specials</h2>
-    <div class="row justify-content-center row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
-        <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-4">
-            <div class="card h-100">
-                <img src="images/dinner.jpeg" class="card-img-top" alt="Special 1">
-                <div class="card-body text-center">
-                    <h5 class="card-title">Special 1</h5>
-                </div>
-            </div>
-        </div>
-        <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-4">
-            <div class="card h-100">
-                <img src="images/dinner.jpeg" class="card-img-top" alt="Special 2">
-                <div class="card-body text-center">
-                    <h5 class="card-title">Special 2</h5>
-                </div>
-            </div>
-        </div>
-        <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-4">
-            <div class="card h-100">
-                <img src="images/dinner.jpeg" class="card-img-top" alt="Special 3">
-                <div class="card-body text-center">
-                    <h5 class="card-title">Special 3</h5>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-
-<!-- Footer -->
 <footer class="footer mt-auto py-3 bg-light">
     <div class="container text-center">
         <p>&copy; 2024 TechCafeSolutions. All rights reserved.</p>
@@ -143,7 +106,5 @@ $categories = $food->getCategories();
 </footer>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-<script src="js/index.js"></script>
-
 </body>
 </html>

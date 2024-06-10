@@ -241,6 +241,26 @@ class Food {
     
         return $foodItem;
     }
+
+    public function getFoodItemsByCategoryId($categoryId) {
+        // Sanitize the input
+        $categoryId = intval($this->sanitizeInput($categoryId));
+    
+        $select_sql = "SELECT * FROM food_items WHERE category_id=?";
+        $select_stmt = mysqli_prepare($this->conn, $select_sql);
+        mysqli_stmt_bind_param($select_stmt, "i", $categoryId);
+        mysqli_stmt_execute($select_stmt);
+        $result = mysqli_stmt_get_result($select_stmt);
+    
+        $foodItems = [];
+        while ($row = mysqli_fetch_assoc($result)) {
+            $foodItems[] = $row;
+        }
+    
+        mysqli_stmt_close($select_stmt);
+    
+        return $foodItems;
+    }
     
     public function updateFoodItem($id, $name = null, $quantity = null, $price = null, $description = null, $image = null, $category = null) {
         $id = intval($this->sanitizeInput($id));

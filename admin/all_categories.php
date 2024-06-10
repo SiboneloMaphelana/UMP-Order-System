@@ -3,7 +3,6 @@ include("model/login_check.php");
 include_once("../connection/connection.php");
 include("model/food.php");
 
-
 $food = new Food($conn);
 $categories = $food->getCategories();
 ?>
@@ -17,6 +16,13 @@ $categories = $food->getCategories();
   <link rel="stylesheet" href="admin.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
   <link rel="stylesheet" href="css/admin.css">
+  <style>
+    .img-fluid {
+      width: 100px;
+      height: 100px;
+      object-fit: cover;
+    }
+  </style>
 </head>
 <body>
 
@@ -95,7 +101,7 @@ $categories = $food->getCategories();
               <?php foreach ($categories as $category): ?>
               <tr>
                 <td><?php echo htmlspecialchars($category['name']); ?></td>
-                <td><img src="uploads/<?php echo htmlspecialchars($category['imageName']); ?>" alt="<?php echo htmlspecialchars($category['name']); ?>" class="img-fluid" style="max-width: 100px;"></td>
+                <td><img src="uploads/<?php echo htmlspecialchars($category['imageName']); ?>" alt="<?php echo htmlspecialchars($category['name']); ?>" class="img-fluid"></td>
                 <td>
                   <a href="update_category.php?id=<?php echo htmlspecialchars($category['id']); ?>" class="btn btn-primary btn-sm">Edit</a>
                   <a href="model/delete_category.php?id=<?php echo htmlspecialchars($category['id']); ?>" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this category?');">Delete</a>
