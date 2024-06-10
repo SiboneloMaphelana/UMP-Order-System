@@ -87,7 +87,7 @@ $categories = $food->getCategories();
         <?php foreach ($categories as $category) : ?>
             <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-4">
                 <div class="card h-100">
-                    <a href="category_details.php?id=<?php echo htmlspecialchars($category['id']); ?>">
+                    <a href="category_details.php?id=<?php echo htmlspecialchars($category['id']); ?>" class="text-decoration-none text-success">
                         <img src="admin/uploads/<?php echo htmlspecialchars($category['imageName']); ?>" class="card-img-top" alt="<?php echo htmlspecialchars($category['name']); ?>" style="height: 200px;">
                         <div class="card-body text-center">
                             <h5 class="card-title"><?php echo htmlspecialchars($category['name']); ?></h5>
