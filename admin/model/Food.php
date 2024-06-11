@@ -45,12 +45,26 @@ class Food {
 
     public function deleteCategory($categoryId) {
         $categoryId = intval($this->sanitizeInput($categoryId));
-
+    
+        // Update the category_id to NULL for related food items
+        $update_sql = "UPDATE food_items SET category_id = NULL WHERE category_id = ?";
+        $update_stmt = mysqli_prepare($this->conn, $update_sql);
+        mysqli_stmt_bind_param($update_stmt, "i", $categoryId);
+        mysqli_stmt_execute($update_stmt);
+    
+        // Delete the category
         $delete_sql = "DELETE FROM category WHERE id=?";
         $delete_stmt = mysqli_prepare($this->conn, $delete_sql);
         mysqli_stmt_bind_param($delete_stmt, "i", $categoryId);
-        return mysqli_stmt_execute($delete_stmt) ? true : "Error deleting category.";
+        
+        if (mysqli_stmt_execute($delete_stmt)) {
+            return true;
+        } else {
+            return "Error deleting category: " . mysqli_error($this->conn);
+        }
     }
+    
+    
 
     public function updateCategory($id, $name = null, $imageName = null) {
         $id = intval($this->sanitizeInput($id));

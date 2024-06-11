@@ -45,22 +45,22 @@ document.addEventListener('DOMContentLoaded', function () {
             case 1:
                 passwordStrengthText.textContent = "Weak";
                 passwordStrength.style.backgroundColor = "#ffcc66";
-                passwordStrengthText.style.color = "#ffcc66"; 
+                passwordStrengthText.style.color = "#ffcc66";
                 break;
             case 2:
                 passwordStrengthText.textContent = "Fair";
                 passwordStrength.style.backgroundColor = "#ffff66";
-                passwordStrengthText.style.color = "#ffff66"; 
+                passwordStrengthText.style.color = "#ffff66";
                 break;
             case 3:
                 passwordStrengthText.textContent = "Strong";
                 passwordStrength.style.backgroundColor = "#99ff99";
-                passwordStrengthText.style.color = "#99ff99"; 
+                passwordStrengthText.style.color = "#99ff99";
                 break;
             case 4:
                 passwordStrengthText.textContent = "Very Strong";
                 passwordStrength.style.backgroundColor = "#66ff66";
-                passwordStrengthText.style.color = "#66ff66"; 
+                passwordStrengthText.style.color = "#66ff66";
                 break;
             default:
                 passwordStrengthText.textContent = "";
@@ -84,41 +84,20 @@ document.addEventListener('DOMContentLoaded', function () {
 
     phoneNumberField.addEventListener('input', function () {
         const phoneNumber = phoneNumberField.value;
-        const validation = validateSouthAfricanPhoneNumber(phoneNumber);
-        if (!validation.isValid) {
-            phoneError.textContent = validation.message;
-            phoneNumberField.classList.add('is-invalid');
-        } else {
-            phoneError.textContent = "";
-            phoneNumberField.classList.remove('is-invalid');
+
+        // Length Validation
+        if (phoneNumber.length !== 10) {
+            phoneError.textContent = "Phone number should be 10 digits long.";
+            phoneError.style.display = 'block';
+            return;
         }
+
+        // Format Validation
+        if (!/^\d{10}$/.test(phoneNumber)) {
+            phoneError.textContent = "Phone number should contain only digits.";
+            phoneError.style.display = 'block';
+            return;
+        }
+        phoneError.style.display = 'none';
     });
-
-    function validateSouthAfricanPhoneNumber(phoneNumber) {
-        const numericPhoneNumber = phoneNumber.replace(/\D/g, '');
-        var phoneRegex = /^(\+?27|0)(\d{2}) ?(\d{3}) ?(\d{4})$/;
-        if (!phoneNumber) {
-            return { isValid: false, message: "Phone number is required" };
-        }
-        if (!phoneRegex.test(phoneNumber)) {
-            return { isValid: false, message: "Invalid phone number format. Please use a valid South African phone number" };
-        }
-        if (numericPhoneNumber.length !== 10 && !(numericPhoneNumber.length === 11 && phoneNumber.startsWith('+'))) {
-            return { isValid: false, message: "Phone number must be 10 digits long" };
-        }
-        return { isValid: true, message: "" };
-    }
-
-    phoneNumberField.addEventListener('input', formatPhoneNumber);
-
-    function formatPhoneNumber() {
-        let phoneNumber = phoneNumberField.value;
-        phoneNumber = phoneNumber.replace(/\D/g, '');
-        if (phoneNumber.startsWith('0')) {
-            phoneNumber = phoneNumber.replace(/(\d{3})(\d{3})(\d{4})/, '0$1 $2 $3');
-        } else if (phoneNumber.startsWith('27')) {
-            phoneNumber = phoneNumber.replace(/(\d{2})(\d{3})(\d{3})(\d{4})/, '+27 $2 $3 $4');
-        }
-        phoneNumberField.value = phoneNumber;
-    }
 });

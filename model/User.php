@@ -85,50 +85,45 @@ class User {
         return $result->fetch_assoc();
     }
 
-    public function updateFoodItem($id, $name = null, $surname = null, $email = null, $registration_number = null, ) {
-        $id = intval($this->sanitizeUserDetails($id));
-        $name = $name ? $this->sanitizeUserDetails($name) : null;
-        $surname = $surname !== null ? intval($this->sanitizeUserDetails($surname)) : null;
-        $email = $email !== null ? floatval($this->sanitizeUserDetails($email)) : null;
-        $registration_number = $registration_number !== null ? intval($this->sanitizeUserDetails($registration_number)) : null;
-    
-        $update_sql = "UPDATE users SET ";
-        $set_values = [];
-        $params = [];
-        $param_types = '';
-    
-        if ($name !== null) {
-            $set_values[] = "name = ?";
-            $params[] = $name;
-            $param_types .= 's';
-        }
-        if ($surname !== null) {
-            $set_values[] = "surname = ?";
-            $params[] = $surname;
-            $param_types .= 'i';
-        }
-        if ($email !== null) {
-            $set_values[] = "email = ?";
-            $params[] = $email;
-            $param_types .= 'd';
-        }
-        if ($registration_number !== null) {
-            $set_values[] = "registration_number = ?";
-            $params[] = $registration_number;
-            $param_types .= 's';
+    public function updateUser($id, $name = null, $surname = null, $email = null, $registration_number = null) {
+        $id = intval($id); // Sanitize the ID as an integer directly
+        
+        // Check if the provided email already exists for another user
+        if ($email !== null && $this->emailExists($id, $email)) {
+            return "Email is already registered by another user.";
         }
     
-        $update_sql .= implode(", ", $set_values);
-        $update_sql .= " WHERE id = ?";
-        $params[] = $id;
-        $param_types .= 'i';
+        // Check if the provided registration number already exists for another user
+        if ($registration_number !== null && $this->registrationNumberExists($id, $registration_number)) {
+            return "Registration number is already registered by another user.";
+        }
     
+        // Fetch existing user details
+        $existingDetails = $this->getUserById($id);
+    
+        // Retain existing details if not updated
+        $name = $name ?: $existingDetails['name'];
+        $surname = $surname ?: $existingDetails['surname'];
+        $email = $email ?: $existingDetails['email'];
+        $registration_number = $registration_number ?: $existingDetails['registration_number'];
+    
+        // Sanitize parameters
+        $name = $this->sanitizeUserDetails(['name' => $name])['name'];
+        $surname = $this->sanitizeUserDetails(['surname' => $surname])['surname'];
+        $email = $this->sanitizeUserDetails(['email' => $email])['email'];
+        $registration_number = $this->sanitizeUserDetails(['registration_number' => $registration_number])['registration_number'];
+    
+        // Prepare SQL query
+        $update_sql = "UPDATE users SET name = ?, surname = ?, email = ?, registration_number = ? WHERE id = ?";
+        
+        // Prepare and bind parameters
         $stmt = mysqli_prepare($this->conn, $update_sql);
         if (!$stmt) {
             return "Error preparing statement: " . mysqli_error($this->conn);
         }
-        mysqli_stmt_bind_param($stmt, $param_types, ...$params);
+        mysqli_stmt_bind_param($stmt, 'ssssi', $name, $surname, $email, $registration_number, $id);
     
+        // Execute the update query
         if (mysqli_stmt_execute($stmt)) {
             if (mysqli_stmt_affected_rows($stmt) > 0) {
                 return true;
@@ -138,9 +133,31 @@ class User {
         } else {
             return "Error updating user: " . mysqli_error($this->conn);
         }
+        
     }
+    
+
+    private function emailExists($id, $email): bool {
+        $stmt = $this->conn->prepare('SELECT COUNT(*) FROM users WHERE email = ? AND id <> ?');
+        $stmt->bind_param('si', $email, $id);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $row = $result->fetch_assoc();
+        return $row['COUNT(*)'] > 0;
+    }
+    
+    private function registrationNumberExists($id, $registration_number): bool {
+        $stmt = $this->conn->prepare('SELECT COUNT(*) FROM users WHERE registration_number = ? AND id <> ?');
+        $stmt->bind_param('ii', $registration_number, $id);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $row = $result->fetch_assoc();
+        return $row['COUNT(*)'] > 0;
+    }
+    
+    
     
 
 }
 
-?>
+

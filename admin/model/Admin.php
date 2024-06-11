@@ -23,16 +23,28 @@ class Admin {
         return $row['COUNT(*)'] > 0;
     }
 
+    public function emailExistsExcludingId(string $email, int $excludeId): bool {
+        $stmt = $this->conn->prepare('SELECT COUNT(*) FROM admins WHERE email = ? AND id != ?');
+        $stmt->bind_param('si', $email, $excludeId);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $row = $result->fetch_assoc();
+        return $row['COUNT(*)'] > 0;
+    }
+
     public function signup(array $data): bool {
         $sanitizedData = $this->sanitizeUserDetails($data);
         $sanitizedData['password'] = password_hash($data['password'], PASSWORD_DEFAULT);
+    
         if ($this->userExists($sanitizedData['email'])) {
             return false;
         }
+    
         $stmt = $this->conn->prepare('INSERT INTO admins (name, email, phone_number, password) VALUES (?, ?, ?, ?)');
         $stmt->bind_param('ssis', $sanitizedData['name'], $sanitizedData['email'], $sanitizedData['phone_number'], $sanitizedData['password']);
         return $stmt->execute();
     }
+    
 
     public function validateSignup(array $data): array {
         $errors = [];
@@ -53,6 +65,7 @@ class Admin {
         }
         return $errors;
     }
+    
 
     public function login(string $email, string $password): bool {
         if (empty($email) || empty($password)) {
@@ -79,11 +92,15 @@ class Admin {
     }
 
     public function updateAdmin(int $id, array $data): bool {
+        if (isset($data['email']) && $this->emailExistsExcludingId($data['email'], $id)) {
+            return false;
+        }
+        
         $sanitizedData = $this->sanitizeUserDetails($data);
         $setValues = [];
         $params = [];
         $paramTypes = '';
-
+        
         foreach ($sanitizedData as $key => $value) {
             if ($value !== null) {
                 $setValues[] = "$key = ?";
@@ -91,30 +108,37 @@ class Admin {
                 $paramTypes .= 's';
             }
         }
-
+        
         if (empty($setValues)) {
             return false;
         }
-
+        
         $updateSql = "UPDATE admins SET " . implode(', ', $setValues) . " WHERE id = ?";
         $params[] = $id;
         $paramTypes .= 'i';
-
+        
         $stmt = $this->conn->prepare($updateSql);
         if (!$stmt) {
             error_log("Prepare failed: (" . $this->conn->errno . ") " . $this->conn->error);
             return false;
         }
-
+        
         $stmt->bind_param($paramTypes, ...$params);
-
+        
         if (!$stmt->execute()) {
             error_log("Execute failed: (" . $stmt->errno . ") " . $stmt->error);
             return false;
         }
-
+        
         return true;
+    }
+    
+    
+
+    public function deleteAccount(int $id): bool {
+        $stmt = $this->conn->prepare('DELETE FROM admins WHERE id = ?');
+        $stmt->bind_param('i', $id);
+        return $stmt->execute();
     }
 }
 ?>
-

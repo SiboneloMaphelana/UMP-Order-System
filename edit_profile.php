@@ -28,6 +28,7 @@
                 <p class="card-text text-center">Update your profile.</p>
 
                 <form id="signupForm" action="model/edit_profile_process.php" method="POST" autocomplete="on">
+                    <input type="hidden" name="id" value="<?php echo $_GET['id']; ?>">
                     <div class="mb-3">
                         <label for="name" class="form-label text-success">First Name</label>
                         <input type="text" class="form-control" id="name" name="name">

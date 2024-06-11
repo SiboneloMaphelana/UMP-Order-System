@@ -45,10 +45,17 @@ if (!$userDetails) {
         <h5 class="card-title text-center">User Profile</h5>
       </div>
       <div class="card-body">
-        <div class="text-center mb-3">
-          <img src="https://via.placeholder.com/150" alt="Profile Picture" class="profile-picture">
-          <input type="file" id="profile-image" class="form-control-file mt-2" style="display: none;">
-        </div>
+        <?php
+        if (isset($_SESSION['success'])) {
+          echo '<div class="alert alert-success">' . $_SESSION['success'] . '</div>';
+          unset($_SESSION['success']);
+        }
+
+        if (isset($_SESSION['error'])) {
+          echo '<div class="alert alert-danger">' . $_SESSION['error'] . '</div>';
+          unset($_SESSION['error']);
+        }
+        ?>
         <div class="row mb-3">
           <div class="col-md-3 d-flex align-items-center">
             <label for="name" class="form-label me-3">Name</label>

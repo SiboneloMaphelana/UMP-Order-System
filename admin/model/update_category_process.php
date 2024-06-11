@@ -25,7 +25,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         exit;
     }
 
-    // Handle image upload if a new image is provided
+    // Handles image upload if a new image is provided
     if (!empty($image['name'])) {
         $target_dir = "../uploads/";
         $target_file = $target_dir . basename($image["name"]);

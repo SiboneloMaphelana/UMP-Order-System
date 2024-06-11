@@ -32,7 +32,7 @@ $userDetails = $adminModel->getUserById($_SESSION['id']);
             <?php if (isset($error)): ?>
                 <div class="alert alert-danger"><?php echo htmlspecialchars($error); ?></div>
             <?php endif; ?>
-            <form action="edit_profile.php" method="post">
+            <form action="model/edit_profile_process.php" method="post">
                 <div class="mb-3">
                     <label for="name" class="form-label">Name</label>
                     <input type="text" class="form-control" id="name" placeholder="Enter your name" name="name" value="<?php echo htmlspecialchars($userDetails['name']); ?>">
@@ -44,6 +44,10 @@ $userDetails = $adminModel->getUserById($_SESSION['id']);
                 <div class="mb-3">
                     <label for="phone" class="form-label">Phone Number</label>
                     <input type="tel" class="form-control" id="phone" placeholder="Enter your phone number" name="phone_number" value="<?php echo htmlspecialchars($userDetails['phone_number']); ?>">
+                </div>
+                <div class="mb-3">
+                    <label for="image" class="form-label">Profile Picture</label>
+                    <input type="file" class="form-control" id="image" name="image">
                 </div>
                 <button type="submit" class="btn btn-primary d-block mx-auto">Save Changes</button>
             </form>

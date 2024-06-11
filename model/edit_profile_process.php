@@ -22,14 +22,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 
     // Update the user details
-    $updateResult = $user->updateFoodItem($id, $name, $surname, $email, $registration_number);
+    $updateResult = $user->updateUser($id, $name, $surname, $email, $registration_number);
 
     // Check the result of the update operation
     if ($updateResult === true) {
-        header("Location: ../all_menus.php?success=" . urlencode("User details updated successfully"));
+        $_SESSION['success'] = "User details updated successfully.";
+        header("Location: ../profile.php?success=" . urlencode("User details updated successfully"));
         exit;
     } else {
-        header("Location: ../edit_profile.php?id=" . urlencode($id) . "&error=" . urlencode("Error updating user details: " . $updateResult));
+        $_SESSION['error'] = "Email or registration number already exists.";
+        header("Location: ../profile.php?id=" . urlencode($id) . "&error=" . urlencode("Error updating user details: " . $updateResult));
         exit;
     }
 } else {
