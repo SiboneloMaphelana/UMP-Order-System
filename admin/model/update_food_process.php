@@ -1,10 +1,13 @@
 <?php
+session_start();
 include_once("../../connection/connection.php");
 include("Food.php");
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (!isset($_POST["id"]) || empty($_POST["id"])) {
-        die("Invalid food ID.");
+        $_SESSION['error'] = "Invalid food ID.";
+        header("Location: ../update_food.php");
+        exit;
     }
 
     $foodModel = new Food($conn);
@@ -17,8 +20,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $image = isset($_FILES["image"]) ? $_FILES["image"] : null;
     $category = isset($_POST["category"]) ? intval($_POST["category"]) : null;
 
-    if (!$foodModel->foodItemExists($id)){
-        header("Location: ../update_food.php?id=" . urlencode($id) . "&error=" . urlencode("Food item with ID $id does not exist."));
+    if (!$foodModel->foodItemExists($id)) {
+        $_SESSION['error'] = "Food item with ID $id does not exist.";
+        header("Location: ../update_food.php?id=" . urlencode($id));
         exit;
     }
 
@@ -30,21 +34,26 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         if (move_uploaded_file($image["tmp_name"], $target_file)) {
             $updateResult = $foodModel->updateFoodItem($id, $name, $quantity, $price, $description, $imageName, $category);
         } else {
-            $updateResult = "Error uploading image.";
+            $_SESSION['error'] = "Error uploading image.";
+            header("Location: ../update_food.php?id=" . urlencode($id));
+            exit;
         }
     } else {
         $updateResult = $foodModel->updateFoodItem($id, $name, $quantity, $price, $description, null, $category);
     }
 
     if ($updateResult === true) {
-        header("Location: ../all_menus.php?success=" . urlencode("Food item updated successfully"));
+        $_SESSION['success'] = "Food item updated successfully.";
+        header("Location: ../all_menus.php");
         exit;
     } else {
-        header("Location: ../update_food.php?id=" . urlencode($id) . "&error=" . urlencode("Error updating food item: " . $updateResult));
+        $_SESSION['error'] = "Error updating food item: " . $updateResult;
+        header("Location: ../update_food.php?id=" . urlencode($id));
         exit;
     }
 } else {
-    header("Location: ../update_food.php?id=" . urlencode($_POST["id"]));
+    $_SESSION['error'] = "Invalid request method.";
+    header("Location: ../update_food.php");
     exit;
 }
 ?>

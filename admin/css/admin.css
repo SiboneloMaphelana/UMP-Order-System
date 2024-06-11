@@ -10,3 +10,31 @@
     color: #555 !important;
   }
   
+  .table-responsive {
+    overflow-x: auto;
+}
+.img-thumbnail {
+    max-width: 100px;
+}
+.logo-img {
+width: 100px; /* Adjust as needed */
+margin-right: 20px; /* Adjust as needed for spacing */
+}
+
+.img-fluid {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+}
+.content {
+  padding: 20px;
+}
+.footer {
+  margin-top: 20px;
+  background-color: #f8f9fa;
+  padding: 10px 0;
+  text-align: center;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+}

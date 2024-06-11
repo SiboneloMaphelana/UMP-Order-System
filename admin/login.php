@@ -20,6 +20,24 @@
           <div class="card-body">
             <form id="loginForm" action="model/login_process.php" method="post">
               <div class="mb-3">
+              <?php
+          session_start();
+          if (isset($_SESSION['errors'])) {
+              foreach ($_SESSION['errors'] as $error) {
+                  echo '<div class="alert alert-danger" role="alert">' . $error . '</div>';
+              }
+              unset($_SESSION['errors']);
+          }
+          if (isset($_SESSION['success'])) {
+              echo '<div class="alert alert-success" role="alert">' . $_SESSION['success'] . '</div>';
+              unset($_SESSION['success']);
+          }
+          if (isset($_SESSION['error'])) {
+              echo '<div class="alert alert-danger" role="alert">' . $_SESSION['error'] . '</div>';
+              unset($_SESSION['error']);
+          }
+          ?>
+        </div>
                 <label for="email" class="form-label">Email address</label>
                 <input type="email" class="form-control" id="email" placeholder="Enter email" name="email" required>
               </div>

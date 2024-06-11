@@ -16,31 +16,20 @@ $foodItems = $food->getAllFoodItems();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>View Food Items</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="admin.css">
+    <link rel="stylesheet" href="css/admin.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <style>
-        .table-responsive {
-            overflow-x: auto;
-        }
-        .img-thumbnail {
-            max-width: 100px;
-        }
-        table.table-bordered {
-            border-collapse: collapse;
-        }
-        table.table-bordered th,
-        table.table-bordered td {
-            border: 1px solid #dee2e6;
-        }
+        
+
     </style>
 </head>
 <body>
     
     <!-- Header -->
-    <header class="header">
+    <header class="navbar-header">
         <div class="container">
             <div class="d-flex justify-content-between align-items-center">
-                <h1 class="logo">Admin Dashboard</h1>
+                <img src="../images/logo.jpeg" alt="UMP LOGO" class="img-fluid logo-img">
                 <div class="dropdown">
                     <button class="btn btn-secondary dropdown-toggle" type="button" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
                         <i class="fas fa-user"></i>
@@ -57,10 +46,10 @@ $foodItems = $food->getAllFoodItems();
     </header>
 
     <!-- Main Content -->
-    <div class="container-fluid mt-4">
+    <div class="container-fluid mt-3">
         <div class="row">
             <!-- Sidebar -->
-            <div class="col-md-3">
+            <div class="col-md-5 position-fixed">
                 <div class="sidebar">
                     <ul class="nav flex-column">
                         <li class="nav-item">
@@ -94,8 +83,19 @@ $foodItems = $food->getAllFoodItems();
             </div>
 
             <!-- Main Content Area -->
-            <div class="col-md-9">
+            <div class="col-md-9 offset-md-2">
                 <div class="main-content">
+                    <!-- Alerts -->
+                    <?php
+                    if (isset($_SESSION['success'])) {
+                        echo '<div class="alert alert-success">' . $_SESSION['success'] . '</div>';
+                        unset($_SESSION['success']);
+                    }
+                    if (isset($_SESSION['error'])) {
+                        echo '<div class="alert alert-danger">' . $_SESSION['error'] . '</div>';
+                        unset($_SESSION['error']);
+                    }
+                    ?>
                     <h2 class="text-center">Food Items</h2>
                     <div class="table-responsive mt-4">
                         <table class="table table-bordered table-striped table-hover">
@@ -120,9 +120,12 @@ $foodItems = $food->getAllFoodItems();
                                         <td><img src="foods/<?= htmlspecialchars($food['image']); ?>" alt="Food Image" class="img-thumbnail"></td>
                                         <td><?= htmlspecialchars($food['Category']); ?></td>
                                         <td>
-                                            <a href="update_food.php?id=<?= htmlspecialchars($food['id']); ?>" class="btn btn-primary">Edit</a>
-                                            <a href="model/delete_food.php?id=<?= htmlspecialchars($food['id']); ?>" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this food item?')">Delete</a>
+                                            <div class="btn-group-vertical">
+                                                <a href="update_food.php?id=<?= htmlspecialchars($food['id']); ?>" class="btn btn-primary"><i class="fas fa-edit fa-xs"></i>
+                                                <a href="model/delete_food.php?id=<?= htmlspecialchars($food['id']); ?>" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this food item?')"><i class="fas fa-trash-alt fa-xs"></i></a>
+                                            </div>
                                         </td>
+
                                     </tr>
                                 <?php endforeach; ?>
                                 <?php if (empty($foodItems)): ?>
@@ -141,3 +144,4 @@ $foodItems = $food->getAllFoodItems();
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
+

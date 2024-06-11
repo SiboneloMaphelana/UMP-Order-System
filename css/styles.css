@@ -1,0 +1,38 @@
+.logo {
+    max-width: 100px; /* Adjust the size as needed */
+    height: auto;
+}
+.btn-custom-size {
+    height: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0; 
+    background: none; 
+    border: none; 
+    color: #32BC9A; 
+    font-size: 1.5rem;
+}
+
+.form-label{
+    color: #32BC9A;
+}
+
+.card{
+    max-width: 400px;
+    border: none; 
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+}
+
+.profile-container .personal-card {
+    background-color: #F5F5F5 !important; 
+    border: none; 
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075); 
+}
+
+.form-control, .form-select {
+    background-color: #F5F5F5; 
+    border: none; 
+    box-shadow: none; 
+}
+

@@ -1,5 +1,4 @@
 <?php
-
 class Admin {
     private $conn;
 
@@ -12,7 +11,6 @@ class Admin {
         $sanitizedData['name'] = filter_var($data['name'], FILTER_SANITIZE_FULL_SPECIAL_CHARS);
         $sanitizedData['email'] = filter_var($data['email'], FILTER_SANITIZE_EMAIL);
         $sanitizedData['phone_number'] = filter_var($data['phone_number'], FILTER_SANITIZE_NUMBER_INT);
-        $sanitizedData['password'] = password_hash($data['password'], PASSWORD_DEFAULT);
         return $sanitizedData;
     }
 
@@ -27,6 +25,7 @@ class Admin {
 
     public function signup(array $data): bool {
         $sanitizedData = $this->sanitizeUserDetails($data);
+        $sanitizedData['password'] = password_hash($data['password'], PASSWORD_DEFAULT);
         if ($this->userExists($sanitizedData['email'])) {
             return false;
         }
@@ -79,62 +78,43 @@ class Admin {
         return $result->fetch_assoc();
     }
 
-    public function updateAdmin($id, $name = null, $email = null, $phone_number = null){
-        $id = intval($this->sanitizeUserDetails($id));
-        $name = $name ? $this->sanitizeUserDetails($name) : null;
-        $email = $email ? $this->sanitizeUserDetails($email) : null;
-        $phone_number = $phone_number ? $this->sanitizeUserDetails($phone_number) : null;
-    
-        $update_sql = "UPDATE admins SET ";
-        $set_values = [];
+    public function updateAdmin(int $id, array $data): bool {
+        $sanitizedData = $this->sanitizeUserDetails($data);
+        $setValues = [];
         $params = [];
-        $param_types = '';
-    
-        if ($name !== null) {
-            $set_values[] = "name = ?";
-            $params[] = $name;
-            $param_types .= 's';
-        }
-    
-        if ($email !== null) {
-            $set_values[] = "email = ?";
-            $params[] = $email;
-            $param_types .= 's';
-        }
+        $paramTypes = '';
 
-        if ($phone_number != null){
-            $set_values[] = "phone_number = ?";
-            $params[] = $phone_number;
-            $param_types .= 's';
-        }
-
-        if (empty($set_values)) {
-            return "No fields to update.";
-        }
-    
-        $update_sql .= implode(", ", $set_values);
-        $update_sql .= " WHERE id = ?";
-        $params[] = $id;
-        $param_types .= 'i';
-    
-        $stmt = mysqli_prepare($this->conn, $update_sql);
-        mysqli_stmt_bind_param($stmt, $param_types, ...$params);
-        
-        if (mysqli_stmt_execute($stmt)) {
-            if (mysqli_stmt_affected_rows($stmt) > 0) {
-                return true;
-            } else {
-                return "No rows updated. Either the category does not exist or the new values are the same as the old values.";
+        foreach ($sanitizedData as $key => $value) {
+            if ($value !== null) {
+                $setValues[] = "$key = ?";
+                $params[] = $value;
+                $paramTypes .= 's';
             }
-        } else {
-            return "Error updating category: " . mysqli_error($this->conn);
         }
-    }
-       
-    
-    
 
-     
-    
+        if (empty($setValues)) {
+            return false;
+        }
+
+        $updateSql = "UPDATE admins SET " . implode(', ', $setValues) . " WHERE id = ?";
+        $params[] = $id;
+        $paramTypes .= 'i';
+
+        $stmt = $this->conn->prepare($updateSql);
+        if (!$stmt) {
+            error_log("Prepare failed: (" . $this->conn->errno . ") " . $this->conn->error);
+            return false;
+        }
+
+        $stmt->bind_param($paramTypes, ...$params);
+
+        if (!$stmt->execute()) {
+            error_log("Execute failed: (" . $stmt->errno . ") " . $stmt->error);
+            return false;
+        }
+
+        return true;
+    }
 }
 ?>
+

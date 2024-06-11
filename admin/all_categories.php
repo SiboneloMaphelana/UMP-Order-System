@@ -16,21 +16,14 @@ $categories = $food->getCategories();
   <link rel="stylesheet" href="admin.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
   <link rel="stylesheet" href="css/admin.css">
-  <style>
-    .img-fluid {
-      width: 100px;
-      height: 100px;
-      object-fit: cover;
-    }
-  </style>
 </head>
 <body>
 
 <!-- Header -->
-<header class="header">
+<header class="navbar-header">
   <div class="container">
     <div class="d-flex justify-content-between align-items-center">
-      <h1 class="logo">Admin Dashboard</h1>
+      <img src="../images/logo.jpeg" alt="UMP LOGO" class="img-fluid logo-img">
       <div class="dropdown">
         <button class="btn btn-secondary dropdown-toggle" type="button" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
           <i class="fas fa-user"></i>
@@ -50,7 +43,7 @@ $categories = $food->getCategories();
 <div class="container-fluid mt-4">
   <div class="row">
     <!-- Sidebar -->
-    <div class="col-md-3">
+    <div class="col-md-3 position-fixed">
       <div class="sidebar">
         <ul class="nav flex-column">
           <li class="nav-item">
@@ -84,13 +77,13 @@ $categories = $food->getCategories();
     </div>
 
     <!-- Main Content Area -->
-    <div class="col-md-9">
+    <div class="col-md-9 offset-md-2">
       <div class="content">
         <h2>Categories</h2>
         <a href="add_category.php" class="btn btn-success mb-3">Add Category</a>
-        <div class="table-responsive">
-          <table class="table table-bordered">
-            <thead class="table-light">
+        <div class="table-responsive mt-4">
+          <table class="table table-bordered table-striped table-hover">
+            <thead class="table-dark">
               <tr>
                 <th scope="col">Name</th>
                 <th scope="col">Image</th>
@@ -103,9 +96,12 @@ $categories = $food->getCategories();
                 <td><?php echo htmlspecialchars($category['name']); ?></td>
                 <td><img src="uploads/<?php echo htmlspecialchars($category['imageName']); ?>" alt="<?php echo htmlspecialchars($category['name']); ?>" class="img-fluid"></td>
                 <td>
-                  <a href="update_category.php?id=<?php echo htmlspecialchars($category['id']); ?>" class="btn btn-primary btn-sm">Edit</a>
-                  <a href="model/delete_category.php?id=<?php echo htmlspecialchars($category['id']); ?>" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this category?');">Delete</a>
+                    <div class="btn-group-vertical">
+                        <a href="update_category.php?id=<?php echo htmlspecialchars($category['id']); ?>" class="btn btn-primary btn-sm mb-2"><i class="fas fa-edit"></i></a>
+                        <a href="model/delete_category.php?id=<?php echo htmlspecialchars($category['id']); ?>" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this category?');"><i class="fas fa-trash-alt"></i></a>
+                    </div>
                 </td>
+
               </tr>
               <?php endforeach; ?>
             </tbody>

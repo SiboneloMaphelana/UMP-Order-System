@@ -1,0 +1,60 @@
+/* Global styles */
+body {
+    font-family: Arial, sans-serif;
+    padding-top: 100px;
+}
+
+.container {
+    max-width: 1200px;
+}
+
+/* Header styles */
+.header {
+    background-color: #32BC9A;
+    color: white;
+}
+
+.logo {
+    max-width: 150px;
+}
+
+.navbar-nav .nav-link {
+    color: white !important;
+    font-size: 1.1rem;
+}
+
+.navbar-nav .nav-link:hover {
+    color: #F8F9FA !important;
+}
+
+.dropdown-menu {
+    background-color: #F8F9FA;
+}
+
+.dropdown-menu a {
+    color: #343A40 !important;
+}
+
+/* Main content styles */
+#categories h2 {
+    color: #32BC9A;
+}
+
+.card {
+    border: none;
+}
+
+.card:hover{
+            transform: scale(1.05);
+            transition: transform 0.3s ease;
+}
+
+.card-title {
+    color: #343A40;
+}
+
+
+/* Specials section */
+#specials h2 {
+    color: #32BC9A;
+}

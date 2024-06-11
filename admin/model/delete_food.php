@@ -1,4 +1,6 @@
 <?php
+session_start(); // Start the session
+
 require_once '../../connection/connection.php';
 require_once 'Food.php';
 
@@ -12,13 +14,15 @@ if (isset($_GET['id'])) {
     $result = $food->deleteFoodItem($foodItemId);
 
     if ($result === true) {
-        header("Location: ../all_menus.php?msg=Food item deleted successfully");
+        $_SESSION['success'] = "Food item deleted successfully"; // Set success message
+        header("Location: ../all_menus.php"); // Redirect to all_menus.php
     } else {
-        // Redirect to the page with an error message
-        header("Location: ../all_menus.php?msg=" . urlencode($result));
+        $_SESSION['error'] = $result; // Set error message
+        header("Location: ../all_menus.php"); // Redirect to all_menus.php
     }
 } else {
-    header("Location: ../all_menus.php?msg=Invalid request");
+    $_SESSION['error'] = "Invalid request"; // Set error message
+    header("Location: ../all_menus.php"); // Redirect to all_menus.php
 }
 exit;
 ?>

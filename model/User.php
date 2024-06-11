@@ -77,13 +77,69 @@ class User {
         return false;
     }
 
-    public function getUserById(string $id): ?array {
+    public function getUserById( $id): ?array {
         $stmt = $this->conn->prepare('SELECT * FROM users WHERE id = ?');
         $stmt->bind_param('s', $id);
         $stmt->execute();
         $result = $stmt->get_result();
         return $result->fetch_assoc();
     }
+
+    public function updateFoodItem($id, $name = null, $surname = null, $email = null, $registration_number = null, ) {
+        $id = intval($this->sanitizeUserDetails($id));
+        $name = $name ? $this->sanitizeUserDetails($name) : null;
+        $surname = $surname !== null ? intval($this->sanitizeUserDetails($surname)) : null;
+        $email = $email !== null ? floatval($this->sanitizeUserDetails($email)) : null;
+        $registration_number = $registration_number !== null ? intval($this->sanitizeUserDetails($registration_number)) : null;
+    
+        $update_sql = "UPDATE users SET ";
+        $set_values = [];
+        $params = [];
+        $param_types = '';
+    
+        if ($name !== null) {
+            $set_values[] = "name = ?";
+            $params[] = $name;
+            $param_types .= 's';
+        }
+        if ($surname !== null) {
+            $set_values[] = "surname = ?";
+            $params[] = $surname;
+            $param_types .= 'i';
+        }
+        if ($email !== null) {
+            $set_values[] = "email = ?";
+            $params[] = $email;
+            $param_types .= 'd';
+        }
+        if ($registration_number !== null) {
+            $set_values[] = "registration_number = ?";
+            $params[] = $registration_number;
+            $param_types .= 's';
+        }
+    
+        $update_sql .= implode(", ", $set_values);
+        $update_sql .= " WHERE id = ?";
+        $params[] = $id;
+        $param_types .= 'i';
+    
+        $stmt = mysqli_prepare($this->conn, $update_sql);
+        if (!$stmt) {
+            return "Error preparing statement: " . mysqli_error($this->conn);
+        }
+        mysqli_stmt_bind_param($stmt, $param_types, ...$params);
+    
+        if (mysqli_stmt_execute($stmt)) {
+            if (mysqli_stmt_affected_rows($stmt) > 0) {
+                return true;
+            } else {
+                return "No rows updated. Either the user does not exist or the new values are the same as the old values.";
+            }
+        } else {
+            return "Error updating user: " . mysqli_error($this->conn);
+        }
+    }
+    
 
 }
 

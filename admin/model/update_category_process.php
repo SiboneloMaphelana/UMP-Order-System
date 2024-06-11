@@ -1,11 +1,14 @@
 <?php
+session_start();
 include_once("../../connection/connection.php");
 include("Food.php");
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Check if categoryId is set and not empty
     if (!isset($_POST['categoryId']) || empty($_POST['categoryId'])) {
-        die("Invalid categoryId.");
+        $_SESSION['error'] = "Invalid category ID.";
+        header("Location: ../update_category.php");
+        exit;
     }
 
     $foodModel = new Food($conn);
@@ -17,17 +20,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     // Check if the category ID exists in the database
     if (!$foodModel->isCategoryExists($categoryId)) {
-        header("Location: ../update_category.php?id=" . urlencode($categoryId) . "&error=" . urlencode("Category with ID $categoryId does not exist."));
+        $_SESSION['error'] = "Category with ID $categoryId does not exist.";
+        header("Location: ../update_category.php?id=" . urlencode($categoryId));
         exit;
     }
 
     // Handle image upload if a new image is provided
     if (!empty($image['name'])) {
-        // Handle image upload if a new image is provided
         $target_dir = "../uploads/";
         $target_file = $target_dir . basename($image["name"]);
         $imageName = basename($image['name']);
-    
+
         // Check if file is uploaded successfully
         if (move_uploaded_file($image["tmp_name"], $target_file)) {
             // Update category with new image name
@@ -42,15 +45,20 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     // Check the result of the category update operation
     if ($updateResult === true) {
-        header("Location: ../all_categories.php?success=" . urlencode("Category updated successfully"));
+        $_SESSION['success'] = "Category updated successfully.";
+        header("Location: ../all_categories.php");
         exit;
     } else {
-        header("Location: ../update_category.php?id=" . urlencode($categoryId) . "&error=" . urlencode("Error updating category: " . $updateResult));
+        $_SESSION['error'] = "Failed to update category. try again.";
+        header("Location: ../update_category.php?id=" . urlencode($categoryId));
         exit;
     }
+
+    header("Location: ../update_category.php?id=" . urlencode($categoryId));
+    exit;
 } else {
-    // Redirect if the request method is not POST
-    header("Location: ../update_category.php?id=" . urlencode($_POST['categoryId']));
+    $_SESSION['error'] = "Invalid request method.";
+    header("Location: ../update_category.php");
     exit;
 }
 ?>
