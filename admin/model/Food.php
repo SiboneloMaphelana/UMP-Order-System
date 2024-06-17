@@ -45,24 +45,43 @@ class Food {
 
     public function deleteCategory($categoryId) {
         $categoryId = intval($this->sanitizeInput($categoryId));
-    
+        
+        // Retrieve the image name to delete the image file
+        $query = "SELECT imageName FROM category WHERE id = ?";
+        $stmt = mysqli_prepare($this->conn, $query);
+        mysqli_stmt_bind_param($stmt, "i", $categoryId);
+        mysqli_stmt_execute($stmt);
+        mysqli_stmt_bind_result($stmt, $imageName);
+        mysqli_stmt_fetch($stmt);
+        mysqli_stmt_close($stmt);
+        
         // Update the category_id to NULL for related food items
         $update_sql = "UPDATE food_items SET category_id = NULL WHERE category_id = ?";
         $update_stmt = mysqli_prepare($this->conn, $update_sql);
         mysqli_stmt_bind_param($update_stmt, "i", $categoryId);
-        mysqli_stmt_execute($update_stmt);
-    
+        
+        if (!mysqli_stmt_execute($update_stmt)) {
+            return "Error updating food items: " . mysqli_error($this->conn);
+        }
+        
         // Delete the category
-        $delete_sql = "DELETE FROM category WHERE id=?";
+        $delete_sql = "DELETE FROM category WHERE id = ?";
         $delete_stmt = mysqli_prepare($this->conn, $delete_sql);
         mysqli_stmt_bind_param($delete_stmt, "i", $categoryId);
         
         if (mysqli_stmt_execute($delete_stmt)) {
+            // Delete the image file if it exists
+            if (!empty($imageName) && file_exists("../uploads/" . $imageName)) {
+                unlink("../uploads/" . $imageName);
+            }
             return true;
         } else {
             return "Error deleting category: " . mysqli_error($this->conn);
         }
     }
+    
+    
+    
     
     
 
@@ -180,9 +199,10 @@ class Food {
     }
 
     public function getAllFoodItems() {
-        $query = "SELECT F.id, F.name, F.description, F.quantity, F.price, F.image, C.name AS Category
-                  FROM food_items F JOIN category C
-                  ON (F.category_id = C.id);";
+        $query = "SELECT F.id, F.name, F.description, F.quantity, F.price, F.image, 
+                  IFNULL(C.name, 'Uncategorized') AS Category
+                  FROM food_items F
+                  LEFT JOIN category C ON F.category_id = C.id";
         $result = mysqli_query($this->conn, $query);
         $foodItems = [];
     
@@ -194,6 +214,7 @@ class Food {
     
         return $foodItems;
     }
+    
 
     public function foodItemExists($id) {
         $query = "SELECT id FROM food_items WHERE id = ?";
@@ -223,22 +244,22 @@ class Food {
         mysqli_stmt_fetch($stmt);
         mysqli_stmt_close($stmt);
     
-        // Delete the image file if it exists
-        if (!empty($imageName) && file_exists("../foods/" . $imageName)) {
-            unlink("../foods/" . $imageName);
-        }
-    
         // Delete the food item from the database
         $delete_sql = "DELETE FROM food_items WHERE id = ?";
         $delete_stmt = mysqli_prepare($this->conn, $delete_sql);
         mysqli_stmt_bind_param($delete_stmt, "i", $foodItemId);
     
         if (mysqli_stmt_execute($delete_stmt)) {
+            // Delete the image file if it exists
+            if (!empty($imageName) && file_exists("../foods/" . $imageName)) {
+                unlink("../foods/" . $imageName);
+            }
             return true;
         } else {
             return "Error deleting food item: " . mysqli_error($this->conn);
         }
     }
+    
 
     public function getFoodItemById($foodItemId) {
         // Sanitize the input

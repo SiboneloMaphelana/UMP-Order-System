@@ -140,5 +140,53 @@ class Admin {
         $stmt->bind_param('i', $id);
         return $stmt->execute();
     }
+
+    public function getAllCustomers(): array {
+        $stmt = $this->conn->prepare('SELECT * FROM users');
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $customers = $result->fetch_all(MYSQLI_ASSOC);
+        return $customers;
+    }
+
+    public function deleteCustomer($customerId) {
+        $sql = "DELETE FROM users WHERE id = ?";
+
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bind_param('i', $customerId); 
+        
+        if ($stmt->execute()) {
+            return true; 
+        } else {
+            return false; 
+        }
+    }
+
+    public function updateCustomer($customerId, $name, $surname, $email, $role, $registrationNumber) {
+        try {
+            $stmt = $this->conn->prepare("UPDATE users SET name=?, surname=?, email=?, role=?, registration_number=? WHERE id=?");
+            $stmt->bind_param("sssssi", $name, $surname, $email, $role, $registrationNumber, $customerId);
+            $stmt->execute();
+            
+            // Check if update was successful
+            if ($stmt->affected_rows > 0) {
+                return true;
+            } else {
+                return false;
+            }
+        } catch (Exception $e) {
+            // Handle exceptions
+            echo "Error: " . $e->getMessage();
+            return false;
+        }
+    }
+
+    public function getCustomerById(string $id): ?array {
+        $stmt = $this->conn->prepare('SELECT * FROM users WHERE id = ?');
+        $stmt->bind_param('s', $id);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        return $result->fetch_assoc();
+    }
 }
 ?>

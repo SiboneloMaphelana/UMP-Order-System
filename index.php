@@ -67,6 +67,7 @@ $categories = $food->getCategories();
             </button>
             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
                 <li><a class="dropdown-item" href="profile.php">My Profile</a></li>
+                <li><a class="dropdown-item" href="signup.php">Sign Up</a></li>
                 <li><a class="dropdown-item text-danger" href="model/logout.php">Logout</a></li>
             </ul>
         </div>

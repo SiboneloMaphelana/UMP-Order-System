@@ -56,11 +56,7 @@
                         <input type="email" class="form-control" id="email" name="email" placeholder="Enter Email"
                                required>
                     </div>
-                    <div class="mb-3">
-                        <label for="image" class="form-label">Profile Picture</label>
-                        <input type="file" class="form-control" id="image" name="image"
-                               placeholder="Upload Profile Picture">
-                    </div>
+
                     <div class="mb-3">
                         <label for="password" class="form-label">Password</label>
                         <div class="input-group">

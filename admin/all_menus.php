@@ -97,6 +97,7 @@ $foodItems = $food->getAllFoodItems();
                     }
                     ?>
                     <h2 class="text-center">Food Items</h2>
+                    <a href="add_menu.php" class="btn btn-success mb-3">Add Food Item</a>
                     <div class="table-responsive mt-4">
                         <table class="table table-bordered table-striped table-hover">
                             <thead class="table-dark">
@@ -111,28 +112,28 @@ $foodItems = $food->getAllFoodItems();
                                 </tr>
                             </thead>
                             <tbody>
-                                <?php foreach ($foodItems as $food): ?>
-                                    <tr>
-                                        <td><?= htmlspecialchars($food['name']); ?></td>
-                                        <td><?= htmlspecialchars($food['quantity']); ?></td>
-                                        <td>R <?= htmlspecialchars($food['price']); ?></td>
-                                        <td><?= htmlspecialchars($food['description']); ?></td>
-                                        <td><img src="foods/<?= htmlspecialchars($food['image']); ?>" alt="Food Image" class="img-thumbnail"></td>
-                                        <td><?= htmlspecialchars($food['Category']); ?></td>
-                                        <td>
-                                            <div class="btn-group-vertical">
-                                                <a href="update_food.php?id=<?= htmlspecialchars($food['id']); ?>" class="btn btn-primary"><i class="fas fa-edit fa-xs"></i>
-                                                <a href="model/delete_food.php?id=<?= htmlspecialchars($food['id']); ?>" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this food item?')"><i class="fas fa-trash-alt fa-xs"></i></a>
-                                            </div>
-                                        </td>
+                            <?php foreach ($foodItems as $food): ?>
+    <tr>
+        <td><?= htmlspecialchars($food['name']); ?></td>
+        <td><?= htmlspecialchars($food['quantity']); ?></td>
+        <td>R <?= htmlspecialchars($food['price']); ?></td>
+        <td><?= htmlspecialchars($food['description']); ?></td>
+        <td><img src="foods/<?= htmlspecialchars($food['image']); ?>" alt="Food Image" class="img-thumbnail"></td>
+        <td><?= htmlspecialchars($food['Category']); ?></td>
+        <td>
+            <div class="btn-group-vertical">
+                <a href="update_food.php?id=<?= htmlspecialchars($food['id']); ?>" class="btn btn-primary"><i class="fas fa-edit fa-xs"></i></a>
+                <a href="model/delete_food.php?id=<?= htmlspecialchars($food['id']); ?>" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this food item?')"><i class="fas fa-trash-alt fa-xs"></i></a>
+            </div>
+        </td>
+    </tr>
+<?php endforeach; ?>
+<?php if (empty($foodItems)): ?>
+    <tr>
+        <td colspan="7" class="text-center">No food items found.</td>
+    </tr>
+<?php endif; ?>
 
-                                    </tr>
-                                <?php endforeach; ?>
-                                <?php if (empty($foodItems)): ?>
-                                    <tr>
-                                        <td colspan="7" class="text-center">No food items found.</td>
-                                    </tr>
-                                <?php endif; ?>
                             </tbody>
                         </table>
                     </div>

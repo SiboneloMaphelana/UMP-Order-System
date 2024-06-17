@@ -82,6 +82,14 @@ if (!$userDetails) {
         </div>
         <div class="row mb-3">
           <div class="col-md-3 d-flex align-items-center">
+            <label for="role" class="form-label me-3">Role</label>
+          </div>
+          <div class="col-md-9">
+            <input type="role" class="form-control" id="role" value="<?php echo htmlspecialchars($userDetails['role']); ?>" readonly>
+          </div>
+        </div>
+        <div class="row mb-3">
+          <div class="col-md-3 d-flex align-items-center">
             <label for="registration_number" class="form-label me-3">Registration Number</label>
           </div>
           <div class="col-md-9">

@@ -13,6 +13,7 @@ class User {
         $sanitizedData['surname'] = filter_var($data['surname'], FILTER_SANITIZE_FULL_SPECIAL_CHARS);
         $sanitizedData['registration_number'] = filter_var($data['registration_number'], FILTER_SANITIZE_NUMBER_INT);
         $sanitizedData['email'] = filter_var($data['email'], FILTER_SANITIZE_EMAIL);
+        $sanitizedData['role'] = filter_var($data['role'], FILTER_SANITIZE_FULL_SPECIAL_CHARS);
         $sanitizedData['password'] = password_hash($data['password'], PASSWORD_DEFAULT);
         return $sanitizedData;
     }
@@ -31,8 +32,8 @@ class User {
         if ($this->userExists($sanitizedData['email'])) {
             return false;
         }
-        $stmt = $this->conn->prepare('INSERT INTO users (name, surname, registration_number, email, password) VALUES (?, ?, ?, ?, ?)');
-        $stmt->bind_param('ssiss', $sanitizedData['name'], $sanitizedData['surname'], $sanitizedData['registration_number'], $sanitizedData['email'], $sanitizedData['password']);
+        $stmt = $this->conn->prepare('INSERT INTO users (name, surname, registration_number, role, email, password) VALUES (?, ?, ?, ?, ?, ?)');
+        $stmt->bind_param('ssisss', $sanitizedData['name'], $sanitizedData['surname'], $sanitizedData['registration_number'], $sanitizedData['role'] ,$sanitizedData['email'], $sanitizedData['password']);
         return $stmt->execute();
     }
 
