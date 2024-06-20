@@ -17,9 +17,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $result = $food->addCategory($name, $imageName);
         if ($result === true) {
             echo "New category added successfully";
+            $_SESSION['success'] = "New category added successfully";
             header("Location: ../all_categories.php");
         } else {
             echo $result;
+            $_SESSION['error'] = "Failed to add new category";
             header("Location: ../add_category.php");
         }
     } else {

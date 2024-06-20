@@ -22,10 +22,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Check the result and redirect accordingly
     if ($result === true) {
         // Food item added successfully
+        $_SESSION['success'] = "Food item added successfully!";
         header('Location: ../all_menus.php');
         exit();
     } else {
         $errorMessage = "Failed to add food item: $result";
+        // Error occurred while adding food item
+        $_SESSION['error'] = "Failed to add food item";
         header('Location: ../add_food.php?error=' . urlencode($errorMessage));
     }
 } else {

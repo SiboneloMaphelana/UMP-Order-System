@@ -29,85 +29,87 @@ include("model/login_check.php");
         </ul>
       </div>
     </div>
-  
 </header>
 
 <!-- Main Content -->
 <div class="container-fluid mt-4">
   <div class="row">
-  <!-- Sidebar -->
-  <div class="col-md-3">
-    <div class="sidebar">
-      <ul class="nav flex-column">
-        <li class="nav-item">
-          <a class="nav-link" href="dashboard.php">
-            <i class="fas fa-tachometer-alt"></i> Dashboard
-          </a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link active" href="customers.php">
-            <i class="fas fa-users"></i> Customers
-          </a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">
-            <i class="fas fa-clipboard-list"></i> Orders
-          </a>
-        </li>
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" id="menuDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            <i class="fas fa-utensils"></i> Menu
-          </a>
-          <ul class="dropdown-menu" aria-labelledby="menuDropdown">
-            <li><a class="dropdown-item" href="all_categories.php">All Categories</a></li>
+    <!-- Sidebar -->
+    <div class="col-md-3">
+      <div class="sidebar">
+        <ul class="nav flex-column">
+          <li class="nav-item">
+            <a class="nav-link" href="dashboard.php">
+              <i class="fas fa-tachometer-alt"></i> Dashboard
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active" href="customers.php">
+              <i class="fas fa-users"></i> Customers
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">
+              <i class="fas fa-clipboard-list"></i> Orders
+            </a>
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="menuDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              <i class="fas fa-utensils"></i> Menu
+            </a>
+            <ul class="dropdown-menu" aria-labelledby="menuDropdown">
+              <li><a class="dropdown-item" href="all_categories.php">All Categories</a></li>
               <li><a class="dropdown-item" href="add_category.php">Add Category</a></li>
               <li><a class="dropdown-item" href="add_menu.php">Add Menu</a></li>
               <li><a class="dropdown-item" href="all_menus.php">All Menus</a></li>
-          </ul>
-        </li>
-      </ul>
+            </ul>
+          </li>
+        </ul>
+      </div>
     </div>
-  </div>
 
-<!-- Main Content Area -->
-<div class="col-md-9">
-    <div class="content">
+    <!-- Main Content Area -->
+    <div class="col-md-9">
+      <div class="content">
         <!-- Order History Section -->
         <div class="card mb-4 border-primary">
-            <a href="order_history.php" class="card-link text-decoration-none">
-                <div class="card-header bg-primary text-white">
-                    <i class="fas fa-history me-2"></i> Order History
-                </div>
-            </a>
+          <a href="order_history.php" class="card-link text-decoration-none">
+            <div class="card-header bg-primary text-white">
+              <i class="fas fa-history me-2"></i> Order History
+            </div>
+          </a>
         </div>
 
         <!-- Canceled Orders Section -->
         <div class="card mb-4 border-danger">
-            <a href="canceled_orders.php" class="card-link text-decoration-none">
-                <div class="card-header bg-danger text-white">
-                    <i class="fas fa-times-circle me-2"></i> Canceled Orders
-                </div>
-            </a>
+          <a href="canceled_orders.php" class="card-link text-decoration-none">
+            <div class="card-header bg-danger text-white">
+              <i class="fas fa-times-circle me-2"></i> Canceled Orders
+            </div>
+          </a>
         </div>
 
         <!-- Total Earnings Section -->
         <div class="card mb-4 border-success">
-            <a href="total_earnings.php" class="card-link text-decoration-none">
-                <div class="card-header bg-success text-white">
-                    <i class="fas fa-dollar-sign me-2"></i> Total Earnings
-                </div>
-            </a>
+          <a href="total_earnings.php" class="card-link text-decoration-none">
+            <div class="card-header bg-success text-white">
+              <i class="fas fa-dollar-sign me-2"></i> Total Earnings
+            </div>
+          </a>
         </div>
 
         <!-- Processed Orders Section -->
         <div class="card mb-4 border-info">
-            <a href="processed_orders.php" class="card-link text-decoration-none">
-                <div class="card-header bg-info text-white">
-                    <i class="fas fa-check-circle me-2"></i> Processed Orders
-                </div>
-            </a>
+          <a href="processed_orders.php" class="card-link text-decoration-none">
+            <div class="card-header bg-info text-white">
+              <i class="fas fa-check-circle me-2"></i> Processed Orders
+            </div>
+          </a>
         </div>
+      </div>
     </div>
+
+  </div>
 </div>
 
 
@@ -124,3 +126,4 @@ include("model/login_check.php");
 <script src="admin.js"></script>
 </body>
 </html>
+

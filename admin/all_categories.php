@@ -79,8 +79,22 @@ $categories = $food->getCategories();
     <!-- Main Content Area -->
     <div class="col-md-9 offset-md-2">
       <div class="content">
-        <h2>Categories</h2>
-        <a href="add_category.php" class="btn btn-success mb-3">Add Category</a>
+        
+                    <!-- Alerts -->
+                    <?php
+                    if (isset($_SESSION['success'])) {
+                        echo '<div class="alert alert-success">' . $_SESSION['success'] . '</div>';
+                        unset($_SESSION['success']);
+                    }
+                    if (isset($_SESSION['error'])) {
+                        echo '<div class="alert alert-danger">' . $_SESSION['error'] . '</div>';
+                        unset($_SESSION['error']);
+                    }
+                    ?>
+        <h2 class="text-center">Categories</h2>
+        <div class="d-flex justify-content-center mb-3">
+          <a href="add_category.php" class="btn btn-success mb-3">Add Category</a>
+        </div>
         <div class="table-responsive mt-4">
           <table class="table table-bordered table-striped table-hover">
             <thead class="table-dark">

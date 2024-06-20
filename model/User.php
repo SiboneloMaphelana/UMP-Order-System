@@ -86,6 +86,17 @@ class User {
         return $result->fetch_assoc();
     }
 
+    public function deleteUserAccount($userId) {
+        // Delete user account
+        $stmt = $this->conn->prepare("DELETE FROM users WHERE id = ?");
+        $stmt->bind_param('i', $userId);
+        if (!$stmt->execute()) {
+            error_log("Error deleting user account: " . $stmt->error);
+            return false;
+        }
+        return true;
+    }
+
     public function updateUser($id, $name = null, $surname = null, $email = null, $registration_number = null) {
         $id = intval($id); // Sanitize the ID as an integer directly
         
@@ -160,5 +171,6 @@ class User {
     
 
 }
+
 
 

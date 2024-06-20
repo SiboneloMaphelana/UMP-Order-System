@@ -97,7 +97,10 @@ $foodItems = $food->getAllFoodItems();
                     }
                     ?>
                     <h2 class="text-center">Food Items</h2>
-                    <a href="add_menu.php" class="btn btn-success mb-3">Add Food Item</a>
+                    <div class="d-flex justify-content-center mb-3">
+                        <a href="add_menu.php" class="btn btn-success">Add Food Item</a>
+                    </div>
+                    
                     <div class="table-responsive mt-4">
                         <table class="table table-bordered table-striped table-hover">
                             <thead class="table-dark">
@@ -145,4 +148,5 @@ $foodItems = $food->getAllFoodItems();
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
+
 
