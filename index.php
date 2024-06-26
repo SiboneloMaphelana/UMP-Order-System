@@ -30,19 +30,19 @@ $categories = $food->getCategories();
                             <div class="collapse navbar-collapse" id="navbarNav">
                                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                                     <li class="nav-item">
-                                        <a class="nav-link text-success" href="#home"><i class="bi bi-house-fill"></i> Home</a>
+                                        <a class="nav-link text-success" href="index.php"><i class="bi bi-house-fill"></i> Home</a>
                                     </li>
                                     <li class="nav-item">
-                                        <a class="nav-link text-success" href="#notifications"><i class="bi bi-bell-fill"></i> Notifications</a>
+                                        <a class="nav-link text-success" href="notifications.php"><i class="bi bi-bell-fill"></i> Notifications</a>
                                     </li>
                                     <li class="nav-item">
-                                        <a class="nav-link text-success" href="#orders"><i class="bi bi-list-check"></i> Orders</a>
+                                        <a class="nav-link text-success" href="orders.php"><i class="bi bi-list-check"></i> Orders</a>
                                     </li>
                                     <li class="nav-item">
-                                        <a class="nav-link text-success" href="#cart"><i class="bi bi-cart-fill"></i> Cart</a>
+                                        <a class="nav-link text-success" href="cart.php"><i class="bi bi-cart-fill"></i> Cart</a>
                                     </li>
                                     <li class="nav-item">
-                                        <a class="nav-link text-success" href="#about"><i class="bi bi-info-square-fill"></i> About Us</a>
+                                        <a class="nav-link text-success" href="about.php"><i class="bi bi-info-square-fill"></i> About Us</a>
                                     </li>
                                     <div class="collapse navbar-collapse" id="navbarNav">
                                         <div class="d-flex">

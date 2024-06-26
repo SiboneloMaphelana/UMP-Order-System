@@ -1,4 +1,6 @@
+// Wait for the DOM to load before executing the script
 document.addEventListener('DOMContentLoaded', function () {
+    // Get references to all the input fields
     const firstNameField = document.getElementById('name');
     const lastNameField = document.getElementById('surname');
     const emailField = document.getElementById('email');
@@ -13,18 +15,21 @@ document.addEventListener('DOMContentLoaded', function () {
     const passwordStrengthText = document.createElement('div'); // Makes password strength text appear
     passwordStrength.appendChild(passwordStrengthText);
 
+    // Toggle password visibility on click
     togglePassword.addEventListener('click', function () {
         const type = passwordField.getAttribute('type') === 'password' ? 'text' : 'password';
         passwordField.setAttribute('type', type);
         this.querySelector('#eyeIcon').classList.toggle('fa-eye-slash');
     });
 
+    // Toggle confirm password visibility on click
     toggleConfirmPassword.addEventListener('click', function () {
         const type = confirmField.getAttribute('type') === 'password' ? 'text' : 'password';
         confirmField.setAttribute('type', type);
         this.querySelector('#eyeIconConfirm').classList.toggle('fa-eye-slash');
     });
 
+    // Check if the password and confirm password match
     function checkPasswordMatch() {
         const password = passwordField.value;
         const confirm = confirmField.value;
@@ -35,13 +40,16 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
+    // Add event listeners to check password match on input
     confirmField.addEventListener('input', checkPasswordMatch);
     passwordField.addEventListener('input', checkPasswordMatch);
 
+    // Check password strength and display suggestions
     passwordField.addEventListener('input', function () {
         const password = passwordField.value;
         const result = zxcvbn(password);
 
+        // Set password strength text and background color based on score
         switch (result.score) {
             case 0:
                 passwordStrengthText.textContent = "Very Weak";
@@ -69,6 +77,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 break;
         }
 
+        // Display password suggestions if available
         if (result.feedback.suggestions.length > 0) {
             passwordSuggestion.textContent = result.feedback.suggestions.join(' ');
             passwordSuggestion.style.color = "#3366ff";
@@ -78,11 +87,13 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 
-     // Validation functions
+    // Validation functions for input fields
+
+    // Validate first name
     function validateFirstName() {
         const firstName = firstNameField.value.trim();
         const nameRegex = /^[A-Za-z]+(?:[ '-][A-Za-z]+)*$/;
-    
+
         // Check if the field is empty
         if (firstName === '') {
             console.error('First name is required');
@@ -95,16 +106,17 @@ document.addEventListener('DOMContentLoaded', function () {
             firstNameField.classList.add('is-invalid');
             return false;
         }
-        
+
         // If all checks pass, remove the invalid class and return true
         firstNameField.classList.remove('is-invalid');
         return true;
     }
-    
+
+    // Validate last name
     function validateLastName() {
         const lastName = lastNameField.value.trim();
         const nameRegex = /^[A-Za-z]+(?:[ '-][A-Za-z]+)*$/; // Adjust regex as needed
-        
+
         // Check if the field is empty
         if (lastName === '') {
             lastNameField.classList.add('is-invalid'); // Add a red border to the input field
@@ -117,13 +129,13 @@ document.addEventListener('DOMContentLoaded', function () {
             console.error('Last name contains invalid characters');
             return false;
         }
-         
+
         // If all checks pass, remove the invalid class and return true
         lastNameField.classList.remove('is-invalid');
         return true;
     }
 
-    
+    // Validate email
     function validateEmail() {
         const email = emailField.value.trim();
         // Regular expression for email validation
@@ -134,7 +146,8 @@ document.addEventListener('DOMContentLoaded', function () {
         }
         return true;
     }
-    
+
+    // Validate registration number
     function validateRegistrationNumber() {
         const registrationNumber = registrationNumberField.value.trim();
         if (registrationNumber === '') {
@@ -153,10 +166,11 @@ document.addEventListener('DOMContentLoaded', function () {
         }
         return true;
     }
-    
+
     // Event listeners for input fields
     firstNameField.addEventListener('input', validateFirstName);
     lastNameField.addEventListener('input', validateLastName);
     emailField.addEventListener('input', validateEmail);
     registrationNumberField.addEventListener('input', validateRegistrationNumber);
 });
+

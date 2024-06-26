@@ -1,6 +1,7 @@
 <?php
-include_once("connection/connection.php"); // Adjust path as per your file structure
-include_once("admin/model/Food.php"); // Adjust path as per your file structure
+session_start();
+include_once("connection/connection.php");
+include_once("admin/model/Food.php");
 
 // Check if user is logged in
 if (!isset($_SESSION['id'])) {
@@ -26,11 +27,16 @@ function calculateTotalItems($cartItems) {
     return $totalItems;
 }
 
-// Retrieve cart items for the logged-in user
-$food = new Food($conn); 
-$cartItems = $food->getCartItems($_SESSION['id']); 
+// Retrieve cart items from session
+$cartItems = isset($_SESSION['cart']) ? $_SESSION['cart'] : [];
 
+// Calculate subtotal
+$subtotal = calculateSubtotal($cartItems);
+
+// Store subtotal in session
+$_SESSION['subtotal'] = $subtotal;
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -64,7 +70,7 @@ $cartItems = $food->getCartItems($_SESSION['id']);
                                     <a class="nav-link text-success" href="#orders"><i class="bi bi-list-check"></i> Orders</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link text-success" href="#cart"><i class="bi bi-cart-fill"></i> Cart</a>
+                                    <a class="nav-link text-success" href="cart.php"><i class="bi bi-cart-fill"></i> Cart</a>
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link text-success" href="#about"><i class="bi bi-info-square-fill"></i> About Us</a>
@@ -138,7 +144,7 @@ $cartItems = $food->getCartItems($_SESSION['id']);
                             </li>
                             <li class="list-group-item d-flex justify-content-between align-items-center">
                                 Subtotal:
-                                <span>R<?php echo number_format(calculateSubtotal($cartItems), 2); ?></span>
+                                <span>R<?php echo number_format($subtotal, 2); ?></span>
                             </li>
                         </ul>
                         <a href="checkout.php" class="btn btn-success w-100 mt-3">Proceed to Checkout</a>
@@ -162,4 +168,3 @@ $cartItems = $food->getCartItems($_SESSION['id']);
 
 </body>
 </html>
-jhv

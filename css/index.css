@@ -1,60 +1,69 @@
-/* Global styles */
+
+
+/* Set the font family and add padding to the top of the body */
 body {
     font-family: Arial, sans-serif;
     padding-top: 100px;
 }
 
+/* Set the maximum width of the container */
 .container {
     max-width: 1200px;
 }
 
 /* Header styles */
 .header {
-    background-color: #32BC9A;
-    color: white;
+    background-color: #32BC9A; /* Set the background color of the header */
+    color: white; /* Set the text color of the header */
 }
 
 .logo {
-    max-width: 150px;
+    max-width: 150px; /* Set the maximum width of the logo */
 }
 
+/* Style the navigation links in the navbar */
 .navbar-nav .nav-link {
-    color: white !important;
-    font-size: 1.1rem;
+    color: white !important; /* Set the text color of the navigation links */
+    font-size: 1.1rem; /* Set the font size of the navigation links */
 }
 
+/* Style the navigation links when hovered */
 .navbar-nav .nav-link:hover {
-    color: #F8F9FA !important;
+    color: #F8F9FA !important; /* Set the text color of the navigation links when hovered */
 }
 
+/* Style the dropdown menu */
 .dropdown-menu {
-    background-color: #F8F9FA;
+    background-color: #F8F9FA; /* Set the background color of the dropdown menu */
 }
 
+/* Style the links in the dropdown menu */
 .dropdown-menu a {
-    color: #343A40 !important;
+    color: #343A40 !important; /* Set the text color of the links in the dropdown menu */
 }
 
-/* Main content styles */
+/* Style the main content */
 #categories h2 {
-    color: #32BC9A;
+    color: #32BC9A; /* Set the text color of the heading in the categories section */
 }
 
 .card {
-    border: none;
+    border: none; /* Remove the border of the cards */
 }
 
+/* Style the cards when hovered */
 .card:hover{
-            transform: scale(1.05);
-            transition: transform 0.3s ease;
+    transform: scale(1.05);
+    transition: transform 0.3s ease;
 }
 
 .card-title {
-    color: #343A40;
+    color: #343A40; /* Set the text color of the card titles */
 }
 
 
 /* Specials section */
 #specials h2 {
-    color: #32BC9A;
+    color: #32BC9A; /* Set the text color of the heading in the specials section */
 }
+

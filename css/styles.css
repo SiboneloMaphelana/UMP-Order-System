@@ -1,8 +1,12 @@
+/* Logo styles */
 .logo {
-    max-width: 100px; /* Adjust the size as needed */
+    max-width: 100px; 
     height: auto;
 }
+
+/* Styles for custom size buttons */
 .btn-custom-size {
+    /* Remove default button styles */
     height: auto;
     display: flex;
     align-items: center;
@@ -10,29 +14,35 @@
     padding: 0; 
     background: none; 
     border: none; 
+    
+    /* Set custom colors and font size */
     color: #32BC9A; 
     font-size: 1.5rem;
 }
 
+/* Styles for labels */
 .form-label{
     color: #32BC9A;
 }
 
+/* Styles for card */
 .card{
     max-width: 400px;
-    border: none; 
-    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+    border: none; /* Remove border */
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075); /* Add box shadow */
 }
 
+/* Styles for personal card within profile container */
 .profile-container .personal-card {
-    background-color: #F5F5F5 !important; 
-    border: none; 
-    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075); 
+    background-color: #F5F5F5 !important; /* Set background color */
+    border: none; /* Remove border */
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075); /* Add box shadow */
 }
 
+/* Styles for form controls and selects */
 .form-control, .form-select {
-    background-color: #F5F5F5; 
-    border: none; 
-    box-shadow: none; 
+    background-color: #F5F5F5; /* Set background color */
+    border: none; /* Remove border */
+    box-shadow: none; /* Remove box shadow */
 }
 

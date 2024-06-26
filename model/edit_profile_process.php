@@ -1,5 +1,4 @@
 <?php
-// Include necessary files and start the session
 include_once("../connection/connection.php");
 include_once("User.php");
 

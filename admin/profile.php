@@ -26,11 +26,11 @@ if (!$userDetails) {
 <body>
     <!-- Header -->
     <header class="header d-flex justify-content-between align-items-center p-3">
-        <a href="index.php" class="btn btn-custom-size align-self-center">
+        <a href="dashboard.php" class="btn btn-custom-size align-self-center">
             <i class="fas fa-arrow-left"></i>
         </a>
         <img src="images/logo.jpeg" alt="UMP logo" class="logo mx-auto"/>
-        <a href="welcome.php" class="btn btn-custom-size align-self-center"><i class="fas fa-times"></i></a>
+        <a href="dashboard.php" class="btn btn-custom-size align-self-center"><i class="fas fa-times"></i></a>
     </header>
 
     <div class="container profile-container mt-5 d-flex justify-content-center">

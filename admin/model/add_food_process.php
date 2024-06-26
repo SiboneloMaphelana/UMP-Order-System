@@ -1,11 +1,12 @@
 <?php
 
+// Require the necessary files
 require_once '../../connection/connection.php';
 require_once 'Food.php'; 
 
-
-
+// Check if the form is submitted
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    // Create a new instance of the Food class
     $food = new Food($conn);
 
     // Get form data
@@ -17,6 +18,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $image = $_FILES['image']; 
     $adminId = $_SESSION['id'];
 
+    // Add the food item to the database
     $result = $food->addFoodItem($name, $description, $categoryId, $quantity, $price, $image, $adminId);
 
     // Check the result and redirect accordingly
@@ -26,8 +28,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         header('Location: ../all_menus.php');
         exit();
     } else {
-        $errorMessage = "Failed to add food item: $result";
         // Error occurred while adding food item
+        $errorMessage = "Failed to add food item: $result";
         $_SESSION['error'] = "Failed to add food item";
         header('Location: ../add_food.php?error=' . urlencode($errorMessage));
     }
@@ -36,4 +38,4 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     header('Location: ../add_food.php');
     exit();
 }
-?>
+

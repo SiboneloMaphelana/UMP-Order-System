@@ -362,63 +362,22 @@ class Food {
             return "Error updating food item: " . mysqli_error($this->conn);
         }
     }
-    
-    public function addToCart($customerId, $foodItemId, $quantity, $price) {
-        // Sanitize input
-        $customerId = intval($customerId);
-        $foodItemId = intval($foodItemId);
-        $quantity = intval($quantity);
-        $price = floatval($price);
-    
-        $sql = "INSERT INTO cart (customer_id, food_item_id, quantity, price) VALUES (?, ?, ?, ?)";
-        $stmt = mysqli_prepare($this->conn, $sql);
-        mysqli_stmt_bind_param($stmt, "iiid", $customerId, $foodItemId, $quantity, $price);
-        
-        if (mysqli_stmt_execute($stmt)) {
-            return true; // Return true if success
+
+    public function addOrder($userId, $totalAmount, $paymentMethod) {
+        $stmt = $this->conn->prepare("INSERT INTO orders (user_id, total_amount, payment_method) VALUES (?, ?, ?)");
+        $stmt->bind_param("ids", $userId, $totalAmount, $paymentMethod);
+        if ($stmt->execute()) {
+            return $stmt->insert_id; // Return the inserted order ID
         } else {
-            return "Error adding item to cart: " . mysqli_error($this->conn); // Return error message if failure
+            return false; // Return false on failure
         }
     }
 
-
-    public function getCartItems($userId) {
-        try {
-            // Prepare SQL statement to retrieve cart items for the user
-            $stmt = mysqli_prepare($this->conn, "
-                SELECT c.id, c.food_item_id, c.quantity, c.price, f.name, f.price as unit_price
-                FROM cart c
-                INNER JOIN food_items f ON c.food_item_id = f.id
-                WHERE c.customer_id = ?
-            ");
-    
-            // Bind parameter
-            mysqli_stmt_bind_param($stmt, 'i', $userId);
-    
-            // Execute query
-            mysqli_stmt_execute($stmt);
-    
-            // Get result
-            $result = mysqli_stmt_get_result($stmt);
-    
-            // Fetch all rows
-            $cartItems = [];
-            while ($row = mysqli_fetch_assoc($result)) {
-                $cartItems[] = $row;
-            }
-    
-            // Free result set
-            mysqli_free_result($result);
-    
-            // Close statement
-            mysqli_stmt_close($stmt);
-    
-            return $cartItems;
-        } catch (mysqli_sql_exception $e) {
-            // Handle database error
-            echo "Error: " . $e->getMessage();
-            return false;
-        }
+    // Function to add order items to the database
+    public function addOrderItem($orderId, $foodId, $quantity, $price) {
+        $stmt = $this->conn->prepare("INSERT INTO order_items (order_id, food_id, quantity, price) VALUES (?, ?, ?, ?)");
+        $stmt->bind_param("iiid", $orderId, $foodId, $quantity, $price);
+        return $stmt->execute(); // Return true or false based on execution
     }
     
     

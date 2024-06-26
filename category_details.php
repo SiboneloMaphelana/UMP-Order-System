@@ -1,4 +1,5 @@
 <?php
+session_start();
 include("connection/connection.php");
 include_once("admin/model/Food.php");
 
@@ -87,28 +88,29 @@ $foodItems = $food->getFoodItemsByCategoryId($category_id);
                         </div>
 
                         <!-- Modal -->
-                        <div class="modal fade" id="foodModal<?php echo $item['id']; ?>" tabindex="-1" aria-labelledby="foodModalLabel<?php echo $item['id']; ?>" aria-hidden="true">
-                            <div class="modal-dialog">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title" id="foodModalLabel<?php echo $item['id']; ?>"><?php echo htmlspecialchars($item['name']); ?></h5>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                    </div>
-                                    <div class="modal-body">
-                                        <img src="admin/foods/<?php echo htmlspecialchars($item['image']); ?>" class="img-fluid mb-3" alt="<?php echo htmlspecialchars($item['name']); ?>">
-                                        <p><?php echo htmlspecialchars($item['description']); ?></p>
-                                        <p class="text-success food-price">R<?php echo htmlspecialchars($item['price']); ?></p>
-                                        <div class="d-flex justify-content-center align-items-center mb-3">
-                                            <button class="btn btn-outline-secondary btn-sm me-2" onclick="changeQuantity(this, -1)">-</button>
-                                            <input type="text" class="form-control text-center quantity-input" value="1" style="width: 50px;" readonly>
-                                            <button class="btn btn-outline-secondary btn-sm ms-2" onclick="changeQuantity(this, 1)">+</button>
-                                        </div>
-                                        <button class="btn btn-success w-100" onclick="addToCart(<?php echo $item['id']; ?>)">Add to Cart</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- End Modal -->
+<div class="modal fade" id="foodModal<?php echo $item['id']; ?>" tabindex="-1" aria-labelledby="foodModalLabel<?php echo $item['id']; ?>" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="foodModalLabel<?php echo $item['id']; ?>"><?php echo htmlspecialchars($item['name']); ?></h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <img src="admin/foods/<?php echo htmlspecialchars($item['image']); ?>" class="img-fluid mb-3" alt="<?php echo htmlspecialchars($item['name']); ?>">
+                <p><?php echo htmlspecialchars($item['description']); ?></p>
+                <p class="text-success food-price">R<?php echo htmlspecialchars($item['price']); ?></p>
+                <div class="d-flex justify-content-center align-items-center mb-3">
+                    <button class="btn btn-outline-secondary btn-sm me-2" onclick="changeQuantity(this, -1)">-</button>
+                    <input type="text" class="form-control text-center quantity-input" value="1" style="width: 50px;" readonly>
+                    <button class="btn btn-outline-secondary btn-sm ms-2" onclick="changeQuantity(this, 1)">+</button>
+                </div>
+                <button class="btn btn-success w-100" onclick="addToCart(<?php echo $item['id']; ?>, '<?php echo htmlspecialchars($item['name']); ?>')">Add to Cart</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End Modal -->
+
                     </div>
                 <?php endforeach; ?>
             <?php else : ?>
@@ -129,46 +131,8 @@ $foodItems = $food->getFoodItemsByCategoryId($category_id);
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script>
-function addToCart(foodItemId) {
-    var quantity = parseInt($('#foodModal' + foodItemId).find('.quantity-input').val());
+<script src="js/addToCart.js"></script>
 
-    var price = parseFloat($('#foodModal' + foodItemId).find('.food-price').text().replace(/[^\d.-]/g, '')); 
-
-    // Calculate total price
-    var totalPrice = price * quantity;
-
-    // Add item to cart
-    $.ajax({
-        url: 'admin/model/temp_cart.php', 
-        method: 'POST',
-        data: {
-            foodItemId: foodItemId,
-            quantity: quantity,
-            price: totalPrice
-        },
-        success: function(response) {
-            alert(response); // Show success or error message
-        },
-        error: function(xhr, status, error) {
-            console.error(xhr.responseText); // Log any errors to the console
-        }
-    });
-}
-
-function changeQuantity(element, change) {
-    var input = $(element).siblings('.quantity-input');
-    var currentValue = parseInt(input.val());
-    var newValue = currentValue + change;
-
-    if (newValue < 1) {
-        newValue = 1;
-    }
-
-    input.val(newValue);
-}
-</script>
 
 </body>
 </html>
-
