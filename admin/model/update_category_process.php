@@ -13,7 +13,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     $foodModel = new Food($conn);
 
-    // Extract data from POST request
     $categoryId = intval($_POST['categoryId']);
     $name = isset($_POST['name']) ? $_POST['name'] : null;
     $image = isset($_FILES['image']) ? $_FILES['image'] : null;

@@ -44,6 +44,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_SESSION['id'])) {
 
     echo json_encode(['success' => true, 'message' => 'Item added to cart successfully.']);
 } else {
-    echo json_encode(['success' => false, 'message' => 'Unauthorized access.']); // Handle cases where user is not logged in or request method is not POST
+    echo json_encode(['success' => false, 'message' => 'Unauthorized access.']); //user not logged in
 }
 ?>

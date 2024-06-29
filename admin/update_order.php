@@ -1,4 +1,3 @@
-<!-- update_status.php -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -38,25 +37,12 @@
         header("Location: orders.php"); // Redirect to manage orders page if order not found
         exit();
     }
-
-    // Process form submission to update order status
-    if ($_SERVER["REQUEST_METHOD"] == "POST") {
-        $new_status = $_POST['status'];
-
-        // Update order status in the database
-        if ($food->updateOrderStatus($order_id, $new_status)) {
-            $_SESSION['success'] = "Order status updated successfully.";
-            header("Location: orders.php?id=" . $order_id); // Redirect to view order details page
-            exit();
-        } else {
-            $_SESSION['error'] = "Failed to update order status.";
-        }
-    }
     ?>
 
     <div class="card mb-4">
         <div class="card-body">
-            <form method="POST">
+            <form method="POST" action="model/update_order.php">
+                <input type="hidden" name="order_id" value="<?php echo $order_id; ?>">
                 <div class="mb-3">
                     <label for="status" class="form-label">Select New Status</label>
                     <select class="form-select" id="status" name="status" required>

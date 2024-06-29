@@ -1,8 +1,6 @@
 <?php
 // Start the session
 session_start();
-
-// Include the necessary files
 include_once("../../connection/connection.php");
 include("Admin.php");
 
@@ -13,7 +11,6 @@ if (!isset($_SESSION['id'])) {
     exit;
 }
 
-// Instantiate the Admin class
 $adminModel = new Admin($conn);
 
 // Get the ID of the account to be deleted

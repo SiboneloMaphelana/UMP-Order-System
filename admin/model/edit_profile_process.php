@@ -29,13 +29,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     // Check if there is no data to be updated and no file is uploaded
     if (empty($updateData) && $file === null) {
-        $_SESSION['error'] = "No data to update."; // Set error message and redirect to profile page
+        $_SESSION['error'] = "No data to update.";
         header("Location: ../profile.php");
         exit;
     }
 
     // Update admin details
-    $success = $adminModel->updateAdmin($id, $updateData, $file); // Call the updateAdmin method to update admin details
+    $success = $adminModel->updateAdmin($id, $updateData, $file); 
     if ($success) {
         $_SESSION['success'] = "User details updated successfully."; // Set success message
     } else {

@@ -1,5 +1,4 @@
 <?php
-
 // Function to group orders by date
 function groupOrdersByDate($orders) {
     $groupedOrders = [];

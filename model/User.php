@@ -7,6 +7,12 @@ class User {
         $this->conn = $conn;
     }
 
+    /**
+     * Sanitizes user details by applying various filters.
+     *
+     * @param array $data The array containing user details to be sanitized.
+     * @return array The array with sanitized user details.
+     */
     public function sanitizeUserDetails(array $data): array {
         $sanitizedData = [];
         $sanitizedData['name'] = filter_var($data['name'], FILTER_SANITIZE_FULL_SPECIAL_CHARS);
@@ -18,6 +24,12 @@ class User {
         return $sanitizedData;
     }
 
+    /**
+     * Checks if a user with the given email already exists in the database.
+     *
+     * @param string $email The email address to check for existence.
+     * @return bool Returns true if a user with the given email exists, false otherwise.
+     */
     public function userExists(string $email): bool {
         $stmt = $this->conn->prepare('SELECT COUNT(*) FROM users WHERE email = ?');
         $stmt->bind_param('s', $email);
@@ -27,6 +39,20 @@ class User {
         return $row['COUNT(*)'] > 0;
     }
 
+    /**
+     * Signs up a user by inserting their details into the database.
+     *
+     * @param array $data An associative array containing the user's details.
+     *                    The array should have the following keys:
+     *                    - name: string
+     *                    - surname: string
+     *                    - registration_number: string
+     *                    - role: string
+     *                    - email: string
+     *                    - password: string
+     * @return bool Returns true if the user was successfully signed up, false otherwise.
+     *              Returns false if the user already exists in the database.
+     */
     public function signup(array $data): bool {
         $sanitizedData = $this->sanitizeUserDetails($data);
         if ($this->userExists($sanitizedData['email'])) {
@@ -37,6 +63,12 @@ class User {
         return $stmt->execute();
     }
 
+    /**
+     * Validates the signup data and returns an array of errors.
+     *
+     * @param array $data The array containing the signup data.
+     * @return array The array of errors.
+     */
     public function validateSignup(array $data): array {
         $errors = [];
         if (empty($data['name'])) $errors['name'] = "First Name is required.";
@@ -62,6 +94,13 @@ class User {
 
     }
 
+    /**
+     * Validates user credentials by checking the provided email and password.
+     *
+     * @param string $email The email of the user trying to log in.
+     * @param string $password The password of the user trying to log in.
+     * @return bool Returns true if the login is successful, false otherwise.
+     */
     public function login(string $email, string $password): bool {
         if (empty($email) || empty($password)) {
             return false;
@@ -78,6 +117,12 @@ class User {
         return false;
     }
 
+    /**
+     * Retrieves user details from the database based on the provided ID.
+     *
+     * @param mixed $id The unique identifier of the user.
+     * @return array|null Returns an associative array of user details if found, null otherwise.
+     */
     public function getUserById( $id): ?array {
         $stmt = $this->conn->prepare('SELECT * FROM users WHERE id = ?');
         $stmt->bind_param('s', $id);
@@ -86,6 +131,12 @@ class User {
         return $result->fetch_assoc();
     }
 
+    /**
+     * Deletes a user account from the database.
+     *
+     * @param int $userId The ID of the user account to delete.
+     * @return bool Returns true if the user account is successfully deleted, false otherwise.
+     */
     public function deleteUserAccount($userId) {
         // Delete user account
         $stmt = $this->conn->prepare("DELETE FROM users WHERE id = ?");
@@ -97,6 +148,16 @@ class User {
         return true;
     }
 
+    /**
+     * Updates the user details with the provided ID.
+     *
+     * @param int $id The ID of the user to update.
+     * @param string|null $name The new first name of the user. If null, retains the existing value.
+     * @param string|null $surname The new last name of the user. If null, retains the existing value.
+     * @param string|null $email The new email of the user. If null, retains the existing value.
+     * @param string|null $registration_number The new registration number of the user. If null, retains the existing value.
+     * @return bool|string Returns true if the user details were successfully updated, or an error message if the update failed.
+     */
     public function updateUser($id, $name = null, $surname = null, $email = null, $registration_number = null) {
         $id = intval($id); // Sanitize the ID as an integer directly
         
@@ -149,6 +210,13 @@ class User {
     }
     
 
+    /**
+     * Checks if an email already exists in the users table for a given user ID.
+     *
+     * @param int $id The ID of the user to exclude from the search.
+     * @param string $email The email address to check for existence.
+     * @return bool Returns true if the email exists for a user other than the one specified by $id, false otherwise.
+     */
     private function emailExists($id, $email): bool {
         $stmt = $this->conn->prepare('SELECT COUNT(*) FROM users WHERE email = ? AND id <> ?');
         $stmt->bind_param('si', $email, $id);
@@ -158,6 +226,13 @@ class User {
         return $row['COUNT(*)'] > 0;
     }
     
+    /**
+     * Checks if a registration number already exists for a user, excluding a specific user ID.
+     *
+     * @param int $id The ID of the user to exclude from the check.
+     * @param int $registration_number The registration number to check for.
+     * @return bool Returns true if the registration number exists for another user, false otherwise.
+     */
     private function registrationNumberExists($id, $registration_number): bool {
         $stmt = $this->conn->prepare('SELECT COUNT(*) FROM users WHERE registration_number = ? AND id <> ?');
         $stmt->bind_param('ii', $registration_number, $id);
@@ -167,10 +242,4 @@ class User {
         return $row['COUNT(*)'] > 0;
     }
     
-    
-    
-
 }
-
-
-

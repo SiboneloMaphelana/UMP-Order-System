@@ -1,12 +1,8 @@
 <?php
-// Start the session
 session_start();
-
-// Include the necessary files
 require_once '../../connection/connection.php';
 require_once 'Food.php';
 
-// Create a new instance of the Food class
 $food = new Food($conn);
 
 // Check if the food item ID is set in the URL
@@ -33,7 +29,6 @@ if (isset($_GET['id'])) {
     header("Location: ../all_menus.php");
 }
 
-// End the script
 exit;
 ?>
 

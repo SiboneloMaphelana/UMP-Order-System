@@ -3,10 +3,8 @@ session_start();
 include_once("../connection/connection.php");
 include_once("model/Food.php"); 
 
-// Initialize Admin class with database connection
 $order = new Food($conn);
 
-// Retrieve all orders using the getAllOrders method
 $orders = $order->getAllOrders();
 ?>
 

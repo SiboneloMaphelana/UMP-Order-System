@@ -1,19 +1,16 @@
 <?php
-// Ensure session is started and user is authenticated
+//session is started and user is authenticated
 session_start();
+include_once("../../connection/connection.php");
+include_once("Food.php");
 
 // Check if user is logged in
 if (!isset($_SESSION['id'])) {
-    // Redirect to login or appropriate error handling
+    // Redirect to login
     header('Location: login.php');
     exit();
 }
 
-// Include database connection and Food class
-include_once("../../connection/connection.php");
-include_once("Food.php");
-
-// Initialize Food class with database connection
 $food = new Food($conn);
 
 // Check if orderId is provided via POST

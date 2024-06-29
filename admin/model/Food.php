@@ -6,10 +6,25 @@ class Food {
         $this->conn = $conn;
     }
 
+    /**
+     * Sanitizes the input data by removing any HTML tags, slashes, and extra whitespace.
+     *
+     * @param mixed $data The data to be sanitized.
+     * @return string The sanitized data.
+     */
     public function sanitizeInput($data) {
         return htmlspecialchars(stripslashes(trim($data)));
     }
 
+    /**
+     * Adds a new category to the database.
+     *
+     * @param string $name The name of the category.
+     * @param string $imagePath The path to the image for the category.
+     * @return string|bool Returns "Category already exists." if the category already exists,
+     *                     true if the category is successfully added,
+     *                     or "Error adding category." if there is an error adding the category.
+     */
     public function addCategory($name, $imagePath) {
         $name = $this->sanitizeInput($name);
 
@@ -29,6 +44,11 @@ class Food {
         return mysqli_stmt_execute($insert_stmt) ? true : "Error adding category.";
     }
 
+    /**
+     * Retrieves all the categories from the database.
+     *
+     * @return array An array of category objects.
+     */
     public function getCategories() {
         $query = "SELECT * FROM category";
         $result = mysqli_query($this->conn, $query);
@@ -43,6 +63,13 @@ class Food {
         return $categories;
     }
 
+    /**
+     * Deletes a category from the database and optionally deletes the associated image file.
+     *
+     * @param int $categoryId The ID of the category to delete.
+     * @return string|bool Returns true if the category was deleted successfully, false otherwise. 
+     *                     If an error occurred, a string with the error message is returned.
+     */
     public function deleteCategory($categoryId) {
         $categoryId = intval($this->sanitizeInput($categoryId));
         
@@ -80,6 +107,17 @@ class Food {
         }
     }
     
+    /**
+     * Updates a category in the database with the given ID.
+     *
+     * @param int $id The ID of the category to update.
+     * @param string|null $name The new name of the category (optional).
+     * @param string|null $imageName The new image name of the category (optional).
+     * @return string|bool Returns true if the category was updated successfully, 
+     *                     "No fields to update." if no fields were provided, 
+     *                     "No rows updated. Either the category does not exist or the new values are the same as the old values." if no rows were updated, 
+     *                     "Error updating category: " . mysqli_error($this->conn) if there was an error updating the category.
+     */
     public function updateCategory($id, $name = null, $imageName = null) {
         $id = intval($this->sanitizeInput($id));
         $name = $name ? $this->sanitizeInput($name) : null;
@@ -126,6 +164,12 @@ class Food {
     }
     
 
+    /**
+     * Checks if a category exists in the database.
+     *
+     * @param int $categoryId The ID of the category to check.
+     * @return bool Returns true if the category exists, false otherwise.
+     */
     public function isCategoryExists($categoryId) {
         $categoryId = intval($this->sanitizeInput($categoryId));
     
@@ -140,6 +184,13 @@ class Food {
         return $count > 0;
     }
 
+    /**
+     * Retrieves a category from the database by its ID.
+     *
+     * @param int $categoryId The ID of the category to retrieve.
+     * @return array|null Returns an associative array representing the category if found,
+     *                    or null if no category with the given ID exists.
+     */
     public function getCategoryById($categoryId) {
         // Sanitize the input
         $categoryId = intval($this->sanitizeInput($categoryId));
@@ -156,6 +207,19 @@ class Food {
         return $category;
     }
 
+    /**
+     * Adds a food item to the database.
+     *
+     * @param string $name The name of the food item.
+     * @param string $description The description of the food item.
+     * @param int $categoryId The ID of the category the food item belongs to.
+     * @param int $quantity The quantity of the food item.
+     * @param float $price The price of the food item.
+     * @param array $image The image of the food item.
+     * @param int $adminId The ID of the admin adding the food item.
+     * @return bool|string Returns true if the food item was added successfully, false otherwise.
+     *                     If an error occurred, a string with the error message is returned.
+     */
     public function addFoodItem($name, $description, $categoryId, $quantity, $price, $image, $adminId) {
         // Sanitize input data
         $name = $this->sanitizeInput($name);
@@ -193,6 +257,13 @@ class Food {
         }
     }
 
+    /**
+     * Retrieves all the food items from the database, along with their category names.
+     * If a food item does not have a category, it is assigned the category 'Uncategorized'.
+     *
+     * @return array An array of associative arrays representing the food items,
+     *               each containing the following keys: id, name, description, quantity, price, image, and Category.
+     */
     public function getAllFoodItems() {
         $query = "SELECT F.id, F.name, F.description, F.quantity, F.price, F.image, 
                   IFNULL(C.name, 'Uncategorized') AS Category
@@ -211,6 +282,12 @@ class Food {
     }
     
 
+    /**
+     * Checks if a food item with the given ID exists in the database.
+     *
+     * @param int $id The ID of the food item to check.
+     * @return bool Returns true if the food item exists, false otherwise.
+     */
     public function foodItemExists($id) {
         $query = "SELECT id FROM food_items WHERE id = ?";
         $stmt = $this->conn->prepare($query);
@@ -226,6 +303,13 @@ class Food {
     }
     
 
+    /**
+     * Deletes a food item from the database and optionally deletes the associated image file.
+     *
+     * @param int $foodItemId The ID of the food item to delete.
+     * @return bool|string Returns true if the food item was deleted successfully, false otherwise. 
+     *                     If an error occurred, a string with the error message is returned.
+     */
     public function deleteFoodItem($foodItemId) {
         // Sanitize the input
         $foodItemId = intval($this->sanitizeInput($foodItemId));
@@ -256,6 +340,13 @@ class Food {
     }
     
 
+    /**
+     * Retrieves a food item from the database by its ID.
+     *
+     * @param int $foodItemId The ID of the food item to retrieve.
+     * @return array|null Returns an associative array representing the food item if found,
+     *                    or null if no food item with the given ID exists.
+     */
     public function getFoodItemById($foodItemId) {
         // Sanitize the input
         $foodItemId = intval($this->sanitizeInput($foodItemId));
@@ -272,6 +363,14 @@ class Food {
         return $foodItem;
     }
 
+    /**
+     * Retrieves food items from the database based on the provided category ID.
+     *
+     * @param int $categoryId The ID of the category to retrieve food items from.
+     * @return array An array of associative arrays representing the food items,
+     *               each containing the following keys: id, name, description,
+     *               quantity, price, image.
+     */
     public function getFoodItemsByCategoryId($categoryId) {
         // Sanitize the input
         $categoryId = intval($this->sanitizeInput($categoryId));
@@ -292,6 +391,19 @@ class Food {
         return $foodItems;
     }
     
+    /**
+     * Updates a food item in the database.
+     *
+     * @param int $id The ID of the food item to update.
+     * @param string|null $name The new name of the food item (optional).
+     * @param int|null $quantity The new quantity of the food item (optional).
+     * @param float|null $price The new price of the food item (optional).
+     * @param string|null $description The new description of the food item (optional).
+     * @param string|null $image The new image of the food item (optional).
+     * @param int|null $category The new category ID of the food item (optional).
+     * @return bool|string Returns true if the food item was successfully updated,
+     *                     or a string describing the error if the update failed.
+     */
     public function updateFoodItem($id, $name = null, $quantity = null, $price = null, $description = null, $image = null, $category = null) {
         $id = intval($this->sanitizeInput($id));
         $name = $name ? $this->sanitizeInput($name) : null;
@@ -363,6 +475,14 @@ class Food {
         }
     }
 
+    /**
+     * Adds an order to the database with the given user ID, total amount, and payment method.
+     *
+     * @param int $userId The ID of the user placing the order.
+     * @param float $totalAmount The total amount of the order.
+     * @param string $paymentMethod The payment method used for the order.
+     * @return int|false The ID of the inserted order, or false on failure.
+     */
     public function addOrder($userId, $totalAmount, $paymentMethod) {
         $stmt = $this->conn->prepare("INSERT INTO orders (user_id, total_amount, payment_method) VALUES (?, ?, ?)");
         $stmt->bind_param("ids", $userId, $totalAmount, $paymentMethod);
@@ -373,13 +493,28 @@ class Food {
         }
     }
 
-    // Function to add order items to the database
+
+    /**
+     * Adds an order item to the database with the given order ID, food ID, quantity, and price.
+     *
+     * @param int $orderId The ID of the order.
+     * @param int $foodId The ID of the food item.
+     * @param int $quantity The quantity of the food item.
+     * @param float $price The price of the food item.
+     * @return bool Returns true if the order item was added successfully, false otherwise.
+     */
     public function addOrderItem($orderId, $foodId, $quantity, $price) {
         $stmt = $this->conn->prepare("INSERT INTO order_items (order_id, food_id, quantity, price) VALUES (?, ?, ?, ?)");
         $stmt->bind_param("iiid", $orderId, $foodId, $quantity, $price);
         return $stmt->execute(); // Return true or false based on execution
     }
 
+    /**
+     * Retrieves all orders from the database.
+     *
+     * @return array An array of associative arrays representing the orders,
+     *               each containing the columns of the 'orders' table.
+     */
     public function getAllOrders(): array {
         $sql = "SELECT * FROM orders";
         $result = $this->conn->query($sql);
@@ -390,6 +525,12 @@ class Food {
         return $orders;
     }
 
+    /**
+     * Retrieves an order from the database by its ID.
+     *
+     * @param int $orderId The ID of the order to retrieve.
+     * @return array|null An associative array representing the order, or null if no order is found.
+     */
     public function getOrderById($orderId) {
         $stmt = $this->conn->prepare('SELECT * FROM orders WHERE id = ?');
         $stmt->bind_param('i', $orderId);
@@ -398,7 +539,13 @@ class Food {
         return $result->fetch_assoc();
     }
 
-    // Function to retrieve order items by order ID
+
+    /**
+     * Retrieves order items from the database by order ID.
+     *
+     * @param int $orderId The ID of the order to retrieve items for.
+     * @return array An associative array representing the order items.
+     */
     public function getOrderItems($orderId) {
         $stmt = $this->conn->prepare('SELECT oi.*, fi.name, fi.price FROM order_items oi JOIN food_items fi ON oi.food_id = fi.id WHERE oi.order_id = ?');
         $stmt->bind_param('i', $orderId);
@@ -407,6 +554,12 @@ class Food {
         return $result->fetch_all(MYSQLI_ASSOC);
     }
 
+    /**
+     * Retrieves a customer from the database by their ID.
+     *
+     * @param string $id The ID of the customer to retrieve.
+     * @return array|null The customer details as an associative array, or null if no customer was found.
+     */
     public function getCustomerById(string $id): ?array {
         $stmt = $this->conn->prepare('SELECT * FROM users WHERE id = ?');
         $stmt->bind_param('s', $id);
@@ -421,6 +574,13 @@ class Food {
     }
 
 
+    /**
+     * Updates the status of an order in the database.
+     *
+     * @param string $order_id The ID of the order to update.
+     * @param string $new_status The new status to set for the order.
+     * @return bool Returns true if the update was successful, false otherwise.
+     */
     public function updateOrderStatus(string $order_id, string $new_status): bool {
         $stmt = $this->conn->prepare('UPDATE orders SET status = ? WHERE id = ?');
         $stmt->bind_param('si', $new_status, $order_id);
@@ -432,6 +592,12 @@ class Food {
         }
     }
 
+    /**
+     * Retrieves orders from the database for a given user ID.
+     *
+     * @param int $user_id The ID of the user to retrieve orders for.
+     * @return array An array of associative arrays representing the orders.
+     */
     public function getOrdersByUserId($user_id) {
         $orders = [];
     
@@ -456,8 +622,14 @@ class Food {
     }
     
 
-    // Method to cancel an order
-public function cancelOrder($orderId) {
+
+    /**
+     * Cancels an order by updating its status to 'cancelled'.
+     *
+     * @param int $orderId The ID of the order to be cancelled.
+     * @return bool Returns true if the order status was successfully updated, false otherwise.
+     */
+    public function cancelOrder($orderId) {
     // Sanitize the input (assuming you have a sanitizeInput method)
     $orderId = intval($this->sanitizeInput($orderId));
     
@@ -484,13 +656,8 @@ public function cancelOrder($orderId) {
         // Prepare statement failed
         return false;
     }
-}
-
-    
-    
-    
-    
-    
+    }
+ 
     
 }
 ?>
