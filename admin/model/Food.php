@@ -379,6 +379,114 @@ class Food {
         $stmt->bind_param("iiid", $orderId, $foodId, $quantity, $price);
         return $stmt->execute(); // Return true or false based on execution
     }
+
+    public function getAllOrders(): array {
+        $sql = "SELECT * FROM orders";
+        $result = $this->conn->query($sql);
+        $orders = [];
+        while ($row = $result->fetch_assoc()) {
+            $orders[] = $row;
+        }
+        return $orders;
+    }
+
+    public function getOrderById($orderId) {
+        $stmt = $this->conn->prepare('SELECT * FROM orders WHERE id = ?');
+        $stmt->bind_param('i', $orderId);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        return $result->fetch_assoc();
+    }
+
+    // Function to retrieve order items by order ID
+    public function getOrderItems($orderId) {
+        $stmt = $this->conn->prepare('SELECT oi.*, fi.name, fi.price FROM order_items oi JOIN food_items fi ON oi.food_id = fi.id WHERE oi.order_id = ?');
+        $stmt->bind_param('i', $orderId);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        return $result->fetch_all(MYSQLI_ASSOC);
+    }
+
+    public function getCustomerById(string $id): ?array {
+        $stmt = $this->conn->prepare('SELECT * FROM users WHERE id = ?');
+        $stmt->bind_param('s', $id);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        
+        // Fetch customer details as an associative array
+        $customer = $result->fetch_assoc();
+
+        // Return customer details or null if not found
+        return $customer;
+    }
+
+
+    public function updateOrderStatus(string $order_id, string $new_status): bool {
+        $stmt = $this->conn->prepare('UPDATE orders SET status = ? WHERE id = ?');
+        $stmt->bind_param('si', $new_status, $order_id);
+        
+        if ($stmt->execute()) {
+            return true; // Update successful
+        } else {
+            return false; // Failed to update
+        }
+    }
+
+    public function getOrdersByUserId($user_id) {
+        $orders = [];
+    
+        // Prepare SQL query with a join to fetch food item names
+        $stmt = $this->conn->prepare("
+            SELECT o.*, GROUP_CONCAT(fi.name SEPARATOR ', ') AS food_items
+            FROM orders o
+            LEFT JOIN order_items oi ON o.id = oi.order_id
+            LEFT JOIN food_items fi ON oi.food_id = fi.id
+            WHERE o.user_id = ?
+            GROUP BY o.id
+        ");
+        $stmt->bind_param("i", $user_id);
+        $stmt->execute();
+        $result = $stmt->get_result();
+    
+        while ($row = $result->fetch_assoc()) {
+            $orders[] = $row;
+        }
+    
+        return $orders;
+    }
+    
+
+    // Method to cancel an order
+public function cancelOrder($orderId) {
+    // Sanitize the input (assuming you have a sanitizeInput method)
+    $orderId = intval($this->sanitizeInput($orderId));
+    
+    // Update the order status to cancelled
+    $update_sql = "UPDATE orders SET status = 'cancelled' WHERE id = ?";
+    $stmt = mysqli_prepare($this->conn, $update_sql);
+
+    if ($stmt) {
+        mysqli_stmt_bind_param($stmt, "i", $orderId);
+        if (mysqli_stmt_execute($stmt)) {
+            // Check if any rows were affected
+            if (mysqli_stmt_affected_rows($stmt) > 0) {
+                return true;
+            } else {
+                // No rows were updated (order might not exist or already cancelled)
+                return false;
+            }
+        } else {
+            // Execution of statement failed
+            return false;
+        }
+        mysqli_stmt_close($stmt);
+    } else {
+        // Prepare statement failed
+        return false;
+    }
+}
+
+    
     
     
     

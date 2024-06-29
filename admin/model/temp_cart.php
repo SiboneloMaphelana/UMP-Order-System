@@ -18,7 +18,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_SESSION['id'])) {
 
     // Validate input
     if ($foodItemId <= 0 || $quantity <= 0 || $price <= 0.0 || !$name) {
-        echo "Invalid input parameters.";
+        echo json_encode(['success' => false, 'message' => 'Invalid input parameters.']);
         exit;
     }
 
@@ -42,8 +42,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_SESSION['id'])) {
         ];
     }
 
-    echo "Item added to cart successfully.";
+    echo json_encode(['success' => true, 'message' => 'Item added to cart successfully.']);
 } else {
-    echo "Unauthorized access."; // Handle cases where user is not logged in or request method is not POST
+    echo json_encode(['success' => false, 'message' => 'Unauthorized access.']); // Handle cases where user is not logged in or request method is not POST
 }
 ?>

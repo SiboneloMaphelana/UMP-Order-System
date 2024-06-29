@@ -50,9 +50,7 @@ if ($subtotal === 0.0) {
 
 </head>
 <body>
-<header class="header fixed-top d-flex justify-content-between align-items-center px-2 py-1">
-    <!-- Header content here -->
-</header>
+
 
 <div class="container mt-5">
     <h2 class="text-center">Checkout</h2>
@@ -93,7 +91,10 @@ if ($subtotal === 0.0) {
 </div>
 
 <footer class="footer mt-auto py-3 bg-light">
-    <!-- Footer content here -->
+    <div class="container text-center">
+        <p>&copy; 2024 TechCafeSolutions. All rights reserved.</p>
+        <p>Contact: info@techcafesolutions.com</p>
+    </div>
 </footer>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>

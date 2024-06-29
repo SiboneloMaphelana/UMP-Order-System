@@ -20,8 +20,8 @@ $orderItems = [];
 if (isset($_SESSION['orderId'])) {
     $orderId = $_SESSION['orderId'];
 
-    // Fetch order details
-    $orderQuery = $conn->prepare("SELECT * FROM orders WHERE id = ? AND user_id = ?");
+    // Fetch order details including status
+    $orderQuery = $conn->prepare("SELECT id, order_date, total_amount, status FROM orders WHERE id = ? AND user_id = ?");
     $orderQuery->bind_param('ii', $orderId, $userId);
     $orderQuery->execute();
     $orderResult = $orderQuery->get_result();
@@ -35,13 +35,14 @@ if (isset($_SESSION['orderId'])) {
     }
 
     // Fetch order items
-    $orderItemsQuery = $conn->prepare("SELECT oi.*, fi.name FROM order_items oi JOIN food_items fi ON oi.food_id = fi.id WHERE oi.order_id = ?");
+    $orderItemsQuery = $conn->prepare("SELECT oi.*, fi.name, oi.status FROM order_items oi JOIN food_items fi ON oi.food_id = fi.id WHERE oi.order_id = ?");
     $orderItemsQuery->bind_param('i', $orderId);
     $orderItemsQuery->execute();
     $orderItemsResult = $orderItemsQuery->get_result();
     while ($row = $orderItemsResult->fetch_assoc()) {
         $orderItems[] = $row;
     }
+    
 
     // Reduce the quantity of each ordered food item
     foreach ($orderItems as $item) {
@@ -67,7 +68,6 @@ if (isset($_SESSION['orderId'])) {
     header("Location: ../../index.php");
     exit();
 }
-
 
 // Return order and order items for use in frontend
 return compact('order', 'orderItems');
