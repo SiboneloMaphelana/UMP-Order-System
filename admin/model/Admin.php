@@ -217,12 +217,19 @@ class Admin {
      * @return array An array of customer data in the format of associative arrays.
      */
     public function getAllCustomers(): array {
-        $stmt = $this->conn->prepare('SELECT * FROM users');
-        $stmt->execute();
-        $result = $stmt->get_result();
-        $customers = $result->fetch_all(MYSQLI_ASSOC);
-        return $customers;
+        $sql = "SELECT * FROM users WHERE is_deleted = FALSE";
+        $result = $this->conn->query($sql);
+        $users = [];
+    
+        if ($result->num_rows > 0) {
+            while ($row = $result->fetch_assoc()) {
+                $users[] = $row;
+            }
+        }
+    
+        return $users;
     }
+    
 
     /**
      * Deletes a customer from the users table in the database.
@@ -231,17 +238,32 @@ class Admin {
      * @return bool Returns true if the deletion was successful, false otherwise.
      */
     public function deleteCustomer($customerId) {
-        $sql = "DELETE FROM users WHERE id = ?";
-
-        $stmt = $this->conn->prepare($sql);
-        $stmt->bind_param('i', $customerId); 
-        
-        if ($stmt->execute()) {
-            return true; 
-        } else {
-            return false; 
+        try {
+            // Begin transaction
+            $this->conn->begin_transaction();
+    
+            // Update orders table for soft delete
+            $sqlOrders = "UPDATE orders SET is_deleted = TRUE WHERE user_id = ?";
+            $stmtOrders = $this->conn->prepare($sqlOrders);
+            $stmtOrders->bind_param("i", $customerId);
+            $stmtOrders->execute();
+    
+            // Update users table for soft delete
+            $sqlUsers = "UPDATE users SET is_deleted = TRUE WHERE id = ?";
+            $stmtUsers = $this->conn->prepare($sqlUsers);  // Corrected this line
+            $stmtUsers->bind_param("i", $customerId);
+            $stmtUsers->execute();
+    
+            // Commit transaction
+            $this->conn->commit();
+            return true;
+        } catch (mysqli_sql_exception $e) {
+            // Rollback transaction on error
+            $this->conn->rollback();
+            return false;
         }
     }
+    
 
     /**
      * Updates a customer's information in the database.

@@ -516,7 +516,7 @@ class Food {
      *               each containing the columns of the 'orders' table.
      */
     public function getAllOrders(): array {
-        $sql = "SELECT * FROM orders";
+        $sql = "SELECT * FROM orders WHERE is_deleted = FALSE";
         $result = $this->conn->query($sql);
         $orders = [];
         while ($row = $result->fetch_assoc()) {
@@ -524,6 +524,7 @@ class Food {
         }
         return $orders;
     }
+    
 
     /**
      * Retrieves an order from the database by its ID.
