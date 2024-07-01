@@ -19,7 +19,7 @@ $customerId = intval($_POST['id']);
 
 $admin = new Admin($conn);
 
-// Attempt to delete the customer
+// Attempt to soft delete the customer
 if ($admin->deleteCustomer($customerId)) {
     // Redirect to customers page or display success message
     header("Location: ../customers.php");
