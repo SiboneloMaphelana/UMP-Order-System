@@ -95,27 +95,35 @@ class User {
     }
 
     /**
-     * Validates user credentials by checking the provided email and password.
+     * Logs in a user by verifying their email and password.
      *
-     * @param string $email The email of the user trying to log in.
-     * @param string $password The password of the user trying to log in.
-     * @return bool Returns true if the login is successful, false otherwise.
+     * @param string $email The user's email.
+     * @param string $password The user's password.
+     * @return bool Returns true if the user is successfully logged in, false otherwise.
+     *              Returns false if the email or password is empty, or if the account is deactivated or not active.
      */
     public function login(string $email, string $password): bool {
         if (empty($email) || empty($password)) {
             return false;
         }
-        $stmt = $this->conn->prepare('SELECT id, password FROM users WHERE email = ?');
+        $stmt = $this->conn->prepare('SELECT id, password, is_deleted, is_active FROM users WHERE email = ?');
         $stmt->bind_param('s', $email);
         $stmt->execute();
         $result = $stmt->get_result();
         $row = $result->fetch_assoc();
-        if ($row && password_verify($password, $row['password'])) {
-            $_SESSION['id'] = $row['id'];
-            return true;
+        if ($row) {
+            if ($row['is_deleted'] || !$row['is_active']) {
+                return false; // Account is deactivated or not active
+            }
+            if (password_verify($password, $row['password'])) {
+                $_SESSION['id'] = $row['id'];
+                return true;
+            }
         }
         return false;
     }
+    
+    
 
     /**
      * Retrieves user details from the database based on the provided ID.
@@ -138,15 +146,50 @@ class User {
      * @return bool Returns true if the user account is successfully deleted, false otherwise.
      */
     public function deleteUserAccount($userId) {
-        // Delete user account
-        $stmt = $this->conn->prepare("DELETE FROM users WHERE id = ?");
+        try {
+            // Begin transaction
+            $this->conn->begin_transaction();
+    
+            // Soft delete user's orders
+            $sqlOrders = "UPDATE orders SET is_deleted = TRUE WHERE user_id = ?";
+            $stmtOrders = $this->conn->prepare($sqlOrders);
+            $stmtOrders->bind_param("i", $userId);
+            $stmtOrders->execute();
+    
+            // Soft delete user account
+            $sqlUsers = "UPDATE users SET is_deleted = TRUE WHERE id = ?";
+            $stmtUsers = $this->conn->prepare($sqlUsers);
+            $stmtUsers->bind_param("i", $userId);
+            $stmtUsers->execute();
+    
+            // Commit transaction
+            $this->conn->commit();
+            return true;
+        } catch (mysqli_sql_exception $e) {
+            // Rollback transaction on error
+            $this->conn->rollback();
+            error_log("Error deleting user account: " . $e->getMessage());
+            return false;
+        }
+    }
+
+    /**
+     * Reactivates a user account by setting the `is_active` field to `TRUE` in the database.
+     *
+     * @param int $userId The ID of the user account to reactivate.
+     * @return bool Returns `true` if the user account was successfully reactivated, `false` otherwise.
+     */
+    public function reactivateAccount($userId): bool {
+        $stmt = $this->conn->prepare("UPDATE users SET is_active = TRUE WHERE id = ?");
         $stmt->bind_param('i', $userId);
         if (!$stmt->execute()) {
-            error_log("Error deleting user account: " . $stmt->error);
+            error_log("Error reactivating user account: " . $stmt->error);
             return false;
         }
         return true;
     }
+    
+    
 
     /**
      * Updates the user details with the provided ID.

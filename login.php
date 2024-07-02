@@ -27,16 +27,21 @@
         <form id="loginForm" action="model/login_process.php" method="post">
           <div class="mb-3">
             <label for="email" class="form-label">Email</label>
-            <input type="email" class="form-control" id="email" name="email" placeholder="Enter Email">
+            <input type="email" class="form-control" id="email" name="email" placeholder="Enter Email" value="<?php echo isset($_COOKIE['login_email']) ? $_COOKIE['login_email'] : ''; ?>">
           </div>
           <div class="mb-3">
             <label for="password" class="form-label">Password</label>
             <div class="input-group">
-              <input type="password" class="form-control" id="password" name="password" placeholder="Enter Password">
+              <input type="password" class="form-control" id="password" name="password" placeholder="Enter Password" value="<?php echo isset($_COOKIE['login_password']) ? $_COOKIE['login_password'] : ''; ?>">
               <button class="btn" type="button" id="togglePassword">
                 <i class="fas fa-eye"></i>
               </button>
             </div>
+          </div>
+          <div class="mb-3">
+            <label class="form-check-label">
+              <input type="checkbox" class="form-check-input" name="remember"> Remember me
+            </label>
           </div>
           <div class="mb-3">
             <p>
@@ -56,6 +61,20 @@
   <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.7/dist/umd/popper.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
   <script src="js/signup.js"></script>
+  <script>
+    // Wait for the DOM to load before executing the script
+    document.addEventListener('DOMContentLoaded', function () {
+      const passwordField = document.getElementById('password');
+      const togglePassword = document.getElementById('togglePassword');
+
+      // Toggle password visibility on click
+      togglePassword.addEventListener('click', function () {
+        const type = passwordField.getAttribute('type') === 'password' ? 'text' : 'password';
+        passwordField.setAttribute('type', type);
+        this.querySelector('i').classList.toggle('fa-eye-slash');
+      });
+    });
+  </script>
 </body>
 </html>
 

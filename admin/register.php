@@ -48,9 +48,13 @@
               <input type="tel" class="form-control" id="phone_number" name="phone_number" required>
               <div id="phoneError" class="invalid-feedback"></div>
             </div>
+
             <div class="mb-3">
-              <label for="image" class="form-label">Upload Profile Image</label>
-              <input type="file" class="form-control" id="image" name="image">
+              <label for="role" class="form-label">Role</label>
+              <select class="form-select form-control" id="role" name="role" required>
+                <option value="admin">Admin</option>
+                <option value="staff">Staff</option>
+              </select>
             </div>
             <div class="mb-3">
               <label for="password" class="form-label">Password</label>

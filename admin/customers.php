@@ -1,11 +1,27 @@
-<?php 
-include("model/login_check.php"); 
+<?php
+session_start();
+
+// Check if user is logged in
+if (!isset($_SESSION['id'])) {
+    header("Location: login.php");
+    exit();
+}
+
+// Check if user is staff
+if ($_SESSION['role'] === 'staff') {
+    $_SESSION['error'] = "Access denied. You are not authorized to view the page.";
+    header("Location: dashboard.php"); // Redirect to dashboard or another page
+    exit();
+}
+
+// Include necessary files and retrieve customer data
 require_once '../connection/connection.php';
 require_once 'model/Admin.php';
 
 $admin = new Admin($conn);
 $customers = $admin->getAllCustomers();
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">

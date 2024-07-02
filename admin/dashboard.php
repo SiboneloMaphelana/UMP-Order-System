@@ -30,6 +30,14 @@ include("model/login_check.php");
       </div>
     </div>
 </header>
+<?php 
+if (isset($_SESSION['error'])){
+    echo '<div class="alert alert-danger" role="alert">
+    '.$_SESSION['error'].'
+  </div>';
+    unset($_SESSION['error']);
+}
+?>
 
 <!-- Main Content -->
 <div class="container-fluid mt-4">

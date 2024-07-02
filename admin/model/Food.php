@@ -593,12 +593,6 @@ class Food {
         }
     }
 
-    /**
-     * Retrieves orders from the database for a given user ID.
-     *
-     * @param int $user_id The ID of the user to retrieve orders for.
-     * @return array An array of associative arrays representing the orders.
-     */
     public function getOrdersByUserId($user_id) {
         $orders = [];
     
@@ -608,7 +602,7 @@ class Food {
             FROM orders o
             LEFT JOIN order_items oi ON o.id = oi.order_id
             LEFT JOIN food_items fi ON oi.food_id = fi.id
-            WHERE o.user_id = ?
+            WHERE o.user_id = ? AND o.is_deleted = FALSE
             GROUP BY o.id
         ");
         $stmt->bind_param("i", $user_id);

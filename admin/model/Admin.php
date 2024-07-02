@@ -60,15 +60,17 @@ class Admin {
     public function signup(array $data): bool {
         $sanitizedData = $this->sanitizeUserDetails($data);
         $sanitizedData['password'] = password_hash($data['password'], PASSWORD_DEFAULT);
+        $sanitizedData['role'] = isset($data['role']) ? $data['role'] : 'admin'; // Default role if not provided
     
         if ($this->userExists($sanitizedData['email'])) {
-            return false;
+            return false; // User with this email already exists
         }
     
-        $stmt = $this->conn->prepare('INSERT INTO admins (name, email, phone_number, password) VALUES (?, ?, ?, ?)');
-        $stmt->bind_param('ssis', $sanitizedData['name'], $sanitizedData['email'], $sanitizedData['phone_number'], $sanitizedData['password']);
+        $stmt = $this->conn->prepare('INSERT INTO admins (name, email, phone_number, password, role) VALUES (?, ?, ?, ?, ?)');
+        $stmt->bind_param('ssiss', $sanitizedData['name'], $sanitizedData['email'], $sanitizedData['phone_number'], $sanitizedData['password'], $sanitizedData['role']);
         return $stmt->execute();
     }
+    
     
 
     /**
@@ -103,32 +105,36 @@ class Admin {
         if ($data['password'] !== $data['confirm_password']) {
             $errors['confirm_password'] = "Passwords do not match.";
         }
+        if (empty($data['role'])) $data['role'] = 'admin';
         return $errors;
     }
     
 
     /**
-     * Logs in an admin user with the provided email and password.
+     * A function to log in a user with the provided email and password.
      *
-     * @param string $email The email of the admin user.
-     * @param string $password The password of the admin user.
+     * @param string $email The email of the user trying to log in.
+     * @param string $password The password of the user trying to log in.
      * @return bool Returns true if the login is successful, false otherwise.
      */
     public function login(string $email, string $password): bool {
         if (empty($email) || empty($password)) {
             return false;
         }
-        $stmt = $this->conn->prepare('SELECT id, password FROM admins WHERE email = ?');
+        $stmt = $this->conn->prepare('SELECT id, role, password FROM admins WHERE email = ?');
         $stmt->bind_param('s', $email);
         $stmt->execute();
         $result = $stmt->get_result();
         $row = $result->fetch_assoc();
         if ($row && password_verify($password, $row['password'])) {
+            session_start();
             $_SESSION['id'] = $row['id'];
+            $_SESSION['role'] = $row['role']; // Store role in session
             return true;
         }
         return false;
     }
+    
 
     /**
      * Retrieves a user from the database by their ID.

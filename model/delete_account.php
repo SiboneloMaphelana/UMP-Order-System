@@ -10,7 +10,7 @@ if (!isset($_SESSION['id'])) {
 }
 
 $user = new User($conn);
-$userId = intval($_GET['id']);
+$userId = intval($_SESSION['id']);  // Use session id for self-deletion
 
 if ($user->deleteUserAccount($userId)) {
     // Account deleted successfully, destroy session and redirect to login
