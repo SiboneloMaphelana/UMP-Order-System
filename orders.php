@@ -1,11 +1,11 @@
 <?php
 include_once("partials/header.php");
 include_once("connection/connection.php");
-include_once("admin/model/Food.php");
-include_once("functions/orders_functions.php"); // Adjust the path accordingly
+include_once("admin/model/Order.php");
+include_once("functions/orders_functions.php");
 
 // Initialize Food class with database connection
-$food = new Food($conn);
+$food = new Order($conn);
 
 // Retrieve orders for the logged-in user
 $user_id = $_SESSION['id'];

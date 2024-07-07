@@ -54,7 +54,6 @@ handleItemQuantityUpdateRequest();
                                             <input type="hidden" name="item_id" value="<?php echo $index; ?>">
                                             <input type="hidden" name="quantity" value="<?php echo $item['quantity'] - 1; ?>">
                                             <button type="submit" name="update_quantity" class="btn btn-outline-secondary btn-sm rounded-circle text-white <?php echo $item['quantity'] <= 1 ? 'disabled' : ''; ?>" style="background-color: #8FBC8F;">-</button>
-
                                         </form>
                                         <span class="mx-2"><?php echo $item['quantity']; ?></span>
                                         <form action="cart.php" method="post" class="d-inline">
@@ -66,7 +65,7 @@ handleItemQuantityUpdateRequest();
                                     <p class="mb-0">R<?php echo number_format($item['price'], 2); ?></p>
                                 </div>
                                 <div class="d-flex justify-content-between align-items-center mt-2">
-                                <a href="cart.php?remove=<?php echo $index; ?>" class="remove-item-link card-link text-decoration-none text-danger" data-item-name="<?php echo htmlspecialchars($item['name']); ?>"><i class="bi bi-trash fs-4"></i></a>
+                                    <a href="cart.php?remove=<?php echo $index; ?>" class="remove-item-link card-link text-decoration-none text-danger" data-item-name="<?php echo htmlspecialchars($item['name']); ?>"><i class="bi bi-trash fs-4"></i></a>
                                     <span>Total: R<?php echo number_format($item['price'] * $item['quantity'], 2); ?></span> 
                                 </div>
                             </div>
@@ -102,7 +101,6 @@ handleItemQuantityUpdateRequest();
         </div>
     </div>
 </div>
-
 
 <?php include_once("partials/footer.php"); ?>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>

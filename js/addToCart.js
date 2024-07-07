@@ -58,3 +58,4 @@ function changeQuantity(element, change) {
 
     input.val(newValue);
 }
+

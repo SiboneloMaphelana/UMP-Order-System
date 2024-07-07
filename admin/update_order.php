@@ -14,10 +14,10 @@
     <?php
     session_start();
     include_once("../connection/connection.php");
-    include_once("model/Food.php"); // Include your Food class file
+    include_once("model/Order.php"); // Include your Food class file
 
-    // Initialize Food class with database connection
-    $food = new Food($conn);
+    // Initialize Order class with database connection
+    $food = new Order($conn);
 
     // Check if order ID is provided in the query string
     if (!isset($_GET['id']) || empty($_GET['id'])) {

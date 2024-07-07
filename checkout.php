@@ -26,7 +26,12 @@ if ($subtotal === 0.0) {
     function calculateSubtotal($cartItems) {
         $subtotal = 0.0;
         foreach ($cartItems as $item) {
-            $subtotal += $item['price'] * $item['quantity'];
+            // Ensure item price and quantity are numeric
+            $price = floatval($item['price']);
+            $quantity = intval($item['quantity']);
+            
+            // Calculate subtotal for each item
+            $subtotal += $price * $quantity;
         }
         return $subtotal;
     }
@@ -38,6 +43,7 @@ if ($subtotal === 0.0) {
     $_SESSION['subtotal'] = $subtotal;
 }
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>

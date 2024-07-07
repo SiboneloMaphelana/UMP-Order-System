@@ -1,7 +1,7 @@
 <?php
 session_start();
-include_once("../../connection/connection.php");
-include("Food.php");
+require_once '../../connection/connection.php';
+require_once 'Food.php';
 
 // Check if the form is submitted using POST method
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -74,4 +74,3 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     exit;
 }
 ?>
-
