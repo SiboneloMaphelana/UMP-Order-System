@@ -15,7 +15,7 @@ if (!isset($_SESSION['cart']) || empty($_SESSION['cart'])) {
 }
 
 // Retrieve cart items from session
-$cartItems = $_SESSION['cart'];
+$cartItems = isset($_SESSION['cart']) ? $_SESSION['cart'] : [];
 
 // Retrieve subtotal from session 
 $subtotal = isset($_SESSION['subtotal']) ? $_SESSION['subtotal'] : 0.0;

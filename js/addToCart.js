@@ -13,7 +13,7 @@ function addToCart(foodItemId, foodName) {
         data: {
             foodItemId: foodItemId,
             quantity: quantity,
-            price: totalPrice,
+            price: price,
             name: name
         },
         dataType: 'json', // Expect JSON response
