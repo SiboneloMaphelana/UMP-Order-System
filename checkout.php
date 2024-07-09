@@ -20,28 +20,7 @@ $cartItems = isset($_SESSION['cart']) ? $_SESSION['cart'] : [];
 // Retrieve subtotal from session 
 $subtotal = isset($_SESSION['subtotal']) ? $_SESSION['subtotal'] : 0.0;
 
-// If subtotal is not stored in session, calculate it
-if ($subtotal === 0.0) {
-    // Function to calculate subtotal
-    function calculateSubtotal($cartItems) {
-        $subtotal = 0.0;
-        foreach ($cartItems as $item) {
-            // Ensure item price and quantity are numeric
-            $price = floatval($item['price']);
-            $quantity = intval($item['quantity']);
-            
-            // Calculate subtotal for each item
-            $subtotal += $price * $quantity;
-        }
-        return $subtotal;
-    }
-
-    // Calculate subtotal
-    $subtotal = calculateSubtotal($cartItems);
-
-    // Store subtotal in session
-    $_SESSION['subtotal'] = $subtotal;
-}
+include_once("partials/header.php");
 ?>
 
 <!DOCTYPE html>
@@ -52,58 +31,85 @@ if ($subtotal === 0.0) {
     <title>Checkout</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
-
+    <link rel="stylesheet" href="css/index.css"> 
+    <link rel="stylesheet" href="css/cart.css">
 </head>
 <body>
-
 
 <div class="container mt-5">
     <h2 class="text-center">Checkout</h2>
     <div class="row">
-        <div class="col-md-8 offset-md-2">
+        <div class="col-md-8">
+            <div class="cart-container">
+                <?php if (!empty($cartItems)) : ?>
+                    <?php foreach ($cartItems as $item) : ?>
+                        <div class="card mb-3">
+                            <div class="card-body bg-light">
+                                <h6 class="card-title"><?php echo htmlspecialchars($item['name']); ?></h6>
+                                <p class="card-text">Quantity: <?php echo $item['quantity']; ?></p>
+                                <p class="card-text">Price: R<?php echo number_format($item['price'], 2); ?></p>
+                                <p class="card-text">Total: R<?php echo number_format($item['price'] * $item['quantity'], 2); ?></p>
+                            </div>
+                        </div>
+                    <?php endforeach; ?>
+                <?php else : ?>
+                    <p>Your cart is empty.</p>
+                <?php endif; ?>
+            </div>
+        </div>
+        <div class="col-md-4">
             <div class="card">
                 <div class="card-body">
                     <h5 class="card-title">Order Summary</h5>
-                    <?php if (!empty($cartItems)) : ?>
-                        <ul class="list-group list-group-flush">
-                            <li class="list-group-item d-flex justify-content-between align-items-center">
-                                Total Items:
-                                <span><?php echo count($cartItems); ?></span>
-                            </li>
-                            <li class="list-group-item d-flex justify-content-between align-items-center">
-                                Total:
-                                <span>R<?php echo number_format($subtotal, 2); ?></span>
-                            </li>
-                        </ul>
-                        <form method="POST" action="admin/model/process_checkout.php" class="mt-4">
-                            <input type="hidden" name="subtotal" value="<?php echo $subtotal; ?>">
-                            <div class="mb-3">
-                                <label for="paymentMethod" class="form-label">Select Payment Method</label>
-                                <select class="form-select" id="paymentMethod" name="payment_method" required>
-                                    <option value="collection">Pay On Collection</option>
-                                    <option value="paypal">PayPal</option>
-                                </select>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            Total Items:
+                            <span><?php echo calculateTotalItems($cartItems); ?></span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            Subtotal:
+                            <span>R<?php echo number_format($subtotal, 2); ?></span>
+                        </li>
+                    </ul>
+                    <form action="admin/model/process_checkout.php" method="POST">
+                        <div class="mt-3">
+                            <h6>Select Payment Method:</h6>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="payment_method" id="payment_paypal" value="paypal" required>
+                                <label class="form-check-label" for="payment_paypal">
+                                    PayPal
+                                </label>
                             </div>
-                            <button type="submit" class="btn btn-success w-100">Place Order</button>
-                        </form>
-                    <?php else : ?>
-                        <p>Your cart is empty.</p>
-                    <?php endif; ?>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="payment_method" id="payment_cash_on_delivery" value="cash_on_delivery" required>
+                                <label class="form-check-label" for="payment_cash_on_delivery">
+                                    Cash on Collection
+                                </label>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-success w-100 mt-3">Place Order</button>
+                    </form>
                 </div>
             </div>
         </div>
     </div>
 </div>
 
-<footer class="footer mt-auto py-3 bg-light">
-    <div class="container text-center">
-        <p>&copy; 2024 TechCafeSolutions. All rights reserved.</p>
-        <p>Contact: info@techcafesolutions.com</p>
-    </div>
-</footer>
-
+<?php include_once("partials/footer.php"); ?>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
 </body>
 </html>
+
+<?php
+// Function to calculate total items in the cart
+function calculateTotalItems($cartItems) {
+    $totalItems = 0;
+    if (is_array($cartItems)) {
+        foreach ($cartItems as $item) {
+            $totalItems += $item['quantity'];
+        }
+    }
+    return $totalItems;
+}
+?>
