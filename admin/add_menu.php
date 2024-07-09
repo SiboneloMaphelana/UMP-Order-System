@@ -1,4 +1,5 @@
 <?php
+require_once 'model/login_check.php';
 require_once '../connection/connection.php';
 require_once 'model/Food.php';
 

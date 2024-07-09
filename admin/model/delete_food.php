@@ -17,18 +17,16 @@ if (isset($_GET['id'])) {
     if ($result === true) {
         // If the deletion is successful, set a success message in the session and redirect to the all menus page
         $_SESSION['success'] = "Food item deleted successfully";
-        header("Location: ../all_menus.php");
     } else {
-        // If there is an error, set an error message in the session and redirect to the all menus page
+        // If there is an error, set an error message in the session
         $_SESSION['error'] = $result;
-        header("Location: ../all_menus.php");
     }
 } else {
-    // If the food item ID is not set, set an error message in the session and redirect to the all menus page
+    // If the food item ID is not set, set an error message in the session
     $_SESSION['error'] = "Invalid request";
-    header("Location: ../all_menus.php");
 }
 
-exit;
+// Redirect back to all_menus.php regardless of success or failure
+header("Location: ../all_menus.php");
+exit();
 ?>
-

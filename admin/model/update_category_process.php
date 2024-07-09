@@ -3,6 +3,7 @@ session_start();
 include_once("../../connection/connection.php");
 include("Food.php");
 
+// Ensure the request method is POST
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Check if categoryId is set and not empty
     if (!isset($_POST['categoryId']) || empty($_POST['categoryId'])) {
@@ -48,13 +49,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         header("Location: ../all_categories.php");
         exit;
     } else {
-        $_SESSION['error'] = "Failed to update category. try again.";
+        $_SESSION['error'] = "Failed to update category. Please try again.";
         header("Location: ../update_category.php?id=" . urlencode($categoryId));
         exit;
     }
-
-    header("Location: ../update_category.php?id=" . urlencode($categoryId));
-    exit;
 } else {
     $_SESSION['error'] = "Invalid request method.";
     header("Location: ../update_category.php");

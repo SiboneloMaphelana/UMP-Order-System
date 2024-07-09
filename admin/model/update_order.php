@@ -1,9 +1,9 @@
 <?php
 session_start();
 include_once("../../connection/connection.php");
-include_once("Food.php"); 
+include_once("Order.php"); 
 
-$food = new Food($conn);
+$food = new Order($conn);
 
 // Check if order ID is provided and new status is submitted
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['order_id'], $_POST['status'])) {

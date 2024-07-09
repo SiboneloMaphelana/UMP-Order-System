@@ -2,7 +2,7 @@
 session_start();
 include_once("../../connection/connection.php");
 include("../../model/User.php");
-include("Food.php");
+include("Order.php");
 
 // Check if user is logged in
 if (!isset($_SESSION['id'])) {
@@ -30,7 +30,7 @@ if ($totalAmount <= 0.0) {
     exit();
 }
 
-$food = new Food($conn);
+$food = new Order($conn);
 
 // Process the payment
 $paymentSuccess = true; 

@@ -50,6 +50,12 @@
 
             <div class="col-md-9">
                 <div class="content">
+                    <?php
+                    if (isset($_SESSION['fail-cat'])) {
+                        echo '<div class="alert alert-danger">' . $_SESSION['fail-cat'] . '</div>';
+                        unset($_SESSION['fail-cat']);
+                    }
+                    ?>
                     <h2 class="text-center">Add New Category</h2>
                     <form action="model/add_category_process.php" method="post" enctype="multipart/form-data">
                         <div class="mb-3">

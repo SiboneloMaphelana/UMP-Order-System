@@ -2,7 +2,7 @@
 
 // Require the necessary files
 require_once '../../connection/connection.php';
-require_once 'Food.php'; 
+require_once 'Food.php';
 
 // Check if the form is submitted
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -15,7 +15,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $categoryId = $_POST['category'];
     $quantity = $_POST['quantity'];
     $price = $_POST['price'];
-    $image = $_FILES['image']; 
+    $image = $_FILES['image'];
     $adminId = $_SESSION['id'];
 
     // Add the food item to the database
@@ -32,6 +32,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $errorMessage = "Failed to add food item: $result";
         $_SESSION['error'] = "Failed to add food item";
         header('Location: ../add_food.php?error=' . urlencode($errorMessage));
+        exit();
     }
 } else {
     // If the form is not submitted, redirect back to the form page
@@ -39,3 +40,4 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     exit();
 }
 
+?>

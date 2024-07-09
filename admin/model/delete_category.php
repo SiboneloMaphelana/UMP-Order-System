@@ -1,7 +1,13 @@
 <?php
+// Include necessary files
 include("login_check.php"); // Check if user is logged in
 include("../../connection/connection.php"); // Establish database connection
 include("Food.php"); // Include Food class
+
+// Start session if not already started
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
 
 // Check if category ID is set and not empty
 if (!isset($_GET['id']) || empty($_GET['id'])) {
@@ -18,9 +24,12 @@ $deleteResult = $foodModel->deleteCategory($categoryId);
 
 // Check if category deletion was successful
 if ($deleteResult === true) {
-    header("Location: ../all_categories.php?success=Category deleted successfully"); // Redirect to all categories page with success message
+    $_SESSION['success'] = "Category deleted successfully";
+    header("Location: ../all_categories.php"); // Redirect to all categories page with success message
+    exit();
 } else {
-    die("Error deleting category."); // If category deletion fails, display error message 
+    $_SESSION['error'] = "Error deleting category. Please try again.";
+    header("Location: ../all_categories.php"); // Redirect to all categories page with error message
+    exit();
 }
-
-
+?>

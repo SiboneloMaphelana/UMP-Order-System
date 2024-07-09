@@ -1,9 +1,9 @@
 <?php
 session_start();
 include_once("../connection/connection.php");
-include_once("model/Food.php"); 
+include_once("model/Order.php"); 
 
-$order = new Food($conn);
+$order = new Order($conn);
 
 $orders = $order->getAllOrders();
 ?>

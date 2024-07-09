@@ -82,13 +82,13 @@ $categories = $food->getCategories();
         
                     <!-- Alerts -->
                     <?php
-                    if (isset($_SESSION['success'])) {
-                        echo '<div class="alert alert-success">' . $_SESSION['success'] . '</div>';
-                        unset($_SESSION['success']);
+                    if (isset($_SESSION['add-cat'])) {
+                        echo '<div class="alert alert-success">' . $_SESSION['add-cat'] . '</div>';
+                        unset($_SESSION['add-cat']);
                     }
-                    if (isset($_SESSION['error'])) {
-                        echo '<div class="alert alert-danger">' . $_SESSION['error'] . '</div>';
-                        unset($_SESSION['error']);
+                    if (isset($_SESSION['fail-cat'])) {
+                        echo '<div class="alert alert-danger">' . $_SESSION['fail-cat'] . '</div>';
+                        unset($_SESSION['fail-cat']);
                     }
                     ?>
         <h2 class="text-center">Categories</h2>
