@@ -1,0 +1,38 @@
+body {
+    background-color: #f8f9fa;
+}
+
+.header {
+    background-color: #343a40;
+    color: #fff;
+    padding: 1rem;
+}
+
+.header .logo {
+    margin: 0;
+}
+
+.nav-tabs .nav-link {
+    color: #495057;
+}
+
+.nav-tabs .nav-link.active {
+    color: #495057;
+    background-color: #e9ecef;
+    border-color: #dee2e6 #dee2e6 #fff;
+}
+
+.tab-pane {
+    background-color: #fff;
+    border: 1px solid #dee2e6;
+    border-top: none;
+    padding: 1rem;
+    margin-top: -1px;
+}
+
+.footer {
+    background-color: #343a40;
+    color: #fff;
+    padding: 1rem;
+    text-align: center;
+}

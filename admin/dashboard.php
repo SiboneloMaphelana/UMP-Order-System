@@ -1,19 +1,6 @@
 <?php
 include("model/login_check.php");
 require_once '../connection/connection.php';
-require_once 'model/ReportingAndAnalytics.php';
-
-// Initialize the ReportingAndAnalytics class
-$reporting = new ReportingAndAnalytics($conn);
-
-// Fetch data using the methods
-$totalOrdersCount = $reporting->getTotalOrders();
-$totalEarnings = $reporting->getTotalEarnings();
-$orderCountsByStatus = $reporting->getOrderCountsByStatus();
-$ordersPerMonth = $reporting->getOrdersPerMonth();
-$totalCustomersCount = $reporting->getTotalCustomers();
-$averageOrderValue = $reporting->getAverageOrderValue();
-$totalCanceledOrdersCount = $reporting->getTotalCanceledOrders();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -27,42 +14,32 @@ $totalCanceledOrdersCount = $reporting->getTotalCanceledOrders();
 </head>
 <body>
 
-<header class="header">
-    <div class="d-flex justify-content-between align-items-center">
-        <h1 class="logo">Admin Dashboard</h1>
-        <div class="dropdown">
-            <button class="btn btn-secondary dropdown-toggle" type="button" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                <i class="fas fa-user"></i>
-            </button>
-            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
-                <li><a class="dropdown-item" href="#">Settings</a></li>
-                <li><a class="dropdown-item" href="profile.php">Profile</a></li>
-                <li><hr class="dropdown-divider"></li>
-                <li><a class="dropdown-item" href="model/logout.php">Logout</a></li>
-            </ul>
+<header class="navbar navbar-dark bg-dark sticky-top flex-md-nowrap p-0 shadow">
+    <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3" href="#">Admin Dashboard</a>
+    <button class="navbar-toggler position-absolute d-md-none collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <input class="form-control form-control-dark w-100" type="text" placeholder="Search" aria-label="Search">
+    <div class="navbar-nav">
+        <div class="nav-item text-nowrap">
+            <a class="nav-link px-3" href="model/logout.php">Sign out</a>
         </div>
     </div>
 </header>
 
-<?php if (isset($_SESSION['error'])): ?>
-    <div class="alert alert-danger" role="alert"><?php echo $_SESSION['error']; ?></div>
-    <?php unset($_SESSION['error']); ?>
-<?php endif; ?>
-
 <div class="container-fluid mt-4">
     <div class="row">
-
         <!-- Sidebar -->
         <div class="col-md-3">
             <div class="sidebar">
                 <ul class="nav flex-column">
                     <li class="nav-item">
-                        <a class="nav-link" href="dashboard.php">
+                        <a class="nav-link active" href="dashboard.php">
                             <i class="fas fa-tachometer-alt"></i> Dashboard
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active" href="customers.php">
+                        <a class="nav-link" href="customers.php">
                             <i class="fas fa-users"></i> Customers
                         </a>
                     </li>
@@ -90,51 +67,100 @@ $totalCanceledOrdersCount = $reporting->getTotalCanceledOrders();
         <div class="col-md-9">
             <div class="container">
                 <div class="row g-4">
-                    <!-- Total Orders Section -->
-                    <div class="col-md-6">
-                        <div class="card border-primary">
+                    <!-- Users Section -->
+                    <div class="col-md-6 col-lg-4 mb-4">
+                        <div class="card border-primary h-100">
                             <div class="card-body">
-                                <h5 class="card-title">Total Orders</h5>
-                                <p class="card-text"><?php echo $totalOrdersCount; ?></p>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <h5 class="card-title">Users</h5>
+                                    <i class="fas fa-users fa-2x text-primary"></i>
+                                </div>
+                                <p class="card-text">Manage users and their details.</p>
+                                <a href="customers.php" class="btn btn-primary">View Users</a>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Total Earnings Section -->
-                    <div class="col-md-6">
-                        <div class="card border-success">
+                    <!-- Food Items Section -->
+                    <div class="col-md-6 col-lg-4 mb-4">
+                        <div class="card border-success h-100">
                             <div class="card-body">
-                                <h5 class="card-title">Total Earnings</h5>
-                                <p class="card-text">R<?php echo number_format($totalEarnings, 2); ?></p>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <h5 class="card-title">Food Items</h5>
+                                    <i class="fas fa-utensils fa-2x text-success"></i>
+                                </div>
+                                <p class="card-text">Manage food items and categories.</p>
+                                <a href="all_menus.php" class="btn btn-success">View Food Items</a>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Order Counts by Status Section -->
-                    <div class="col-md-6">
-                        <div class="card border-info">
+                    <!-- Orders Section -->
+                    <div class="col-md-6 col-lg-4 mb-4">
+                        <div class="card border-info h-100">
                             <div class="card-body">
-                                <h5 class="card-title">Order Counts by Status</h5>
-                                <ul class="list-group">
-                                    <?php foreach ($orderCountsByStatus as $status => $count): ?>
-                                        <li class="list-group-item"><?php echo ucfirst($status); ?>: <?php echo $count; ?></li>
-                                    <?php endforeach; ?>
-                                </ul>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <h5 class="card-title">Orders</h5>
+                                    <i class="fas fa-clipboard-list fa-2x text-info"></i>
+                                </div>
+                                <p class="card-text">View and manage customer orders.</p>
+                                <a href="orders.php" class="btn btn-info">View Orders</a>
                             </div>
                         </div>
                     </div>
 
+                    <!-- Categories Section -->
+                    <div class="col-md-6 col-lg-4 mb-4">
+                        <div class="card border-warning h-100">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <h5 class="card-title">Categories</h5>
+                                    <i class="fas fa-tags fa-2x text-warning"></i>
+                                </div>
+                                <p class="card-text">Manage food categories.</p>
+                                <a href="all_categories.php" class="btn btn-warning">View Categories</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Reports Section -->
+                    <div class="col-md-6 col-lg-4 mb-4">
+                        <div class="card border-danger h-100">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <h5 class="card-title">Reports</h5>
+                                    <i class="fas fa-chart-bar fa-2x text-danger"></i>
+                                </div>
+                                <p class="card-text">Generate and view reports.</p>
+                                <a href="reports.php" class="btn btn-danger">View Reports</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Settings Section -->
+                    <div class="col-md-6 col-lg-4 mb-4">
+                        <div class="card border-dark h-100">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <h5 class="card-title">Settings</h5>
+                                    <i class="fas fa-cog fa-2x text-dark"></i>
+                                </div>
+                                <p class="card-text">Configure application settings.</p>
+                                <a href="settings.php" class="btn btn-dark">View Settings</a>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
-
     </div>
 </div>
 
+
 <!-- Footer -->
-<footer class="footer">
+<footer class="footer bg-dark text-white text-center py-3">
     <div class="container">
-        <p>&copy; 2024 Admin Dashboard</p>
+        <p class="mb-0">&copy; 2024 Admin Dashboard. All rights reserved.</p>
     </div>
 </footer>
 
@@ -143,4 +169,3 @@ $totalCanceledOrdersCount = $reporting->getTotalCanceledOrders();
 
 </body>
 </html>
-
