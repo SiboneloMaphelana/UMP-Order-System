@@ -87,7 +87,7 @@ try {
 
     // Set error message in session and redirect
     $_SESSION['error'] = "Failed to place order: " . $e->getMessage();
-    header("Location: ../cart.php");
+    header("Location: ../../cart.php");
     exit();
 } finally {
     // Always close connections and free resources
