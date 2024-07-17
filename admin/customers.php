@@ -51,7 +51,6 @@ $customers = $admin->getAllCustomers();
                                         <th>SURNAME</th>
                                         <th>EMAIL</th>
                                         <th>ROLE</th>
-                                        <th>REGISTRATION NUMBER</th>
                                         <th>ACTIONS</th>
                                     </tr>
                                 </thead>
@@ -62,7 +61,6 @@ $customers = $admin->getAllCustomers();
                                             <td><?php echo htmlspecialchars($customer['surname']); ?></td>
                                             <td><?php echo htmlspecialchars($customer['email']); ?></td>
                                             <td><?php echo htmlspecialchars($customer['role']); ?></td>
-                                            <td><?php echo htmlspecialchars($customer['registration_number']); ?></td>
                                             <td>
                                                 <a href="update_customer.php?id=<?php echo $customer['id']; ?>" class="btn btn-sm btn-primary">
                                                     <i class="fas fa-edit"></i>

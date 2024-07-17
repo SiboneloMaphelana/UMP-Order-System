@@ -69,10 +69,6 @@ if (!$customer) {
                 <option value="other">Other</option>
               </select>
             </div>
-            <div class="mb-3">
-              <label for="registration_number" class="form-label">Registration Number</label>
-              <input type="text" class="form-control" id="registration_number" name="registration_number" value="<?php echo htmlspecialchars($customer['registration_number']); ?>" required>
-            </div>
             <button type="submit" class="btn btn-primary">Update Customer</button>
           </form>
         </main>

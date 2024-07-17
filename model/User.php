@@ -17,7 +17,6 @@ class User {
         $sanitizedData = [];
         $sanitizedData['name'] = filter_var($data['name'], FILTER_SANITIZE_FULL_SPECIAL_CHARS);
         $sanitizedData['surname'] = filter_var($data['surname'], FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-        $sanitizedData['registration_number'] = filter_var($data['registration_number'], FILTER_SANITIZE_NUMBER_INT);
         $sanitizedData['email'] = filter_var($data['email'], FILTER_SANITIZE_EMAIL);
         $sanitizedData['role'] = filter_var($data['role'], FILTER_SANITIZE_FULL_SPECIAL_CHARS);
         $sanitizedData['password'] = password_hash($data['password'], PASSWORD_DEFAULT);
@@ -58,8 +57,8 @@ class User {
         if ($this->userExists($sanitizedData['email'])) {
             return false;
         }
-        $stmt = $this->conn->prepare('INSERT INTO users (name, surname, registration_number, role, email, password) VALUES (?, ?, ?, ?, ?, ?)');
-        $stmt->bind_param('ssisss', $sanitizedData['name'], $sanitizedData['surname'], $sanitizedData['registration_number'], $sanitizedData['role'] ,$sanitizedData['email'], $sanitizedData['password']);
+        $stmt = $this->conn->prepare('INSERT INTO users (name, surname, role, email, password) VALUES (?, ?, ?, ?, ?)');
+        $stmt->bind_param('sssss', $sanitizedData['name'], $sanitizedData['surname'], $sanitizedData['role'] ,$sanitizedData['email'], $sanitizedData['password']);
         return $stmt->execute();
     }
 
@@ -78,7 +77,6 @@ class User {
         } elseif (!filter_var($data['email'], FILTER_VALIDATE_EMAIL)) {
             $errors['email'] = "Invalid email format.";
         }
-        if (empty($data['registration_number'])) $errors['registration_number'] = "Registration number is required.";
 
         if (empty($data['role'])) $errors['role'] = "Role is required.";
         
@@ -209,11 +207,6 @@ class User {
             return "Email is already registered by another user.";
         }
     
-        // Check if the provided registration number already exists for another user
-        if ($registration_number !== null && $this->registrationNumberExists($id, $registration_number)) {
-            return "Registration number is already registered by another user.";
-        }
-    
         // Fetch existing user details
         $existingDetails = $this->getUserById($id);
     
@@ -221,23 +214,21 @@ class User {
         $name = $name ?: $existingDetails['name'];
         $surname = $surname ?: $existingDetails['surname'];
         $email = $email ?: $existingDetails['email'];
-        $registration_number = $registration_number ?: $existingDetails['registration_number'];
     
         // Sanitize parameters
         $name = $this->sanitizeUserDetails(['name' => $name])['name'];
         $surname = $this->sanitizeUserDetails(['surname' => $surname])['surname'];
         $email = $this->sanitizeUserDetails(['email' => $email])['email'];
-        $registration_number = $this->sanitizeUserDetails(['registration_number' => $registration_number])['registration_number'];
     
         // Prepare SQL query
-        $update_sql = "UPDATE users SET name = ?, surname = ?, email = ?, registration_number = ? WHERE id = ?";
+        $update_sql = "UPDATE users SET name = ?, surname = ?, email = ? WHERE id = ?";
         
         // Prepare and bind parameters
         $stmt = mysqli_prepare($this->conn, $update_sql);
         if (!$stmt) {
             return "Error preparing statement: " . mysqli_error($this->conn);
         }
-        mysqli_stmt_bind_param($stmt, 'ssssi', $name, $surname, $email, $registration_number, $id);
+        mysqli_stmt_bind_param($stmt, 'sssi', $name, $surname, $email,  $id);
     
         // Execute the update query
         if (mysqli_stmt_execute($stmt)) {
@@ -269,20 +260,6 @@ class User {
         return $row['COUNT(*)'] > 0;
     }
     
-    /**
-     * Checks if a registration number already exists for a user, excluding a specific user ID.
-     *
-     * @param int $id The ID of the user to exclude from the check.
-     * @param int $registration_number The registration number to check for.
-     * @return bool Returns true if the registration number exists for another user, false otherwise.
-     */
-    private function registrationNumberExists($id, $registration_number): bool {
-        $stmt = $this->conn->prepare('SELECT COUNT(*) FROM users WHERE registration_number = ? AND id <> ?');
-        $stmt->bind_param('ii', $registration_number, $id);
-        $stmt->execute();
-        $result = $stmt->get_result();
-        $row = $result->fetch_assoc();
-        return $row['COUNT(*)'] > 0;
-    }
+
     
 }

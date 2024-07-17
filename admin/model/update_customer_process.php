@@ -20,13 +20,12 @@ $name = $_POST['name'];
 $surname = $_POST['surname'];
 $email = $_POST['email'];
 $role = $_POST['role'];
-$registrationNumber = $_POST['registration_number'];
 
 // Instantiate Admin class
 $admin = new Admin($conn);
 
 // Attempt to update customer details
-if ($admin->updateCustomer($customerId, $name, $surname, $email, $role, $registrationNumber)) {
+if ($admin->updateCustomer($customerId, $name, $surname, $email, $role)) {
     // Redirect to customers page or display success message
     header("Location: ../customers.php");
     exit();

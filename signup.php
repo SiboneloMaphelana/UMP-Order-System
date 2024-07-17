@@ -55,9 +55,9 @@
                                 </div>
                             </div>
                             <div class="row mb-3">
-                                <div class="col-12 col-md-6">
-                                    <label for="registration_number" class="form-label">Registration Number</label>
-                                    <input type="text" class="form-control" id="registration_number" name="registration_number" placeholder="Enter Registration Number" required>
+                            <div class="col-12 col-md-6">
+                                    <label for="email" class="form-label">Email</label>
+                                    <input type="email" class="form-control" id="email" name="email" placeholder="Enter Email" required>
                                 </div>
                                 <div class="col-12 col-md-6">
                                     <label for="role" class="form-label">Role</label>
@@ -71,10 +71,7 @@
                                 </div>
                             </div>
                             <div class="row mb-3">
-                                <div class="col-12 col-md-6">
-                                    <label for="email" class="form-label">Email</label>
-                                    <input type="email" class="form-control" id="email" name="email" placeholder="Enter Email" required>
-                                </div>
+                                
                                 <div class="col-12 col-md-6">
                                     <label for="password" class="form-label">Password</label>
                                     <div class="input-group">
@@ -84,8 +81,7 @@
                                         </button>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="row mb-3">
+
                                 <div class="col-12 col-md-6">
                                     <label for="confirmPassword" class="form-label">Confirm Password</label>
                                     <div class="input-group">

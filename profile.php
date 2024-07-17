@@ -82,14 +82,6 @@ if (!$userDetails) {
                     <input type="text" class="form-control" id="role" value="<?php echo htmlspecialchars($userDetails['role']); ?>" readonly>
                   </div>
                 </div>
-                <div class="row mb-3">
-                  <div class="col-md-3 d-flex align-items-center">
-                    <label for="registration_number" class="form-label me-3">Registration Number</label>
-                  </div>
-                  <div class="col-md-9">
-                    <input type="tel" class="form-control" id="registration_number" value="<?php echo htmlspecialchars($userDetails['registration_number']); ?>" readonly>
-                  </div>
-                </div>
               </div>
               <div class="text-center">
                 <a href="edit_profile.php?id=<?php echo htmlspecialchars($userDetails['id']); ?>" class="btn btn-primary edit-profile-button">

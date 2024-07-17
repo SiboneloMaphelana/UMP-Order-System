@@ -282,10 +282,10 @@ class Admin {
      * @param string $registrationNumber The new registration number of the customer.
      * @return bool Returns true if the update was successful, false otherwise.
      */
-    public function updateCustomer($customerId, $name, $surname, $email, $role, $registrationNumber) {
+    public function updateCustomer($customerId, $name, $surname, $email, $role) {
         try {
-            $stmt = $this->conn->prepare("UPDATE users SET name=?, surname=?, email=?, role=?, registration_number=? WHERE id=?");
-            $stmt->bind_param("sssssi", $name, $surname, $email, $role, $registrationNumber, $customerId);
+            $stmt = $this->conn->prepare("UPDATE users SET name=?, surname=?, email=?, role=? WHERE id=?");
+            $stmt->bind_param("ssssi", $name, $surname, $email, $role, $customerId);
             $stmt->execute();
             
             // Check if update was successful
