@@ -60,7 +60,7 @@ if (!$orderDetails) {
                 </select>
             </div>
             <button type="submit" class="btn btn-primary">Update Status</button>
-            <a href="view_order.php?id=<?php echo $order_id; ?>" class="btn btn-secondary">Cancel</a>
+            <a href="orders.php?id=<?php echo $order_id; ?>" class="btn btn-secondary">Cancel</a>
         </form>
     </div>
 </div>

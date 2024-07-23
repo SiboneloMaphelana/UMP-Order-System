@@ -65,7 +65,7 @@ $totalItems = calculateTotalItems($_SESSION['cart']);
                                             <label class="form-check-label" for="payment_paypal">PayPal</label>
                                         </div>
                                         <div class="form-check">
-                                            <input class="form-check-input" type="radio" name="payment_method" id="payment_cash_on_delivery" value="cash_on_delivery" required>
+                                            <input class="form-check-input" type="radio" name="payment_method" id="payment_cash_on_delivery" value="cash on collection" required>
                                             <label class="form-check-label" for="payment_cash_on_delivery">Cash on Collection</label>
                                         </div>
                                     </div>
