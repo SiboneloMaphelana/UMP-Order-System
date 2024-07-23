@@ -24,7 +24,7 @@ class Notifications
             $mail->Host       = 'smtp.gmail.com';
             $mail->SMTPAuth   = true;
             $mail->Username   = 'maphelanasibonelo46@gmail.com'; // SMTP username
-            $mail->Password   = 'qwcldigwpmfkgxrd'; // SMTP password
+            $mail->Password   = 'uyvvvhguisdydsiudss'; // SMTP password
             $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
             $mail->Port       = 465;
 
