@@ -14,6 +14,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Attempt to login
     if ($user->login($email, $password)) {
         $_SESSION['success'] = "Login successful!";
+        $_SESSION['user_email'] = $email; 
         
         // If "Remember Me" is checked, set a cookie with user credentials
         if ($remember) {

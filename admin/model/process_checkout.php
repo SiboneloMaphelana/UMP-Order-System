@@ -3,6 +3,7 @@ session_start();
 include_once("../../connection/connection.php");
 include("../../model/User.php");
 include("Order.php");
+include("Notifications.php");
 
 // Check if user is logged in
 if (!isset($_SESSION['id'])) {
@@ -31,9 +32,10 @@ if ($totalAmount <= 0.0) {
 }
 
 $food = new Order($conn);
+$notifications = new Notifications($conn); // Create an instance of Notifications
 
 // Process the payment
-$paymentSuccess = true; 
+$paymentSuccess = true; // Assume payment is successful for demonstration
 
 if ($paymentSuccess) {
     // Add order to database
@@ -48,6 +50,20 @@ if ($paymentSuccess) {
                 header("Location: ../../checkout.php");
                 exit();
             }
+        }
+
+        // Retrieve order details
+        $orderDetails = $food->getOrderById($orderId);
+        $orderItems = $food->getOrderItems($orderId);
+        $customer = $food->getCustomerById($userId);
+
+        // Send order completion email
+        $emailSent = $notifications->orderCompletionEmail($orderDetails, $customer, $orderItems);
+
+        if (!$emailSent) {
+            $_SESSION['error'] = "Failed to send order completion email.";
+            header("Location: ../../checkout.php");
+            exit();
         }
 
         // Clear the cart

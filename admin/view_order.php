@@ -9,7 +9,7 @@ $food = new Order($conn);
 // Check if order ID is provided in the query string
 if (!isset($_GET['id']) || empty($_GET['id'])) {
     $_SESSION['error'] = "Order ID is required.";
-    header("Location: manage_orders.php"); // Redirect to manage orders page if ID is missing
+    header("Location: orders.php"); // Redirect to orders page if ID is missing
     exit();
 }
 
@@ -21,7 +21,7 @@ $orderDetails = $food->getOrderById($order_id);
 // Check if order exists
 if (!$orderDetails) {
     $_SESSION['error'] = "Order not found.";
-    header("Location: orders.php"); // Redirect to manage orders page if order not found
+    header("Location: orders.php"); // Redirect to orders page if order not found
     exit();
 }
 
