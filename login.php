@@ -65,7 +65,7 @@
                               <div class="mb-3">
                                   <p>
                                       Forgot Your Password? Click
-                                      <a href="reset_password.php" class="link-success text-decoration-none">Here</a>
+                                      <a href="forgot_password.php" class="link-success text-decoration-none">Here</a>
                                   </p>
                               </div>
                               <div class="mb-3 text-center">

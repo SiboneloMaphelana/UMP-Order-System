@@ -13,6 +13,14 @@ function groupOrdersByDate($orders) {
         }
         $groupedOrders[$formattedDate][] = $order;
     }
+    
+    // Sort dates in descending order based on actual date values
+    uksort($groupedOrders, function($a, $b) {
+        $dateA = strtotime(explode(',', $a)[1]);
+        $dateB = strtotime(explode(',', $b)[1]);
+        return $dateB - $dateA;
+    });
+    
     return $groupedOrders;
 }
 
@@ -27,5 +35,4 @@ function getStatusBadgeClass($status) {
             return 'bg-secondary text-white';
     }
 }
-
 ?>

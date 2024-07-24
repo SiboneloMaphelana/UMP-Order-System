@@ -72,7 +72,6 @@
             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton">
                 <li><a class="dropdown-item text-white" href="profile.php">Profile</a></li>
                 <li><a class="dropdown-item text-white" href="model/logout.php">Logout</a></li>
-                <li><a class="dropdown-item text-white" href="notifications.php">Notifications</a></li>
             </ul>
         </li>
     </ul>

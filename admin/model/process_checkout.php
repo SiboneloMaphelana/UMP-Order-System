@@ -58,7 +58,7 @@ if ($paymentSuccess) {
         $customer = $food->getCustomerById($userId);
 
         // Send order completion email
-        $emailSent = $notifications->orderCompletionEmail($orderDetails, $customer, $orderItems);
+        $emailSent = $notifications->orderPlacementEmail($orderDetails, $customer, $orderItems);
 
         if (!$emailSent) {
             $_SESSION['error'] = "Failed to send order completion email.";

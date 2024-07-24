@@ -24,7 +24,7 @@ class Notifications
             $mail->Host       = 'smtp.gmail.com';
             $mail->SMTPAuth   = true;
             $mail->Username   = 'maphelanasibonelo46@gmail.com'; // SMTP username
-            $mail->Password   = 'uyvvvhguisdydsiudss'; // SMTP password
+            $mail->Password   = 'qwcldigwpmfkgxrd'; // SMTP password
             $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
             $mail->Port       = 465;
 
@@ -114,7 +114,7 @@ class Notifications
             <h2 style='color: #004080;'>TechCafe Solutions</h2>
         </div>
         <p>Dear " . htmlspecialchars($customer['name']) . ",</p>
-        <p>Your order <strong>#{$orderDetails['order_id']}</strong> has been placed successfully.</p>
+        <p>Your order <strong>#{$orderDetails['id']}</strong> has been placed successfully.</p>
         <p><strong>Order Details:</strong></p>
         <ul style='list-style-type: none; padding: 0;'>
             <li style='margin-bottom: 10px;'><strong style='color: #004080;'>Order Date:</strong> {$orderDate}</li>
@@ -155,6 +155,41 @@ class Notifications
     $altBody .= "\nTotal Amount: R" . number_format($orderDetails['total_amount'], 2) . "\nPayment Method: " . htmlspecialchars($orderDetails['payment_method']) . "\n";
 
     return $this->sendEmail($customer['email'], $subject, $body, $altBody);
+}
+
+function generateToken($length = 50) {
+    return bin2hex(random_bytes($length));
+}
+
+public function sendPasswordResetEmail($user) {
+    
+    $token = $this->generateToken();
+    $userId = $user['id'];
+
+    // Insert token into database
+    $stmt = $this->conn->prepare("INSERT INTO password_resets (user_id, token) VALUES (?, ?)");
+    $stmt->bind_param("is", $userId, $token);
+    $stmt->execute();
+    $stmt->close();
+
+    $resetLink = "http://localhost/UMP-Order-System/reset_password.php?token=" . $token;
+
+    $subject = "Password Reset Request";
+    $body = "
+    <div style='font-family: Arial, sans-serif; max-width: 600px; margin: auto; padding: 20px; border: 1px solid #dddddd; border-radius: 10px; background-color: #f9f9f9;'>
+        <div style='text-align: center;'>
+            <h2 style='color: #004080;'>TechCafe Solutions</h2>
+        </div>
+        <p>Dear " . htmlspecialchars($user['name']) . ",</p>
+        <p>You requested a password reset. Click the link below to reset your password:</p>
+        <p><a href='" . $resetLink . "' style='color: #004080;'>Reset Password</a></p>
+        <p>If you did not request a password reset, please ignore this email.</p>
+        <p style='text-align: center; color: #004080;'>Best Regards,<br>TechCafe Solutions</p>
+    </div>";
+
+    $altBody = "Dear " . htmlspecialchars($user['name']) . ",\n\nYou requested a password reset. Click the link below to reset your password:\n" . $resetLink . "\n\nIf you did not request a password reset, please ignore this email.\n\nBest Regards,\nTechCafe Solutions";
+
+    return $this->sendEmail($user['email'], $subject, $body, $altBody);
 }
 
 

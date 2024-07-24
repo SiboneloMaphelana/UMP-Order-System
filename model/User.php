@@ -7,28 +7,14 @@ class User {
         $this->conn = $conn;
     }
 
-    /**
-     * Sanitizes user details by applying various filters.
-     *
-     * @param array $data The array containing user details to be sanitized.
-     * @return array The array with sanitized user details.
-     */
     public function sanitizeUserDetails(array $data): array {
         $sanitizedData = [];
         $sanitizedData['name'] = filter_var($data['name'], FILTER_SANITIZE_FULL_SPECIAL_CHARS);
         $sanitizedData['surname'] = filter_var($data['surname'], FILTER_SANITIZE_FULL_SPECIAL_CHARS);
         $sanitizedData['email'] = filter_var($data['email'], FILTER_SANITIZE_EMAIL);
         $sanitizedData['role'] = filter_var($data['role'], FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-        $sanitizedData['password'] = password_hash($data['password'], PASSWORD_DEFAULT);
         return $sanitizedData;
     }
-
-    /**
-     * Checks if a user with the given email already exists in the database.
-     *
-     * @param string $email The email address to check for existence.
-     * @return bool Returns true if a user with the given email exists, false otherwise.
-     */
     public function userExists(string $email): bool {
         $stmt = $this->conn->prepare('SELECT COUNT(*) FROM users WHERE email = ?');
         $stmt->bind_param('s', $email);
@@ -38,20 +24,6 @@ class User {
         return $row['COUNT(*)'] > 0;
     }
 
-    /**
-     * Signs up a user by inserting their details into the database.
-     *
-     * @param array $data An associative array containing the user's details.
-     *                    The array should have the following keys:
-     *                    - name: string
-     *                    - surname: string
-     *                    - registration_number: string
-     *                    - role: string
-     *                    - email: string
-     *                    - password: string
-     * @return bool Returns true if the user was successfully signed up, false otherwise.
-     *              Returns false if the user already exists in the database.
-     */
     public function signup(array $data): bool {
         $sanitizedData = $this->sanitizeUserDetails($data);
         if ($this->userExists($sanitizedData['email'])) {
@@ -62,12 +34,6 @@ class User {
         return $stmt->execute();
     }
 
-    /**
-     * Validates the signup data and returns an array of errors.
-     *
-     * @param array $data The array containing the signup data.
-     * @return array The array of errors.
-     */
     public function validateSignup(array $data): array {
         $errors = [];
         if (empty($data['name'])) $errors['name'] = "First Name is required.";
@@ -92,14 +58,6 @@ class User {
 
     }
 
-    /**
-     * Logs in a user by verifying their email and password.
-     *
-     * @param string $email The user's email.
-     * @param string $password The user's password.
-     * @return bool Returns true if the user is successfully logged in, false otherwise.
-     *              Returns false if the email or password is empty, or if the account is deactivated or not active.
-     */
     public function login(string $email, string $password): bool {
         if (empty($email) || empty($password)) {
             return false;
@@ -121,14 +79,6 @@ class User {
         return false;
     }
     
-    
-
-    /**
-     * Retrieves user details from the database based on the provided ID.
-     *
-     * @param mixed $id The unique identifier of the user.
-     * @return array|null Returns an associative array of user details if found, null otherwise.
-     */
     public function getUserById( $id): ?array {
         $stmt = $this->conn->prepare('SELECT * FROM users WHERE id = ?');
         $stmt->bind_param('s', $id);
@@ -137,12 +87,6 @@ class User {
         return $result->fetch_assoc();
     }
 
-    /**
-     * Deletes a user account from the database.
-     *
-     * @param int $userId The ID of the user account to delete.
-     * @return bool Returns true if the user account is successfully deleted, false otherwise.
-     */
     public function deleteUserAccount($userId) {
         try {
             // Begin transaction
@@ -171,12 +115,6 @@ class User {
         }
     }
 
-    /**
-     * Reactivates a user account by setting the `is_active` field to `TRUE` in the database.
-     *
-     * @param int $userId The ID of the user account to reactivate.
-     * @return bool Returns `true` if the user account was successfully reactivated, `false` otherwise.
-     */
     public function reactivateAccount($userId): bool {
         $stmt = $this->conn->prepare("UPDATE users SET is_active = TRUE WHERE id = ?");
         $stmt->bind_param('i', $userId);
@@ -187,78 +125,63 @@ class User {
         return true;
     }
     
-    
-
-    /**
-     * Updates the user details with the provided ID.
-     *
-     * @param int $id The ID of the user to update.
-     * @param string|null $name The new first name of the user. If null, retains the existing value.
-     * @param string|null $surname The new last name of the user. If null, retains the existing value.
-     * @param string|null $email The new email of the user. If null, retains the existing value.
-     * @param string|null $registration_number The new registration number of the user. If null, retains the existing value.
-     * @return bool|string Returns true if the user details were successfully updated, or an error message if the update failed.
-     */
-    public function updateUser($id, $name = null, $surname = null, $email = null, $registration_number = null) {
+    public function updateUser($id, $name = null, $surname = null, $email = null, $role = null) {
         $id = intval($id); // Sanitize the ID as an integer directly
-        
+
         // Check if the provided email already exists for another user
         if ($email !== null && $this->emailExists($id, $email)) {
             return "Email is already registered by another user.";
         }
-    
+
         // Fetch existing user details
         $existingDetails = $this->getUserById($id);
-    
+
         // Retain existing details if not updated
         $name = $name ?: $existingDetails['name'];
         $surname = $surname ?: $existingDetails['surname'];
         $email = $email ?: $existingDetails['email'];
-    
+        $role = $role ?: $existingDetails['role'];
+
         // Sanitize parameters
-        $name = $this->sanitizeUserDetails(['name' => $name])['name'];
-        $surname = $this->sanitizeUserDetails(['surname' => $surname])['surname'];
-        $email = $this->sanitizeUserDetails(['email' => $email])['email'];
-    
+        $sanitizedDetails = $this->sanitizeUserDetails(['name' => $name, 'surname' => $surname, 'email' => $email, 'role' => $role]);
+        $name = $sanitizedDetails['name'];
+        $surname = $sanitizedDetails['surname'];
+        $email = $sanitizedDetails['email'];
+        $role = $sanitizedDetails['role'];
+
         // Prepare SQL query
-        $update_sql = "UPDATE users SET name = ?, surname = ?, email = ? WHERE id = ?";
-        
+        $update_sql = "UPDATE users SET name = ?, surname = ?, email = ?, role = ? WHERE id = ?";
+
         // Prepare and bind parameters
-        $stmt = mysqli_prepare($this->conn, $update_sql);
+        $stmt = $this->conn->prepare($update_sql);
         if (!$stmt) {
-            return "Error preparing statement: " . mysqli_error($this->conn);
+            return "Error preparing statement: " . $this->conn->error;
         }
-        mysqli_stmt_bind_param($stmt, 'sssi', $name, $surname, $email,  $id);
-    
+        $stmt->bind_param('ssssi', $name, $surname, $email, $role, $id);
+
         // Execute the update query
-        if (mysqli_stmt_execute($stmt)) {
-            if (mysqli_stmt_affected_rows($stmt) > 0) {
+        if ($stmt->execute()) {
+            if ($stmt->affected_rows > 0) {
                 return true;
             } else {
                 return "No rows updated. Either the user does not exist or the new values are the same as the old values.";
             }
         } else {
-            return "Error updating user: " . mysqli_error($this->conn);
+            return "Error updating user: " . $this->conn->error;
         }
-        
     }
     
-
-    /**
-     * Checks if an email already exists in the users table for a given user ID.
-     *
-     * @param int $id The ID of the user to exclude from the search.
-     * @param string $email The email address to check for existence.
-     * @return bool Returns true if the email exists for a user other than the one specified by $id, false otherwise.
-     */
     private function emailExists($id, $email): bool {
-        $stmt = $this->conn->prepare('SELECT COUNT(*) FROM users WHERE email = ? AND id <> ?');
+        $stmt = $this->conn->prepare('SELECT COUNT(*) as count FROM users WHERE email = ? AND id <> ?');
         $stmt->bind_param('si', $email, $id);
         $stmt->execute();
         $result = $stmt->get_result();
         $row = $result->fetch_assoc();
-        return $row['COUNT(*)'] > 0;
+        return $row['count'] > 0;
     }
+
+    
+    
     
 
     
