@@ -61,12 +61,16 @@ $totalItems = calculateTotalItems($_SESSION['cart']);
                                     <div>
                                         <h6>Select Payment Method:</h6>
                                         <div class="form-check">
-                                            <input class="form-check-input" type="radio" name="payment_method" id="payment_paypal" value="paypal" required>
-                                            <label class="form-check-label" for="payment_paypal">PayPal</label>
+                                            <input class="form-check-input" type="radio" name="payment_method" id="payment_payfast" value="payfast" required>
+                                            <label class="form-check-label" for="payment_payfast">
+                                                <i class="fas fa-credit-card"></i> PayFast
+                                            </label>
                                         </div>
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="radio" name="payment_method" id="payment_cash_on_delivery" value="cash on collection" required>
-                                            <label class="form-check-label" for="payment_cash_on_delivery">Cash on Collection</label>
+                                        <div class="form-check mt-2">
+                                            <input class="form-check-input" type="radio" name="payment_method" id="cash_on_collection" value="cash on collection" required>
+                                            <label class="form-check-label" for="cash_on_collection">
+                                                <i class="fas fa-money-bill-wave"></i> Cash on Collection
+                                            </label>
                                         </div>
                                     </div>
                                     <button type="submit" class="btn btn-success w-100 mt-3">Place Order</button>
