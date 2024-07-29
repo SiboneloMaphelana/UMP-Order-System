@@ -12,6 +12,10 @@ if ($_SESSION['role'] === 'staff') {
     $_SESSION['error'] = "Access denied. You are not authorized to view the page.";
     header("Location: dashboard.php"); // Redirect to dashboard or another page
     exit();
+
+}else{
+    //Allow access
+    
 }
 
 // Include necessary files and retrieve customer data
