@@ -2,7 +2,7 @@
 //session is started and user is authenticated
 session_start();
 include_once("../../connection/connection.php");
-include_once("Food.php");
+include_once("Order.php");
 
 // Check if user is logged in
 if (!isset($_SESSION['id'])) {
@@ -11,7 +11,7 @@ if (!isset($_SESSION['id'])) {
     exit();
 }
 
-$food = new Food($conn);
+$food = new Order($conn);
 
 // Check if orderId is provided via POST
 if (isset($_POST['orderId'])) {
