@@ -4,7 +4,7 @@
 header('Content-Type: application/json');
 
 require_once("../../connection/connection.php");
-require_once("../../model/Order.php");
+require_once("../model/Order.php");
 
 $orderModel = new Order($conn);
 
