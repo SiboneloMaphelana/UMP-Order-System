@@ -1,7 +1,6 @@
 <?php
 include("../../connection/connection.php");
 include("Notifications.php");
-// forgot_password.php
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $email = $_POST['email'];
 

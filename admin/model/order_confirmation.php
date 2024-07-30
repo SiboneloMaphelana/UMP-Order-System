@@ -75,7 +75,7 @@ try {
     // Clear orderId from session after displaying the order
     unset($_SESSION['orderId']);
 
-    // Return order and order items for use in frontend
+    // Return order and order items for use
     return compact('order', 'orderItems');
 
 } catch (Exception $e) {
@@ -85,12 +85,12 @@ try {
     // Log the exception
     error_log('Exception caught in place_order.php: ' . $e->getMessage());
 
-    // Set error message in session and redirect
+    
     $_SESSION['error'] = "Failed to place order: " . $e->getMessage();
     header("Location: ../../cart.php");
     exit();
 } finally {
-    // Always close connections and free resources
+    
     if (isset($orderQuery)) {
         $orderQuery->close();
     }

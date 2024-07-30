@@ -21,7 +21,7 @@
                     <div class="d-flex justify-content-between align-items-center mt-4">
                         <h1>Admin Dashboard</h1>
                         <div class="notification-icon">
-                            <i class="bi bi-bell" style="font-size: 2rem;"></i> <!-- Bootstrap Icon -->
+                            <i class="bi bi-bell" style="font-size: 2rem;"></i> 
                             <span id="notificationBadge" class="notification-badge">0</span>
                         </div>
                     </div>
@@ -39,11 +39,11 @@
                                         <th>Status</th>
                                         <th>Order Date</th>
                                         <th>Completed At</th>
-                                        <th>Actions</th> <!-- New column for actions -->
+                                        <th>Actions</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <!-- Existing orders will be displayed here -->
+                                    
                                 </tbody>
                             </table>
 
@@ -57,7 +57,7 @@
                                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                         </div>
                                         <div class="modal-body">
-                                            <!-- Order details will be loaded here dynamically -->
+                                            
                                         </div>
                                         <div class="modal-footer">
                                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>

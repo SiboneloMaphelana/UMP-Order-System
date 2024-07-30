@@ -36,7 +36,6 @@ $total_pages = ceil($total_orders / $items_per_page);
 
                             <div class="card-body">
                                 <?php
-                                // Display success or error messages
                                 if (isset($_SESSION['success'])) {
                                     echo '<div class="alert alert-success">' . $_SESSION['success'] . '</div>';
                                     unset($_SESSION['success']);

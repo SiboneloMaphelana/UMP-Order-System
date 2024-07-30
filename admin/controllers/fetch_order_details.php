@@ -1,5 +1,4 @@
 <?php
-// fetch_order_details.php
 
 header('Content-Type: application/json');
 
@@ -8,7 +7,6 @@ require_once("../model/Order.php");
 
 $orderModel = new Order($conn);
 
-// Validate input
 $order_id = isset($_GET['order_id']) && is_numeric($_GET['order_id']) ? intval($_GET['order_id']) : 0;
 
 if ($order_id <= 0) {
@@ -18,7 +16,6 @@ if ($order_id <= 0) {
 }
 
 try {
-    // Fetch order details
     $stmt = $conn->prepare('SELECT id, total_amount, status, order_date FROM orders WHERE id = ?');
     $stmt->bind_param('i', $order_id);
     $stmt->execute();

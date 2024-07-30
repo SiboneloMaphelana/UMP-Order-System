@@ -130,11 +130,6 @@ class Order{
         return $result->fetch_all(MYSQLI_ASSOC);
     }
 
-    /**
-     * Counts the total number of orders.
-     *
-     * @return int The total number of orders.
-     */
     public function countOrders() {
         $stmt = $this->conn->prepare("SELECT COUNT(*) AS total FROM orders WHERE is_deleted = FALSE");
         $stmt->execute();

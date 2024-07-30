@@ -1,7 +1,6 @@
 <?php
 include("../../connection/connection.php");
 include("Notifications.php");
-// reset_password.php
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $token = $_POST['token'];
     $newPassword = password_hash($_POST['password'], PASSWORD_BCRYPT);

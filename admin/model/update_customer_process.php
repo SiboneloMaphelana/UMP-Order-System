@@ -21,7 +21,6 @@ $surname = $_POST['surname'];
 $email = $_POST['email'];
 $role = $_POST['role'];
 
-// Instantiate Admin class
 $admin = new Admin($conn);
 
 // Attempt to update customer details
@@ -30,7 +29,6 @@ if ($admin->updateCustomer($customerId, $name, $surname, $email, $role)) {
     header("Location: ../customers.php");
     exit();
 } else {
-    // Handle update failure
     echo "Failed to update customer.";
 }
 ?>

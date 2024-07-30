@@ -1,46 +1,45 @@
-/* Style for form controls */
 .form-control {
-    background-color: #dcdcdc !important; /* Set background color */
-    color: #555 !important; /* Set text color */
+    background-color: #dcdcdc !important; 
+    color: #555 !important; 
   }
   
-  /* Style for form control placeholders */
+ 
   .form-control::placeholder {
-    color: #888 !important; /* Set placeholder color */
+    color: #888 !important; 
   }
   
-  /* Style for focused form controls */
+
   .form-control:focus {
-    background-color: #dcdcdc !important; /* Set background color */
-    color: #555 !important; /* Set text color */
+    background-color: #dcdcdc !important; 
+    color: #555 !important; 
   }
   
-  /* Style for responsive tables */
+  
   .table-responsive {
-    overflow-x: auto; /* Enable horizontal scrolling */
+    overflow-x: auto; 
 }
 
-/* Style for thumbnail images */
+
 .img-thumbnail {
-    max-width: 100px; /* Set maximum width */
+    max-width: 100px; 
 }
 
-/* Style for logo images */
+
 .logo-img {
-    width: 100px; /* Set width */
-    margin-right: 20px; /* Set right margin */
+    width: 100px; 
+    margin-right: 20px; 
 }
 
-/* Style for fluid images */
+
 .img-fluid {
-    width: 100px; /* Set width */
-    height: 100px; /* Set height */
-    object-fit: cover; /* Scale image to cover the entire container */
+    width: 100px;
+    height: 100px;
+    object-fit: cover; 
 }
 
-/* Style for content padding */
+
 .content {
-    padding: 20px; /* Set padding */
+    padding: 20px; 
 }
 
 .notification-icon {
@@ -60,15 +59,14 @@
   font-size: 0.8em;
 }
 
-/* Style for footer */
 .footer {
-    margin-top: 20px; /* Set top margin */
-    background-color: #f8f9fa; /* Set background color */
-    padding: 10px 0; /* Set vertical padding */
-    text-align: center; /* Center align text */
-    position: fixed; /* Set fixed position */
-    bottom: 0; /* Set to bottom of the page */
-    width: 100%; /* Set full width */
+    margin-top: 20px; 
+    background-color: #f8f9fa;
+    padding: 10px 0; 
+    text-align: center; 
+    position: fixed; 
+    bottom: 0; 
+    width: 100%; 
 }
 
 

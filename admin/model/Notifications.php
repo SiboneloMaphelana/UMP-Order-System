@@ -3,7 +3,7 @@
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
-require '../../vendor/autoload.php'; // Path to PHPMailer autoload file
+require '../../vendor/autoload.php'; 
 
 class Notifications
 {

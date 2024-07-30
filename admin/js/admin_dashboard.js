@@ -5,7 +5,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
     fetchOrders(currentPage);
 
-    // EventSource for real-time updates
     const eventSource = new EventSource('controllers/sse_server.php');
     eventSource.onmessage = function(event) {
         const data = JSON.parse(event.data);
@@ -32,15 +31,12 @@ document.addEventListener('DOMContentLoaded', function() {
                 const orders = data.orders;
                 totalPages = data.totalPages;
 
-                // Clear the table body
                 document.querySelector('#ordersTable tbody').innerHTML = '';
 
-                // Add orders to the table
                 orders.forEach(order => addOrderToTable(order));
                 pendingProcessingCount = orders.filter(order => order.status === 'pending' || order.status === 'processing').length;
                 updateBadgeCount(pendingProcessingCount);
 
-                // Update pagination controls
                 updatePaginationControls();
             })
             .catch(error => console.error('Error fetching orders:', error));
@@ -49,7 +45,7 @@ document.addEventListener('DOMContentLoaded', function() {
     function addOrderToTable(order) {
         const ordersTableBody = document.querySelector('#ordersTable tbody');
         const orderRow = document.createElement('tr');
-        orderRow.id = `order-${order.id}`; // Set ID to easily remove later
+        orderRow.id = `order-${order.id}`; 
         orderRow.innerHTML = `
             <td>${order.id}</td>
             <td>R${order.total_amount}</td>
@@ -68,7 +64,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const orderRow = document.getElementById(`order-${orderId}`);
         if (orderRow) {
             orderRow.remove();
-            // Update the count
+            
             pendingProcessingCount--;
             updateBadgeCount(pendingProcessingCount);
         }
@@ -114,7 +110,6 @@ document.addEventListener('DOMContentLoaded', function() {
                     throw new Error(order.error);
                 }
     
-                // Populate modal with order details
                 const modalBody = document.querySelector('#viewOrderModal .modal-body');
                 modalBody.innerHTML = `
                     <p><strong>Order ID:</strong> ${order.id}</p>
@@ -127,7 +122,6 @@ document.addEventListener('DOMContentLoaded', function() {
                     </ul>
                 `;
     
-                // Display the modal
                 const viewOrderModal = new bootstrap.Modal(document.getElementById('viewOrderModal'));
                 viewOrderModal.show();
             })
@@ -155,7 +149,7 @@ document.addEventListener('DOMContentLoaded', function() {
         .then(result => {
             if (result.success) {
                 alert('Order status updated successfully!');
-                fetchOrders(currentPage); // Reload orders to reflect the changes
+                fetchOrders(currentPage); 
             } else {
                 alert('Error updating order status.');
             }

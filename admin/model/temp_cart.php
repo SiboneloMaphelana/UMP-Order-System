@@ -26,7 +26,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_SESSION['id'])) {
     $itemFound = false;
     foreach ($_SESSION['cart'] as &$cartItem) {
         if ($cartItem['food_id'] == $foodItemId) {
-            $cartItem['quantity'] += $quantity; // Update quantity
+            $cartItem['quantity'] += $quantity; 
             $itemFound = true;
             break;
         }

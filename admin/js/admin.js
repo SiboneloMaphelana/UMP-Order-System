@@ -85,14 +85,12 @@ document.addEventListener('DOMContentLoaded', function () {
     phoneNumberField.addEventListener('input', function () {
         const phoneNumber = phoneNumberField.value;
 
-        // Length Validation
         if (phoneNumber.length !== 10) {
             phoneError.textContent = "Phone number should be 10 digits long.";
             phoneError.style.display = 'block';
             return;
         }
 
-        // Format Validation
         if (!/^\d{10}$/.test(phoneNumber)) {
             phoneError.textContent = "Phone number should contain only digits.";
             phoneError.style.display = 'block';

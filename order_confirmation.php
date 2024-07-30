@@ -1,5 +1,4 @@
 <?php
-// Include backend logic to retrieve order data
 $data = include('admin/model/order_confirmation.php');
 
 // Extract order and order items from included data

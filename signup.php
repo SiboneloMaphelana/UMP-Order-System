@@ -11,20 +11,20 @@
     <link rel="stylesheet" href="css/home.css">
     <style>
         .sidebar {
-            border-right: 1px solid #dee2e6; /* Optional: adds a border to the sidebar */
+            border-right: 1px solid #dee2e6; 
         }
 
         .sidebar .logo {
-            max-width: 100%; /* Ensures the logo is responsive */
+            max-width: 100%;
         }
 
         @media (max-width: 767.98px) {
             .sidebar {
-                display: none; /* Hide sidebar on small devices */
+                display: none;
             }
 
             .main-content {
-                flex: 1; /* Allows the main content to take full width */
+                flex: 1; 
             }
         }
     </style>

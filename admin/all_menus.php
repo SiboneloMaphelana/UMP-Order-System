@@ -29,7 +29,6 @@ $foodItems = $food->getAllFoodItems();
             <?php include("partials/navigation.php"); ?>
             <div class="col d-flex flex-column h-sm-100">
                 <main class="row overflow-auto">
-                    <!-- Alerts -->
                     <?php
                     if (isset($_SESSION['success'])) {
                         echo '<div class="alert alert-success">' . $_SESSION['success'] . '</div>';

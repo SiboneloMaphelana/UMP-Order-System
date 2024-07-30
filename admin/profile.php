@@ -6,7 +6,6 @@ include("model/Admin.php");
 $adminModel = new Admin($conn);
 $userDetails = $adminModel->getUserById($_SESSION['id']);
 
-// Check if user details are found
 if (!$userDetails) {
     header("Location: login.php");
     exit;
@@ -37,7 +36,6 @@ if (!$userDetails) {
                             <h5 class="card-title text-center">User Profile</h5>
                         </div>
                         <div class="card-body">
-                            <!-- Display success or error messages -->
                             <?php if (isset($_SESSION['success'])) : ?>
                                 <div class="alert alert-success"><?php echo $_SESSION['success']; ?></div>
                                 <?php unset($_SESSION['success']); ?>

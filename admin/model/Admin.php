@@ -6,12 +6,7 @@ class Admin {
         $this->conn = $conn;
     }
 
-    /**
-     * Sanitizes the user details by filtering and sanitizing the input data.
-     *
-     * @param array $data The user details to sanitize.
-     * @return array The sanitized user details.
-     */
+
     public function sanitizeUserDetails(array $data): array {
         $sanitizedData = [];
         $sanitizedData['name'] = filter_var($data['name'], FILTER_SANITIZE_FULL_SPECIAL_CHARS);
@@ -20,12 +15,7 @@ class Admin {
         return $sanitizedData;
     }
 
-    /**
-     * Checks if the user with the given email exists in the `admins` table.
-     *
-     * @param string $email The email to check.
-     * @return bool Returns true if the user exists, false otherwise.
-     */
+
     public function userExists(string $email): bool {
         $stmt = $this->conn->prepare('SELECT COUNT(*) FROM admins WHERE email = ?');
         $stmt->bind_param('s', $email);
@@ -35,13 +25,6 @@ class Admin {
         return $row['COUNT(*)'] > 0;
     }
 
-    /**
-     * Checks if an email exists in the `admins` table, excluding a specific ID.
-     *
-     * @param string $email The email to check.
-     * @param int $excludeId The ID to exclude from the check.
-     * @return bool Returns `true` if the email exists, `false` otherwise.
-     */
     public function emailExistsExcludingId(string $email, int $excludeId): bool {
         $stmt = $this->conn->prepare('SELECT COUNT(*) FROM admins WHERE email = ? AND id != ?');
         $stmt->bind_param('si', $email, $excludeId);
@@ -51,12 +34,6 @@ class Admin {
         return $row['COUNT(*)'] > 0;
     }
 
-    /**
-     * Signs up a new admin user.
-     *
-     * @param array $data The signup data containing the user's name, email, phone number, and password.
-     * @return bool Returns true if the user is successfully signed up, false otherwise.
-     */
     public function signup(array $data): bool {
         $sanitizedData = $this->sanitizeUserDetails($data);
         $sanitizedData['password'] = password_hash($data['password'], PASSWORD_DEFAULT);
@@ -73,21 +50,6 @@ class Admin {
     
     
 
-    /**
-     * Validates the signup data and returns an array of errors if any.
-     *
-     * @param array $data The signup data to be validated.
-     *                    The array should contain the following keys:
-     *                    - 'name': The name of the user.
-     *                    - 'email': The email of the user.
-     *                    - 'phone_number': The phone number of the user.
-     *                    - 'password': The password of the user.
-     *                    - 'confirm_password': The confirmed password of the user.
-     * @return array An array of errors.
-     *               The array keys represent the field names with errors,
-     *               and the values represent the corresponding error messages.
-     *               If there are no errors, an empty array is returned.
-     */
     public function validateSignup(array $data): array {
         $errors = [];
         if (empty($data['name'])) $errors['name'] = "Name is required.";
@@ -110,13 +72,6 @@ class Admin {
     }
     
 
-    /**
-     * A function to log in a user with the provided email and password.
-     *
-     * @param string $email The email of the user trying to log in.
-     * @param string $password The password of the user trying to log in.
-     * @return bool Returns true if the login is successful, false otherwise.
-     */
     public function login(string $email, string $password): bool {
         if (empty($email) || empty($password)) {
             return false;
@@ -129,19 +84,14 @@ class Admin {
         if ($row && password_verify($password, $row['password'])) {
             session_start();
             $_SESSION['id'] = $row['id'];
-            $_SESSION['role'] = $row['role']; // Store role in session
+            $_SESSION['role'] = $row['role']; 
             return true;
         }
         return false;
     }
     
 
-    /**
-     * Retrieves a user from the database by their ID.
-     *
-     * @param string $id The ID of the user to retrieve.
-     * @return array|null The user data as an associative array, or null if no user was found.
-     */
+
     public function getUserById(string $id): ?array {
         $stmt = $this->conn->prepare('SELECT * FROM admins WHERE id = ?');
         $stmt->bind_param('s', $id);
@@ -150,17 +100,7 @@ class Admin {
         return $result->fetch_assoc();
     }
 
-    /**
-     * Updates an admin record in the database.
-     *
-     * @param int $id The ID of the admin to update.
-     * @param array $data An associative array containing the updated data for the admin.
-     *                     The keys of the array should match the column names in the admins table.
-     *                     The values can be either strings or null.
-     * @return bool Returns true if the update was successful, false otherwise.
-     *              If the email already exists for another admin except the one being updated, returns false.
-     * @throws None
-     */
+
     public function updateAdmin(int $id, array $data): bool {
         if (isset($data['email']) && $this->emailExistsExcludingId($data['email'], $id)) {
             return false;
@@ -205,23 +145,14 @@ class Admin {
     
     
 
-    /**
-     * Deletes an account from the admins table in the database.
-     *
-     * @param int $id The ID of the account to delete.
-     * @return bool Returns true if the deletion was successful, false otherwise.
-     */
+
     public function deleteAccount(int $id): bool {
         $stmt = $this->conn->prepare('DELETE FROM admins WHERE id = ?');
         $stmt->bind_param('i', $id);
         return $stmt->execute();
     }
 
-    /**
-     * Retrieves all customers from the database.
-     *
-     * @return array An array of customer data in the format of associative arrays.
-     */
+
     public function getAllCustomers(): array {
         $sql = "SELECT * FROM users WHERE is_deleted = FALSE";
         $result = $this->conn->query($sql);
@@ -237,12 +168,7 @@ class Admin {
     }
     
 
-    /**
-     * Deletes a customer from the users table in the database.
-     *
-     * @param int $customerId The ID of the customer to delete.
-     * @return bool Returns true if the deletion was successful, false otherwise.
-     */
+
     public function deleteCustomer($customerId) {
         try {
             // Begin transaction
@@ -256,7 +182,7 @@ class Admin {
     
             // Update users table for soft delete
             $sqlUsers = "UPDATE users SET is_deleted = TRUE WHERE id = ?";
-            $stmtUsers = $this->conn->prepare($sqlUsers);  // Corrected this line
+            $stmtUsers = $this->conn->prepare($sqlUsers);  
             $stmtUsers->bind_param("i", $customerId);
             $stmtUsers->execute();
     
@@ -301,12 +227,7 @@ class Admin {
         }
     }
 
-    /**
-     * Retrieves a customer from the database by their ID.
-     *
-     * @param string $id The ID of the customer to retrieve.
-     * @return array|null The customer data as an associative array, or null if no customer was found.
-     */
+
     public function getCustomerById(string $id): ?array {
         $stmt = $this->conn->prepare('SELECT * FROM users WHERE id = ?');
         $stmt->bind_param('s', $id);

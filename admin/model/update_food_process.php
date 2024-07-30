@@ -3,12 +3,10 @@ session_start();
 require_once '../../connection/connection.php';
 require_once 'Food.php';
 
-// Check if the form is submitted using POST method
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     
     // Check if the food ID is set and not empty
     if (!isset($_POST["id"]) || empty($_POST["id"])) {
-        // Redirect with error message
         $_SESSION['error'] = "Invalid food ID.";
         header("Location: ../update_food.php");
         exit;
@@ -16,7 +14,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     $foodModel = new Food($conn);
 
-    // Get form data
     $id = intval($_POST["id"]);
     $name = isset($_POST["name"]) ? $_POST["name"] : null;
     $description = isset($_POST["description"]) ? $_POST["description"] : null;

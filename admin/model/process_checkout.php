@@ -42,7 +42,7 @@ try {
     $itemDescription = implode(', ', $itemDescriptions);
 
     $food = new Order($conn);
-    $notifications = new Notifications($conn); // Create an instance of Notifications
+    $notifications = new Notifications($conn); 
 
     // Process the payment
     if ($paymentMethod == 'payfast') {

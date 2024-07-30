@@ -3,7 +3,6 @@ include_once("connection/connection.php");
 include_once("admin/model/Order.php");
 include_once("functions/orders_functions.php");
 
-// Initialize Order class with database connection
 $orderModel = new Order($conn);
 
 // Retrieve orders for the logged-in user
