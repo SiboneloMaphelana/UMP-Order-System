@@ -43,6 +43,23 @@
     padding: 20px; /* Set padding */
 }
 
+.notification-icon {
+  position: relative;
+  display: inline-block;
+}
+
+.notification-badge {
+  position: absolute;
+  top: 0;
+  right: 0;
+  transform: translate(50%, -50%);
+  background-color: red;
+  color: white;
+  border-radius: 50%;
+  padding: 0.3em 0.5em;
+  font-size: 0.8em;
+}
+
 /* Style for footer */
 .footer {
     margin-top: 20px; /* Set top margin */
@@ -53,3 +70,5 @@
     bottom: 0; /* Set to bottom of the page */
     width: 100%; /* Set full width */
 }
+
+

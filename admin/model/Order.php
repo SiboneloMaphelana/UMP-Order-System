@@ -27,16 +27,6 @@ class Order{
         return $stmt->execute(); 
     }
 
-    public function getAllOrders(): array {
-        $sql = "SELECT * FROM orders WHERE is_deleted = FALSE";
-        $result = $this->conn->query($sql);
-        $orders = [];
-        while ($row = $result->fetch_assoc()) {
-            $orders[] = $row;
-        }
-        return $orders;
-    }
-
     public function getOrderById($order_id) {
         $stmt = $this->conn->prepare('SELECT * FROM orders WHERE id = ?');
         $stmt->bind_param('i', $order_id);
@@ -153,6 +143,75 @@ class Order{
         return $row['total'];
     }
 
+     // Fetch all existing orders
+     public function getExistingOrders($page = 1, $limit = 10) {
+        $offset = ($page - 1) * $limit;
+        $sql = "SELECT * FROM orders ORDER BY id DESC LIMIT $limit OFFSET $offset";
+        $result = $this->conn->query($sql);
+        $orders = [];
+    
+        while ($row = $result->fetch_assoc()) {
+            $orders[] = $row;
+        }
+    
+        return $orders;
+    }
+    
+    public function getTotalOrderCount() {
+        $sql = "SELECT COUNT(*) as total FROM orders";
+        $result = $this->conn->query($sql);
+        $row = $result->fetch_assoc();
+        return $row['total'];
+    }
+    
+
+    // Fetch new orders based on the latest order ID
+    public function getNewOrders($latestOrderId) {
+        $sql = "SELECT * FROM orders WHERE id > ? ORDER BY id ASC";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bind_param('i', $latestOrderId);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $orders = [];
+
+        while ($row = $result->fetch_assoc()) {
+            $orders[] = $row;
+        }
+
+        return $orders;
+    }
+
+    public function getAllOrders() {
+        $sql = "SELECT * FROM orders ORDER BY id DESC";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $orders = [];
+
+        while ($row = $result->fetch_assoc()) {
+            $orders[] = $row;
+        }
+
+        return $orders;
+    }
+
+    // Fetch new orders by status based on the latest order ID
+    public function getNewOrdersByStatus($latestOrderId, array $statuses) {
+        $placeholders = implode(',', array_fill(0, count($statuses), '?'));
+        $sql = "SELECT * FROM orders WHERE id > ? AND status IN ($placeholders) ORDER BY id ASC";
+        $stmt = $this->conn->prepare($sql);
+        $params = array_merge([$latestOrderId], $statuses);
+        $stmt->bind_param(str_repeat('i', 1) . str_repeat('s', count($statuses)), ...$params);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $orders = [];
+
+        while ($row = $result->fetch_assoc()) {
+            $orders[] = $row;
+        }
+
+        return $orders;
+    }
     
 }
 

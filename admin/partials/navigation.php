@@ -6,20 +6,20 @@
         <ul class="nav nav-pills flex-sm-column flex-row flex-nowrap flex-shrink-1 flex-sm-grow-0 flex-grow-1 mb-sm-auto mb-0 justify-content-center align-items-center align-items-sm-start" id="menu">
             <li class="nav-item">
                 <a href="dashboard.php" class="nav-link px-sm-0 px-2">
-                    <i class="fs-5 bi-house"></i><span class="ms-1 d-none d-sm-inline">Home</span>
+                    <i class="fs-5 fas fa-home"></i><span class="ms-1 d-none d-sm-inline">Home</span>
                 </a>
             </li>
             <li>
                 <a href="dashboard.php" data-bs-toggle="collapse" class="nav-link px-sm-0 px-2">
-                    <i class="fs-5 bi-speedometer2"></i><span class="ms-1 d-none d-sm-inline">Dashboard</span> </a>
+                    <i class="fs-5 fas fa-tachometer-alt"></i><span class="ms-1 d-none d-sm-inline">Dashboard</span> </a>
             </li>
             <li>
                 <a href="orders.php" class="nav-link px-sm-0 px-2">
-                    <i class="fs-5 bi-table"></i><span class="ms-1 d-none d-sm-inline">Orders</span></a>
+                    <i class="fs-5 fas fa-table"></i><span class="ms-1 d-none d-sm-inline">Orders</span></a>
             </li>
             <li class="dropdown">
                 <a href="#" class="nav-link dropdown-toggle px-sm-0 px-1" id="dropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                    <i class="fs-5 bi-bootstrap"></i><span class="ms-1 d-none d-sm-inline">Menu</span>
+                    <i class="fs-5 fas fa-bars"></i><span class="ms-1 d-none d-sm-inline">Menu</span>
                 </a>
                 <ul class="dropdown-menu dropdown-menu-dark text-small shadow" aria-labelledby="dropdown">
                     <li><a class="dropdown-item" href="all_categories.php">All categories</a></li>
@@ -30,11 +30,11 @@
             </li>
             <li>
                 <a href="customers.php" class="nav-link px-sm-0 px-2">
-                    <i class="fs-5 bi-people"></i><span class="ms-1 d-none d-sm-inline">Customers</span> </a>
+                    <i class="fs-5 fas fa-users"></i><span class="ms-1 d-none d-sm-inline">Customers</span> </a>
             </li>
             <li class="dropdown">
                 <a href="#" class="nav-link dropdown-toggle px-sm-0 px-1" id="notificationsDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                    <i class="fs-5 bi-bell"></i><span class="ms-1 d-none d-sm-inline">Notifications</span>
+                    <i class="fs-5 fas fa-bell"></i><span class="ms-1 d-none d-sm-inline">Notifications</span>
                 </a>
                 <ul class="dropdown-menu dropdown-menu-dark text-small shadow" aria-labelledby="notificationsDropdown">
                     <li><a class="dropdown-item" href="order_notifications.php">Order Notifications</a></li>
