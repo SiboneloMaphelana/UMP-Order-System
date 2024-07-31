@@ -23,13 +23,13 @@ class Notifications
             $mail->isSMTP();
             $mail->Host       = 'smtp.gmail.com';
             $mail->SMTPAuth   = true;
-            $mail->Username   = 'stjufkdtjydtrhdj'; // SMTP username
-            $mail->Password   = 'dttrtryterfsthdyshtstdrjdtjndserhdj'; // SMTP password
+            $mail->Username   = 'maphelanasibonelo46@gmail.com'; // SMTP username
+            $mail->Password   = 'rrxqrghqnuydzrmf'; // SMTP password
             $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
             $mail->Port       = 465;
 
             //Recipients
-            $mail->setFrom('dykdystehdydstrh', 'TechCafe Solutions');
+            $mail->setFrom('maphelanasibonelo46@gmail.com', 'TechCafe Solutions');
             $mail->addAddress($to);
 
             // Content

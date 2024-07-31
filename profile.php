@@ -22,8 +22,15 @@ if (!$userDetails) {
   <!-- Bootstrap CSS -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/new.css">
   <!-- Bootstrap Icons CSS -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+  <style>
+    /* Adjust margin to ensure content is pushed down below the navigation */
+    .main-content {
+        margin-top: 100px; /* Adjust this value based on your navigation height */
+    }
+  </style>
 </head>
 
 <body>
@@ -32,9 +39,9 @@ if (!$userDetails) {
       <?php include("partials/navigation.php"); ?>
       <div class="col d-flex flex-column h-sm-100">
 
-        <main class="row overflow-auto">
+        <main class="row overflow-auto main-content">
           <div class="container profile-container mt-5 d-flex justify-content-center">
-            <div class="personal-card card">
+            <div class="personal-card card py-3">
               <div class="card-header">
                 <h5 class="card-title text-center">User Profile</h5>
               </div>
@@ -83,18 +90,26 @@ if (!$userDetails) {
                   </div>
                 </div>
               </div>
-              <div class="text-center">
-                <a href="edit_profile.php?id=<?php echo htmlspecialchars($userDetails['id']); ?>" class="btn btn-primary edit-profile-button">
-                  <i class="bi bi-pencil-fill"></i> Edit Profile
-                </a>
-                <a href="model/logout.php" class="btn btn-danger edit-profile-button ms-3">
-                  <i class="bi bi-box-arrow-left"></i> Logout
-                </a>
-                <br>
-                <a href="model/delete_account.php?id=<?php echo htmlspecialchars($userDetails['id']); ?>" class="btn btn-danger edit-profile-button ms-3">
-                  <i class="bi bi-trash-fill"></i> Delete Account
-                </a>
-              </div>
+              <div class="text-center mt-4">
+    <div class="row justify-content-center">
+        <div class="col-auto mb-2">
+            <a href="edit_profile.php?id=<?php echo htmlspecialchars($userDetails['id']); ?>" class="btn btn-primary">
+                <i class="bi bi-pencil-fill"></i> Edit Profile
+            </a>
+        </div>
+        <div class="col-auto mb-2">
+            <a href="model/logout.php" class="btn btn-danger">
+                <i class="bi bi-box-arrow-left"></i> Logout
+            </a>
+        </div>
+        <div class="col-auto mb-2">
+            <a href="model/delete_account.php?id=<?php echo htmlspecialchars($userDetails['id']); ?>" class="btn btn-danger">
+                <i class="bi bi-trash-fill"></i> Delete Account
+            </a>
+        </div>
+    </div>
+</div>
+
             </div>
           </div>
         </main>

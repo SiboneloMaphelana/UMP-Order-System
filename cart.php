@@ -30,11 +30,14 @@ handleItemQuantityUpdateRequest();
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="css/cart.css">
-    <link rel="stylesheet" href="css/navigation.css">
-    <link rel="stylesheet" href="css/home.css">
-    <link rel="stylesheet" href="css/cart.css">
-
+    <link rel="stylesheet" href="css/new.css">
+    <style>
+        /* Ensure the main content is pushed down below the navigation */
+        .main-content {
+            margin-top: 125px;
+            
+        }
+    </style>
 </head>
 
 <body>
@@ -43,14 +46,19 @@ handleItemQuantityUpdateRequest();
         <div class="row vh-100 overflow-auto">
             <?php include("partials/navigation.php"); ?>
             <div class="col d-flex flex-column h-sm-100">
-                <main class="row overflow-auto">
+                <main class="row overflow-auto main-content">
                     <h2 class="text-center">My Cart</h2>
 
                     <div class="row">
                         <div class="col-md-8">
                             <div class="cart-container">
                                 <?php if (!empty($cartItems)) : ?>
-                                    <span class="text-muted"><a href="index.php" class="card-link text-decoration-none text-success">Back To Menu</a></span>
+                                    <span class="text-muted">
+                                        <a href="index.php" class="card-link text-decoration-none text-success">
+                                            <i class="fas fa-arrow-left"></i>Continue Shopping
+                                        </a>
+                                    </span>
+
                                     <?php foreach ($cartItems as $index => $item) : ?>
                                         <div class="card mb-3">
                                             <div class="card-body bg-light">
@@ -78,7 +86,6 @@ handleItemQuantityUpdateRequest();
                                             </div>
                                         </div>
                                     <?php endforeach; ?>
-                                    <span class="text-muted"><a href="admin/model/clear_cart.php" class="card-link text-decoration-none text-danger"> <i class="bi bi-trash fs-4"></i> Clear Cart</a> </span>
                                 <?php else : ?>
                                     <p>Your cart is empty. Let's start an Order! <a href="index.php" class="btn btn-success rounded-pill text-decoration-none">Start Order <i class="bi bi-cart"></i> </a></p>
                                 <?php endif; ?>
@@ -106,16 +113,17 @@ handleItemQuantityUpdateRequest();
                                 </div>
                             </div>
                         </div>
+                        <span class="text-muted"><a href="admin/model/clear_cart.php" class="card-link text-decoration-none text-danger"> <i class="bi bi-trash fs-4"></i> Clear Cart</a> </span>
+
                     </div>
                 </main>
                 <footer class="row bg-light py-4 mt-auto">
-                    
+
                 </footer>
             </div>
         </div>
     </div>
 
-    
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
 </body>

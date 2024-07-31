@@ -45,59 +45,7 @@ try {
     $notifications = new Notifications($conn); 
 
     // Process the payment
-    if ($paymentMethod == 'payfast') {
-        // PayFast sandbox credentials
-        $merchantId = '10034560';
-        $merchantKey = '7ihweq67use4r';
-        $payfastUrl = 'https://sandbox.payfast.co.za/eng/process';
-
-        // PayFast payment data
-        $payfastData = array(
-            'merchant_id' => $merchantId,
-            'merchant_key' => $merchantKey,
-            'return_url' => 'http://localhost/UMP-Order-System/order_confirmation.php',
-            'cancel_url' => 'http://localhost/UMP-Order-System/index.php',
-            'notify_url' => 'http://localhost/UMP-Order-System/notify.php',
-            'm_payment_id' => uniqid(), // Unique payment ID to identify the payment
-            'amount' => number_format($totalAmount, 2, '.', ''),
-            'item_name' => 'Order #' . uniqid(), // Generic order name for cases of multiple products ordered
-            'item_description' => $itemDescription,
-            'custom_str1' => $itemDescription,
-        );
-
-        // Generate signature for PayFast
-        ksort($payfastData); // Ensure data is sorted by keys
-        $signatureString = '';
-        foreach ($payfastData as $key => $val) {
-            $signatureString .= $key . '=' . urlencode(trim($val)) . '&';
-        }
-        $signatureString = rtrim($signatureString, '&');
-        $signature = md5($signatureString);
-        $payfastData['signature'] = $signature;
-
-        // Store order in database
-        $orderId = $food->addOrder($userId, $totalAmount, $paymentMethod);
-
-        if (!$orderId) {
-            throw new Exception("Error adding order.");
-        }
-
-        // Insert order items into database
-        foreach ($cartItems as $item) {
-            $result = $food->addOrderItem($orderId, $item['food_id'], $item['quantity'], $item['price']);
-            if (!$result) {
-                throw new Exception("Error adding order items.");
-            }
-        }
-
-        // Store orderId in session
-        $_SESSION['orderId'] = $orderId;
-
-        // Redirect to PayFast payment page
-        $queryString = http_build_query($payfastData);
-        header("Location: $payfastUrl?$queryString");
-        exit();
-    } else if ($paymentMethod == 'cash on collection') {
+    if ($paymentMethod == 'cash on collection') {
         // Handle Cash on Collection payment method
         $orderId = $food->addOrder($userId, $totalAmount, $paymentMethod);
 

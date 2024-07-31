@@ -126,7 +126,7 @@ class User {
     }
     
     public function updateUser($id, $name = null, $surname = null, $email = null, $role = null) {
-        $id = intval($id); // Sanitize the ID as an integer directly
+        $id = intval($id); // Sanitize the ID as an integer
 
         // Check if the provided email already exists for another user
         if ($email !== null && $this->emailExists($id, $email)) {

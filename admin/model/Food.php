@@ -332,7 +332,8 @@ class Food {
         // Sanitize the input
         $categoryId = intval($this->sanitizeInput($categoryId));
     
-        $select_sql = "SELECT * FROM food_items WHERE category_id=?";
+        // SQL query with additional WHERE clause for quantity > 10
+        $select_sql = "SELECT * FROM food_items WHERE category_id=? AND quantity > 10";
         $select_stmt = mysqli_prepare($this->conn, $select_sql);
         mysqli_stmt_bind_param($select_stmt, "i", $categoryId);
         mysqli_stmt_execute($select_stmt);
@@ -347,6 +348,7 @@ class Food {
     
         return $foodItems;
     }
+    
     
     public function updateFoodItem($id, $name = null, $quantity = null, $price = null, $description = null, $image = null, $category = null) {
         $id = intval($this->sanitizeInput($id));
@@ -428,10 +430,55 @@ class Food {
             return "Error updating food item: " . mysqli_error($this->conn);
         }
     }
-    
-    
 
-  
+    public function getFavorites() {
+        $query = "SELECT f.id, f.name, f.description, f.image, COUNT(oi.food_id) AS order_count
+                  FROM food_items f
+                  JOIN order_items oi ON f.id = oi.food_id
+                  GROUP BY f.id, f.name, f.description, f.image
+                  ORDER BY order_count DESC
+                  LIMIT 3";
+    
+        $stmt = $this->conn->prepare($query);
+        $stmt->execute();
+    
+        $result = $stmt->get_result();
+        $favorites = [];
+    
+        while ($row = $result->fetch_assoc()) {
+            $favorites[] = $row;
+        }
+    
+        return $favorites;
+    }
+
+    public function searchFoodItems($searchTerm) {
+        // Sanitize the search term
+        $searchTerm = $this->sanitizeInput($searchTerm);
+        $searchTerm = "%" . $searchTerm . "%"; // Add wildcards for partial matching
+    
+        try {
+            // Prepare the SQL query
+            $sql = "SELECT * FROM food_items WHERE name LIKE ? OR description LIKE ?";
+            $stmt = $this->conn->prepare($sql);
+    
+            // Bind the search term to the placeholders
+            $stmt->bind_param("ss", $searchTerm, $searchTerm);
+    
+            // Execute the query
+            if ($stmt->execute()) {
+                // Get the result
+                $result = $stmt->get_result();
+                $foodItems = $result->fetch_all(MYSQLI_ASSOC);
+                return $foodItems;
+            } else {
+                throw new Exception("Error executing search query: " . $stmt->error);
+            }
+        } catch (Exception $e) {
+            error_log("Exception caught: " . $e->getMessage());
+            return [];
+        }
+    }
     
 }
 ?>

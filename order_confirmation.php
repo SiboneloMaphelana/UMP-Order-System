@@ -13,8 +13,7 @@ $orderItems = $data['orderItems'];
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Order Confirmation</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="css/navigation.css">
-    <link rel="stylesheet" href="css/home.css">
+    <link rel="stylesheet" href="css/new.css">
     <style>
         body {
             background-color: #f8f9fa;
@@ -29,7 +28,6 @@ $orderItems = $data['orderItems'];
                 <main class="row overflow-auto">
                     <div class="col-lg-8 mx-auto">
                         <div class="text-center my-4">
-                            <img src="images/confirm_order.png" alt="Order Confirmation" class="img-fluid">
                             <h1 class="mb-3">Order Confirmation</h1>
                             <p class="lead">Thank you for your order! Here are your order details:</p>
                         </div>

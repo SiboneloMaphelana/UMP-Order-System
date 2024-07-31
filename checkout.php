@@ -31,9 +31,7 @@ $totalItems = calculateTotalItems($_SESSION['cart']);
     <title>Checkout</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-    <link rel="stylesheet" href="css/navigation.css">
-    <link rel="stylesheet" href="css/home.css">
-    <link rel="stylesheet" href="css/cart.css">
+    <link rel="stylesheet" href="css/new.css">
 </head>
 
 <body>
@@ -42,7 +40,7 @@ $totalItems = calculateTotalItems($_SESSION['cart']);
         <div class="row vh-100 overflow-auto">
             <?php include("partials/navigation.php"); ?>
             <div class="col d-flex flex-column h-sm-100">
-                <main class="row overflow-auto">
+                <main class="row overflow-auto main-content">
                     <div class="col-md-6 mx-auto">
                         <h2 class="text-center my-4">Order Summary</h2>
                         <div class="card mb-4">

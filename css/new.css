@@ -1,0 +1,211 @@
+/* Fixed Header */
+.header {
+    position: fixed; /* Fix the header at the top */
+    top: 0;
+    left: 0;
+    width: 100%; /* Full width of the viewport */
+    background-color: #353D55; /* Your header background color */
+    z-index: 1000; /* Ensure it stays on top of other content */
+    padding: 0.5rem; /* Padding for spacing */
+}
+
+/* Fixed Desktop Navigation */
+.desktop {
+    position: fixed; /* Fix the navbar below the header */
+    top: 56px; /* Set top offset equal to the height of the header */
+    left: 0;
+    width: 100%;
+    background-color: #F5F5F5; /* Background color of the navbar */
+    z-index: 999; /* Slightly lower than the header but still on top of content */
+    padding: 0.5rem; /* Padding for spacing */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Subtle shadow for separation */
+}
+
+/* Hero Section */
+.hero {
+    background-color: #353D55; 
+    color: #fff; 
+    text-align: center;
+    padding: 5rem 1rem; /* Default padding */
+}
+
+.hero h1 {
+    font-size: 2rem; /* Default heading size */
+}
+
+.hero p {
+    font-size: 1rem; /* Default paragraph size */
+}
+
+.hero a {
+    font-size: 1rem; /* Default button font size */
+    padding: 0.75rem 1.5rem; /* Default button padding */
+}
+
+/* Dropup Arrow Removal */
+.dropdown-toggle::after {
+    display: none;
+}
+
+/* Custom Styles for Mobile Bottom Navigation */
+.fixed-bottom {
+    background-color: #353D55;
+}
+
+.fixed-bottom .nav-link {
+    text-align: center;
+    padding: 1px 0; /* Further reduced padding */
+    font-size: 0.8rem; /* Further reduced font size */
+    line-height: 1.1; /* Further adjusted line-height */
+}
+
+.fixed-bottom .nav-link i {
+    font-size: 1rem;
+}
+
+.fixed-bottom .nav-link:hover,
+.fixed-bottom .nav-link:focus {
+    background-color: rgba(255, 255, 255, 0.1); /* Subtle hover effect */
+}
+
+/* Logo Size */
+.logo {
+    height: 40px;
+}
+
+/* Card Styles */
+.card {
+    display: flex;
+    flex-direction: column;
+    border: none;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    margin-bottom: 1rem;
+    border-radius: 0.5rem;
+    overflow: hidden; /* Ensures image and content stay within card */
+}
+
+.card img {
+    transition: transform 0.3s ease;
+}
+
+.card:hover img {
+    transform: scale(1.05); /* Slight zoom effect on image */
+}
+
+.index-img {
+    object-fit: cover; /* Ensure images cover the area without distortion */
+    height: 150px;
+    width: 100%;
+}
+
+.index-card-body {
+    padding: 1rem; /* Padding inside the card body */
+}
+
+/* Mobile Adjustments */
+@media (max-width: 576px) {
+    .category-nav {
+        position: fixed; /* Fix the category navigation below the desktop nav */
+        top: 56px; /* Align it just below the desktop navigation */
+        left: 0;
+        width: 100%; /* Full width of the viewport */
+        background-color: #F5F5F5;
+        z-index: 998; /* Ensure it is below the header and desktop navigation but still on top of content */
+        padding: 0.5rem; /* Add padding for spacing */
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Subtle shadow for separation */
+    }
+
+    .category-nav .nav-link {
+        text-decoration: none;
+        color: #353D55;
+        font-size: 1rem;
+    }
+
+    .hero {
+        padding: 2rem 1rem; /* Adjust padding */
+        text-align: center;
+    }
+
+    .hero h1 {
+        font-size: 1.5rem; /* Adjust font size for heading */
+    }
+
+    .hero p,
+    .hero a {
+        font-size: 0.875rem; /* Adjust font size for paragraph and button */
+    }
+
+    .index-card {
+        flex-direction: row; /* Arrange content side by side */
+        align-items: center; /* Center align items vertically */
+        margin-bottom: 0.75rem; /* Reduce space between cards on small screens */
+    }
+
+    .card-img-top {
+        height: 120px; /* Adjust image height for smaller screens */
+        width: 50%; /* Set width to 50% to take half of the card's width */
+        flex-shrink: 0; /* Prevent image from shrinking */
+    }
+
+    .index-card-body {
+        width: 50%; /* Allow card body to take the remaining 50% of the card's width */
+        padding: 0.75rem; /* Adjust padding inside the card body */
+        display: flex;
+        flex-direction: column; /* Arrange card content vertically */
+        justify-content: center; /* Center align text vertically */
+    }
+
+    .card-title {
+        font-size: 1rem; /* Adjust font size for card title on mobile */
+    }
+
+    .navbar-toggler {
+        position: relative; /* Ensure dropdown is positioned relative to the button */
+    }
+
+    .logo {
+        display: none; /* Hide logo on small screens */
+    }
+}
+
+/* Larger Devices Adjustments */
+@media (min-width: 577px) {
+    .category-nav {
+        position: static; /* Make it static on larger screens */
+        box-shadow: none; /* Remove shadow on larger screens */
+    }
+
+    .hero {
+        padding: 5rem 2rem; /* Increase padding for larger screens */
+        text-align: center;
+    }
+
+    .hero h1 {
+        font-size: 2rem; /* Larger font size for headings */
+    }
+
+    .hero p {
+        font-size: 1rem; /* Larger font size for paragraphs */
+    }
+
+    .hero a {
+        font-size: 1rem; /* Larger font size for buttons */
+        padding: 0.75rem 1.5rem; /* Larger padding for buttons */
+    }
+
+    .card {
+        flex-direction: column; /* Keep column layout for larger screens */
+    }
+
+    .index-img {
+        height: 180px; /* Larger image height for larger screens */
+    }
+
+    .index-card-body {
+        padding: 1.25rem; /* Larger padding inside the card body */
+    }
+
+    .card-title {
+        font-size: 1.25rem; /* Larger font size for card titles */
+    }
+}

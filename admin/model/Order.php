@@ -57,8 +57,8 @@ class Order{
         return $stmt->execute();
     }
 
-    public function getOrdersByUserId($user_id, $page = 1, $items_per_page = 10) {
-        $offset = ($page - 1) * $items_per_page;
+    public function getOrdersByUserId($user_id) {
+        // Prepare the SQL statement without pagination
         $stmt = $this->conn->prepare("
             SELECT o.*, GROUP_CONCAT(fi.name SEPARATOR ', ') AS food_items
             FROM orders o
@@ -66,17 +66,37 @@ class Order{
             LEFT JOIN food_items fi ON oi.food_id = fi.id
             WHERE o.user_id = ? AND o.is_deleted = FALSE
             GROUP BY o.id
-            LIMIT ?, ?
         ");
-        $stmt->bind_param("iii", $user_id, $offset, $items_per_page);
-        $stmt->execute();
+    
+        if (!$stmt) {
+            // Handle the error, e.g., log it
+            error_log("Error preparing statement: " . $this->conn->error);
+            return false;
+        }
+    
+        // Bind the user_id parameter
+        $stmt->bind_param("i", $user_id);
+    
+        if (!$stmt->execute()) {
+            // Handle the error, e.g., log it
+            error_log("Error executing statement: " . $stmt->error);
+            return false;
+        }
+    
+        // Get the result
         $result = $stmt->get_result();
         $orders = [];
+    
         while ($row = $result->fetch_assoc()) {
             $orders[] = $row;
         }
+    
+        // Close the statement
+        $stmt->close();
+    
         return $orders;
     }
+    
 
     public function countOrdersByUserId($user_id) {
         $stmt = $this->conn->prepare("
