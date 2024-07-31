@@ -1,4 +1,6 @@
 /* Fixed Header */
+body{
+    }
 .header {
     position: fixed; /* Fix the header at the top */
     top: 0;
@@ -101,6 +103,20 @@
 .index-card-body {
     padding: 1rem; /* Padding inside the card body */
 }
+
+/* style for displaying categories at time slots */
+.disabled-link {
+    pointer-events: none;
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+/* main content */
+.main-content {
+    width: 80%; /* Set the width to 80% */
+    margin: 0 auto; /* Center the content */
+}
+
 
 /* Mobile Adjustments */
 @media (max-width: 576px) {

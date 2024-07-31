@@ -65,12 +65,8 @@ foreach ($categories as $category) {
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <link rel="stylesheet" href="css/new.css">
     <style>
-        /* Custom styles */
-        .disabled-link {
-            pointer-events: none;
-            opacity: 0.6;
-            cursor: not-allowed;
-        }
+        
+        
     </style>
 </head>
 
@@ -83,9 +79,9 @@ foreach ($categories as $category) {
                 <main class="row overflow-auto">
                     <!-- Hero Section -->
                     <section class="hero bg-primary text-white text-center py-5">
-                        <h1>Order Your Favorite Meals in Minutes</h1>
-                        <p>Delicious food, with a click of a button</p>
-                        <a href="category_details.php" class="btn btn-light">Browse Menu</a>
+                        <h1></h1>
+                        <p></p>
+                        <a href="category_details.php" class="btn btn-light"></a>
                     </section>
 
                     <!-- Category Cards -->
