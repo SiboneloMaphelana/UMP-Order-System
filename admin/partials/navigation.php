@@ -3,7 +3,7 @@
         <a href="dashboard.php" class="d-flex align-items-center pb-sm-3 mb-md-0 me-md-auto text-white text-decoration-none">
             <span class="fs-5"><img src="partials/logo.png" alt="logo" class="img-fluid h-25"></span>
         </a>
-        <ul class="nav nav-pills flex-sm-column flex-row flex-nowrap flex-shrink-1 flex-sm-grow-0 flex-grow-1 mb-sm-auto mb-0 justify-content-center align-items-center align-items-sm-start" id="menu">
+        <ul class="nav nav-pills flex-sm-column flex-row flex-nowrap flex-shrink-1 flex-sm-grow-0 flex-grow-1 mb-sm-auto mb-0 justify-content-center align-items-center align-items-sm-start mt-3" id="menu">
             <li class="nav-item">
                 <a href="dashboard.php" class="nav-link px-sm-0 px-2">
                     <i class="fs-5 fas fa-home"></i><span class="ms-1 d-none d-sm-inline">Home</span>

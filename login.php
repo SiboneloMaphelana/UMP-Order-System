@@ -6,40 +6,21 @@
   <title>Login</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
-  <style>
-        
-        .sidebar {
-            border-right: 1px none #dee2e6;
-            background-color: #353D55;
-        }
-
-        .sidebar .logo {
-            max-width: 100%; /* Ensures the logo is responsive */
-        }
-
-        @media (max-width: 767.98px) {
-            .sidebar {
-                display: none; /* Hide sidebar on small devices */
-            }
-            .main-content {
-                flex: 1; /* Allows the main content to take full width */
-            }
-        }
-    </style>
+  <link rel="stylesheet" href="css/auth.css">
 </head>
 <body>
 
   <div class="container-fluid">
       <div class="row flex-nowrap">
           <div class="col-md-3 sidebar"> <!-- Sidebar -->
-              <img src="images/logo.png" alt="Logo" class="logo" />
+              <img src="images/logo.png" alt="Logo" class="logo mt-5" />
           </div>
           <div class="col-md-9 main-content"> <!-- Main content -->
 
               <h3 class="text-center mt-4">Login</h3>
 
               <div class="container mt-4">
-                  <div class="card mx-auto">
+                  <main class="card mx-auto">
                       <div class="card-body">
                           <p class="card-text text-center">
                               Welcome Back! Just Enter Your Details And See What We Can Serve You Today.
@@ -75,7 +56,7 @@
                               </div>
                           </form>
                       </div>
-                  </div>
+                  </main>
               </div>
           </div>
       </div>

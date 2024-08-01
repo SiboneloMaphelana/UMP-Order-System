@@ -45,11 +45,6 @@ $groupedCanceledOrders = groupOrdersByDate($canceledOrders);
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <link rel="stylesheet" href="css/new.css">
     <link rel="stylesheet" href="css/cart.css">
-    <style>
-        .main-content {
-            margin-top: 60px; 
-        }
-    </style>
 </head>
 
 <body>
@@ -59,7 +54,7 @@ $groupedCanceledOrders = groupOrdersByDate($canceledOrders);
             <?php include("partials/navigation.php"); ?>
             <div class="col-md-9 col-lg-10 ms-auto main-content">
                 <main class="p-4">
-                    <h1 class="mt-5 mb-4">My Orders</h1>
+                    <h1 class="mt-5 mb-2 text-center">My Orders</h1>
                     <div class="d-flex justify-content-center mb-4">
                         <div class="btn-group mt-5" role="group" aria-label="Order Toggle">
                             <button type="button" class="btn btn-success" id="upcomingOrdersBtn">Upcoming Orders</button>

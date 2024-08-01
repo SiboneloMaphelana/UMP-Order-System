@@ -104,9 +104,6 @@ $customer = $food->getCustomerById($orderDetails['user_id']);
 
                     <a href="orders.php" class="btn btn-primary">Back to Orders</a>
                 </main>
-                <footer class="row bg-light py-4 mt-auto">
-                    <div class="col">WE HAVE NO FOOTER, BEING GHOSTED</div>
-                </footer>
             </div>
         </div>
     </div>

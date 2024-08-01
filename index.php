@@ -64,10 +64,6 @@ foreach ($categories as $category) {
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <link rel="stylesheet" href="css/new.css">
-    <style>
-        
-        
-    </style>
 </head>
 
 <body>
@@ -76,24 +72,17 @@ foreach ($categories as $category) {
     <div class="container-fluid overflow-hidden">
         <div class="row vh-100 overflow-auto">
             <div class="col d-flex flex-column h-sm-100">
-                <main class="row overflow-auto">
-                    <!-- Hero Section -->
-                    <section class="hero bg-primary text-white text-center py-5">
-                        <h1></h1>
-                        <p></p>
-                        <a href="category_details.php" class="btn btn-light"></a>
-                    </section>
-
+                <main class="row overflow-auto main-content">
+                    <h2 class="text-center text-muted">Here Is A Collection Of Our Delicious Meals </h2>
                     <!-- Category Cards -->
                     <div class="col-12">
-                        <div class="container my-4">
-                            <h2 class="text-center mb-4">Explore Our Categories</h2>
+                        <div class="container my-3">
+                            <h2 class="text-center mb-4 text-muted">Explore Our Categories</h2>
                             <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 g-4">
                                 <?php foreach ($categoryStatus as $status) : ?>
                                     <div class="col mb-4">
                                         <div class="card index-card h-100">
-                                            <a href="category_details.php?id=<?php echo htmlspecialchars($status['category']['id']); ?>" 
-                                               class="text-decoration-none <?php echo $status['isClickable'] ? 'text-success' : 'disabled-link'; ?>">
+                                            <a href="category_details.php?id=<?php echo htmlspecialchars($status['category']['id']); ?>" class="text-decoration-none <?php echo $status['isClickable'] ? 'text-muted' : 'disabled-link'; ?>">
                                                 <img src="admin/uploads/<?php echo htmlspecialchars($status['category']['imageName']); ?>" class="index-img" alt="<?php echo htmlspecialchars($status['category']['name']); ?>">
                                                 <div class="card-body text-center">
                                                     <h5 class="card-title">
@@ -117,7 +106,7 @@ foreach ($categories as $category) {
                                 <?php foreach ($favorites as $favorite) : ?>
                                     <div class="col mb-4">
                                         <div class="card index-card h-100">
-                                            <a href="category_details.php?id=<?php echo htmlspecialchars($favorite['id']); ?>" class="text-decoration-none text-success">
+                                            <a href="category_details.php?id=<?php echo htmlspecialchars($favorite['id']); ?>" class="text-decoration-none text-muted">
                                                 <img src="admin/foods/<?php echo htmlspecialchars($favorite['image']); ?>" class="index-img" alt="<?php echo htmlspecialchars($favorite['name']); ?>">
                                                 <div class="index-card-body text-center">
                                                     <h5 class="card-title"><?php echo htmlspecialchars($favorite['name']); ?></h5>
@@ -131,7 +120,7 @@ foreach ($categories as $category) {
                         </div>
                     </div>
                 </main>
-                
+
                 <!-- Footer -->
                 <footer class="row bg-light py-4 mt-auto">
                     <div class="col text-center">
@@ -144,14 +133,13 @@ foreach ($categories as $category) {
             </div>
         </div>
     </div>
-    
+
     <!-- Include Bootstrap JavaScript after Popper.js -->
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.7/dist/umd/popper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/js/all.min.js"></script>
-    
+
 
 </body>
 
 </html>
-

@@ -1,0 +1,41 @@
+html, body {
+    height: 100%;
+    margin: 0;
+}
+
+.container-fluid {
+    height: 100%;
+}
+
+.row.flex-nowrap {
+    height: 100%;
+}
+
+.sidebar {
+    border-right: 1px none #dee2e6;
+    background-color: #353D55;
+    height: 100%; /* Make the sidebar take full height */
+    padding-top: 1rem; /* Adjust padding for spacing */
+    position: sticky; /* Keeps the sidebar in view as the user scrolls */
+    top: 0; /* Sticky positioning starts at the top */
+    width: 250px; /* Set the width of the sidebar */
+}
+
+.sidebar .logo {
+    max-width: 100%; /* Ensures the logo is responsive */
+}
+
+.main-content {
+    height: 100%; /* Ensure main content takes the remaining height */
+    padding: 1rem; /* Adjust padding for spacing */
+}
+
+@media (max-width: 767.98px) {
+    .sidebar {
+        display: none; /* Hide sidebar on small devices */
+    }
+    .main-content {
+        flex: 1; /* Allows the main content to take full width */
+        padding: 1rem; /* Adjust padding for spacing */
+    }
+}
