@@ -13,6 +13,7 @@ class User {
         $sanitizedData['surname'] = filter_var($data['surname'], FILTER_SANITIZE_FULL_SPECIAL_CHARS);
         $sanitizedData['email'] = filter_var($data['email'], FILTER_SANITIZE_EMAIL);
         $sanitizedData['role'] = filter_var($data['role'], FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+        $sanitizedData['password'] = password_hash($data['password'], PASSWORD_DEFAULT);
         return $sanitizedData;
     }
     public function userExists(string $email): bool {

@@ -10,19 +10,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     // Check if there are any validation errors
     if (!empty($errors)) {
-        $_SESSION['errors'] = $errors;
+        $_SESSION['signup_errors'] = $errors;
         header("Location: ../signup.php");
         exit;
     } else {
         if ($user->userExists($_POST['email'])) {
-            $_SESSION['error'] = "User already exists!";
+            $_SESSION['signup_user_errors'] = "User already exists!";
             header("Location: ../signup.php");
         } else {
             if ($user->signup($_POST)) {
-                $_SESSION['success'] = "Signup successful!";
                 header("Location: ../login.php");
             } else {
-                $_SESSION['error'] = "Signup failed!";
+                $_SESSION['signup_user_errors'] = "Signup failed!";
                 header("Location: ../signup.php");
             }
         }

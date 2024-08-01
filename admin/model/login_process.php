@@ -8,14 +8,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     $email = $_POST['email'];
     $password = $_POST['password'];
+    $remember = isset($_POST['remember']) ? true : false; // Check if "Remember Me" is checked
 
     // Attempt to login
     if ($admin->login($email, $password)) {
-        $_SESSION['success'] = "Login successful!";
         $_SESSION['login'] = 'email';
+        if ($remember) {
+            setcookie('admin_email', $email, time() + (86400 * 30), "/"); // 30 days expiration
+            setcookie('admin_password', $password, time() + (86400 * 30), "/"); // 30 days expiration
+        }
         header("Location: ../dashboard.php");
     } else {
-        $_SESSION['error'] = "Invalid email or password!";
+        $_SESSION['login_error'] = "Invalid email or password!";
         header("Location: ../login.php");
     }
 } else {

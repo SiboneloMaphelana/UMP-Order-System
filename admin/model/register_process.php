@@ -11,20 +11,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Check if there are any validation errors
     if (!empty($errors)) {
         // Store the validation errors in the session
-        $_SESSION['errors'] = $errors;
+        $_SESSION['register_error'] = "An error was made. Please try again.";
         header("Location: ../register.php");
         exit;
     } else {
         if ($admin->userExists($_POST['email'])) {
-            $_SESSION['error'] = "User already exists!";
+            $_SESSION['register_error'] = "User already exists!";
             header("Location: ../register.php");
         } else {
             // Attempt to sign up the admin
             if ($admin->signup($_POST)) {
-                $_SESSION['success'] = "Signup successful!";
                 header("Location: ../login.php");
             } else {
-                $_SESSION['error'] = "Signup failed!";
+                $_SESSION['register_error'] = "Signup failed!";
                 header("Location: ../register.php");
             }
         }

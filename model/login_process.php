@@ -13,13 +13,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     // Attempt to login
     if ($user->login($email, $password)) {
-        $_SESSION['success'] = "Login successful!";
-        $_SESSION['user_email'] = $email; 
-        
+        $_SESSION['user_email'] = $email; // Store user email in session   
         // If "Remember Me" is checked, set a cookie with user credentials
         if ($remember) {
-            setcookie('login_email', $email, time() + (86400 * 30), "/"); // 30 days expiration
-            setcookie('login_password', $password, time() + (86400 * 30), "/"); // 30 days expiration
+            setcookie('user_email', $email, time() + (86400 * 30), "/"); // 30 days expiration
+            setcookie('user_password', $password, time() + (86400 * 30), "/"); // 30 days expiration
         }
         
         $_SESSION['login'] = 'email';

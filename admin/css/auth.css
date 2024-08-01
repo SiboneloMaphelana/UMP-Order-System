@@ -1,0 +1,47 @@
+body,
+html {
+  height: 100%;
+  margin: 0;
+  background-color: #353D55;
+}
+.container {
+  min-height: 100vh; /* Ensure container takes full viewport height */
+}
+.logo {
+  max-width: 150px;
+}
+.card {
+  margin-top: 20px;
+  border-radius: 0.5rem;
+}
+.btn {
+  width: 100%;
+}
+.input-group {
+  position: relative;
+}
+.input-group .form-control {
+  padding-right: 2.5rem;
+}
+.input-group .eye-icon {
+  position: absolute;
+  top: 50%;
+  right: 0.75rem;
+  transform: translateY(-50%);
+  z-index: 1;
+  cursor: pointer;
+}
+.strength-meter-bar {
+  height: 5px;
+}
+@media (max-width: 576px) {
+  .card {
+    margin: 10px;
+  }
+  .input-group input {
+    font-size: 14px;
+  }
+  .input-group .eye-icon {
+    right: 0.5rem;
+  }
+}
