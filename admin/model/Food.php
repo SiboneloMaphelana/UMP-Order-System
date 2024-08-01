@@ -247,7 +247,7 @@ class Food
 
             // Handle image upload
             if (isset($image['name']) && !empty($image['name'])) {
-                $targetDir = '../uploads/'; // Target directory for file upload
+                $targetDir = '../foods/'; // Target directory for file upload
                 $imageName = basename($image['name']);
                 $targetPath = $targetDir . $imageName;
 
@@ -275,12 +275,12 @@ class Food
     }
 
 
-    public function getAllFoodItems()
-    {
+    public function getAllFoodItems(){
         $query = "SELECT F.id, F.name, F.description, F.quantity, F.price, F.image, 
-                  IFNULL(C.name, 'Uncategorized') AS Category
-                  FROM food_items F
-                  LEFT JOIN category C ON F.category_id = C.id";
+              IFNULL(C.name, 'Uncategorized') AS Category
+              FROM food_items F
+              LEFT JOIN category C ON F.category_id = C.id
+              WHERE F.deleted = 0";
         $result = mysqli_query($this->conn, $query);
         $foodItems = [];
 
@@ -292,6 +292,7 @@ class Food
 
         return $foodItems;
     }
+
 
     public function foodItemExists($id)
     {

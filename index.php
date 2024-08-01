@@ -4,53 +4,7 @@ include_once("admin/model/Food.php");
 $food = new Food($conn);
 
 $categories = $food->getCategories();
-$favorites = $food->getFavorites(); // Assuming you have a method to get favorite dishes
-
-// Get the current time
-$currentTime = new DateTime();
-
-// Define meal times
-$breakfastStart = new DateTime('07:00');
-$breakfastEnd = new DateTime('11:30');
-$lunchStart = new DateTime('12:00');
-$lunchEnd = new DateTime('14:30');
-$dinnerStart = new DateTime('17:00');
-$dinnerEnd = new DateTime('19:30');
-
-// Determine clickability of categories and display time
-$categoryStatus = [];
-foreach ($categories as $category) {
-    $isClickable = true; // Default to true for unrestricted categories
-    $displayTime = '';
-
-    if ($category['name'] === 'Breakfast') {
-        $displayTime = 'Available from 07:00 to 11:30';
-        if ($currentTime < $breakfastStart || $currentTime > $breakfastEnd) {
-            $isClickable = false;
-            $displayTime = 'Not available now';
-        }
-    } elseif ($category['name'] === 'Lunch') {
-        $displayTime = 'Available from 12:00 to 14:30';
-        if ($currentTime < $lunchStart || $currentTime > $lunchEnd) {
-            $isClickable = false;
-            $displayTime = 'Not available now';
-        }
-    } elseif ($category['name'] === 'Dinner') {
-        $displayTime = 'Available from 17:00 to 19:30';
-        if ($currentTime < $dinnerStart || $currentTime > $dinnerEnd) {
-            $isClickable = false;
-            $displayTime = 'Not available now';
-        }
-    } else {
-        $displayTime = 'Available all day'; // Unrestricted categories
-    }
-
-    $categoryStatus[] = [
-        'category' => $category,
-        'isClickable' => $isClickable,
-        'displayTime' => $displayTime
-    ];
-}
+$favorites = $food->getFavorites(); 
 ?>
 
 
@@ -79,15 +33,14 @@ foreach ($categories as $category) {
                         <div class="container my-3">
                             <h2 class="text-center mb-4 text-muted">Explore Our Categories</h2>
                             <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 g-4">
-                                <?php foreach ($categoryStatus as $status) : ?>
+                                <?php foreach ($categories as $category) : ?>
                                     <div class="col mb-4">
                                         <div class="card index-card h-100">
-                                            <a href="category_details.php?id=<?php echo htmlspecialchars($status['category']['id']); ?>" class="text-decoration-none <?php echo $status['isClickable'] ? 'text-muted' : 'disabled-link'; ?>">
-                                                <img src="admin/uploads/<?php echo htmlspecialchars($status['category']['imageName']); ?>" class="index-img" alt="<?php echo htmlspecialchars($status['category']['name']); ?>">
+                                            <a href="category_details.php?id=<?php echo htmlspecialchars($category['id']); ?>" class="text-decoration-none text-muted">
+                                                <img src="admin/uploads/<?php echo htmlspecialchars($category['imageName']); ?>" class="index-img" alt="<?php echo htmlspecialchars($category['name']); ?>">
                                                 <div class="card-body text-center">
                                                     <h5 class="card-title">
-                                                        <?php echo htmlspecialchars($status['category']['name']); ?>
-                                                        <small class="text-muted d-block"><?php echo htmlspecialchars($status['displayTime']); ?></small>
+                                                        <?php echo htmlspecialchars($category['name']); ?>
                                                     </h5>
                                                 </div>
                                             </a>
