@@ -56,7 +56,7 @@ $foodItems = $food->getFoodItemsByCategoryId($category_id);
                                                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                                 </div>
                                                                 <div class="modal-body">
-                                                                    <img src="admin/foods/<?php echo htmlspecialchars($item['image']); ?>" class="img-fluid mb-3" alt="<?php echo htmlspecialchars($item['name']); ?>">
+                                                                    <img src="admin/foods/<?php echo htmlspecialchars($item['image']); ?>" class="card-img-top" alt="<?php echo htmlspecialchars($item['name']); ?>">
                                                                     <p><?php echo htmlspecialchars($item['description']); ?></p>
                                                                     <p class="text-success food-price">R<?php echo htmlspecialchars($item['price']); ?></p>
                                                                     <div class="d-flex justify-content-center align-items-center mb-3">
@@ -91,7 +91,17 @@ $foodItems = $food->getFoodItemsByCategoryId($category_id);
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="js/addToCart.js"></script>
+    <script>
+        $(window).on('load', function() {
+            $('.card-img-top').each(function() {
+                var img = $(this);
+                img.css('height', '200px'); // Set the desired height
+                img.css('object-fit', 'cover'); // Maintain aspect ratio
+            });
+        });
+    </script>
 </body>
 
 </html>
