@@ -1,5 +1,5 @@
 <?php
-require_once '../../connection/connection.php';
+include_once '../../connection/connection.php';
 include_once("Food.php"); 
 
 $foodItems = new Food($conn);
