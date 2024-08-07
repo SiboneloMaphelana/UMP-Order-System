@@ -102,7 +102,7 @@
                     </div>
                 </main>
                 <footer class="row bg-light py-4 mt-auto">
-                <div class="col">WE HAVE NO FOOTER, BEING GHOSTED</div>
+                <div class="col"></div>
             </footer>
             </div>
         </div>

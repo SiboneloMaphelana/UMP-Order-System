@@ -82,7 +82,7 @@ $customers = $admin->getAllCustomers();
                 </main>
                 <footer class="row bg-light py-4 mt-auto">
                     <div class="col text-center text-muted">
-                        &copy; 2024 Food Ordering Admin. All Rights Reserved.
+                        
                     </div>
                 </footer>
             </div>

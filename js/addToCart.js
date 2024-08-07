@@ -1,3 +1,10 @@
+/**
+ * Adds an item to the cart.
+ *
+ * @param {number} foodItemId - The ID of the food item.
+ * @param {string} foodName - The name of the food item.
+ * @return {void}
+ */
 function addToCart(foodItemId, foodName) {
   var quantity = parseInt(
     $("#foodModal" + foodItemId)
@@ -13,9 +20,6 @@ function addToCart(foodItemId, foodName) {
   var name = $("#foodModal" + foodItemId)
     .find(".modal-title")
     .text();
-
-  // Calculate total price
-  var totalPrice = price * quantity;
 
   // Add item to cart
   $.ajax({
@@ -43,7 +47,6 @@ function addToCart(foodItemId, foodName) {
           },
         });
       } else {
-        // Handle error
         console.error("Failed to add item to cart:", response.message);
       }
     },

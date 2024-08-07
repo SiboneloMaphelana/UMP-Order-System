@@ -21,6 +21,17 @@ class Food
         }
     }
 
+    /**
+     * Adds a new category to the database.
+     *
+     * @param string $name The name of the category.
+     * @param string $imagePath The path to the image associated with the category.
+     * @throws mysqli_sql_exception If there is an error with the database query.
+     * @return bool|string Returns true if the category is successfully added,
+     *                    "Category already exists." if the category already exists,
+     *                    "Error adding category." if there is an error adding the category,
+     *                    "An error occurred while adding the category. Please try again." if there is an error with the database.
+     */
     public function addCategory($name, $imagePath)
     {
         // Sanitize input
@@ -56,6 +67,17 @@ class Food
 
 
 
+    /**
+     * Retrieves all categories from the database.
+     *
+     * @return array An array of associative arrays representing the categories.
+     *               Each array contains the following keys:
+     *               - id: The ID of the category.
+     *               - name: The name of the category.
+     *               - imageName: The name of the image associated with the category.
+     *
+     * @throws Exception If there is an error with the database connection or query execution.
+     */
     public function getCategories()
     {
         $categories = [];
@@ -96,6 +118,13 @@ class Food
         return $categories;
     }
 
+    /**
+     * Deletes a category from the database, along with its associated food items and image.
+     *
+     * @param int $categoryId The ID of the category to be deleted.
+     * @throws Exception If there is an error updating food items or deleting the category.
+     * @return bool Returns true if the category is successfully deleted, false otherwise.
+     */
     public function deleteCategory($categoryId)
     {
         try {
@@ -140,6 +169,15 @@ class Food
     }
 
 
+    /**
+     * Update a category in the database with the provided name and image.
+     *
+     * @param int $id The ID of the category to update.
+     * @param string|null $name The new name of the category (optional).
+     * @param string|null $imageName The new image name of the category (optional).
+     * @throws Exception If there is an error updating the category.
+     * @return bool|string Returns true if the category is successfully updated, "No fields to update." if no fields provided, or an error message.
+     */
     public function updateCategory($id, $name = null, $imageName = null)
     {
         try {
@@ -199,6 +237,12 @@ class Food
     }
 
 
+    /**
+     * Checks if a category exists in the database based on the given category ID.
+     *
+     * @param int $categoryId The ID of the category to check.
+     * @return bool Returns true if the category exists, false otherwise.
+     */
     public function isCategoryExists($categoryId)
     {
         $categoryId = intval($this->sanitizeInput($categoryId));
@@ -215,6 +259,12 @@ class Food
     }
 
 
+    /**
+     * Retrieves a category from the database based on the given category ID.
+     *
+     * @param int $categoryId The ID of the category to retrieve.
+     * @return array|null Returns an associative array representing the category if found, or null if not found.
+     */
     public function getCategoryById($categoryId)
     {
         // Sanitize the input
@@ -233,6 +283,20 @@ class Food
     }
 
 
+    /**
+     * Adds a food item to the database.
+     *
+     * @param string $name The name of the food item.
+     * @param string $description The description of the food item.
+     * @param int $categoryId The ID of the category the food item belongs to.
+     * @param int $quantity The quantity of the food item.
+     * @param float $price The price of the food item.
+     * @param array $image The image of the food item.
+     * @param int $adminId The ID of the admin adding the food item.
+     * @throws Exception If there is an error adding the food item.
+     * @return bool|string Returns true if the food item was added successfully,
+     *                     or an error message if there was an error.
+     */
     public function addFoodItem($name, $description, $categoryId, $quantity, $price, $image, $adminId)
     {
         try {
@@ -275,7 +339,16 @@ class Food
     }
 
 
-    public function getAllFoodItems(){
+    /**
+     * Retrieves all food items from the database, along with their category.
+     *
+     * @return array An array of associative arrays representing each food item,
+     *               with the following keys: 'id', 'name', 'description',
+     *               'quantity', 'price', 'image', and 'Category'.
+     *               If no food items are found, an empty array is returned.
+     */
+    public function getAllFoodItems()
+    {
         $query = "SELECT F.id, F.name, F.description, F.quantity, F.price, F.image, 
               IFNULL(C.name, 'Uncategorized') AS Category
               FROM food_items F
@@ -294,6 +367,12 @@ class Food
     }
 
 
+    /**
+     * Checks if a food item exists in the database based on the given ID.
+     *
+     * @param int $id The ID of the food item.
+     * @return bool Returns true if the food item exists, false otherwise.
+     */
     public function foodItemExists($id)
     {
         $query = "SELECT id FROM food_items WHERE id = ?";
@@ -309,6 +388,12 @@ class Food
         }
     }
 
+    /**
+     * Deletes a food item from the database by setting its deleted status to true.
+     *
+     * @param int $foodItemId The ID of the food item to be deleted.
+     * @return bool|string Returns true if the food item is successfully deleted, or an error message if deletion fails.
+     */
     public function deleteFoodItem($foodItemId)
     {
         // Sanitize the input
@@ -327,6 +412,12 @@ class Food
     }
 
 
+    /**
+     * Retrieves a food item from the database based on the given ID.
+     *
+     * @param int $foodItemId The ID of the food item to retrieve.
+     * @return array|null Returns an associative array representing the food item if found, or null if not found.
+     */
     public function getFoodItemById($foodItemId)
     {
         // Sanitize the input
@@ -344,6 +435,12 @@ class Food
         return $foodItem;
     }
 
+    /**
+     * Retrieves food items from the database based on the given category ID, where the quantity is greater than 10.
+     *
+     * @param int $categoryId The ID of the category to filter the food items.
+     * @return array Returns an array of associative arrays representing the food items that meet the criteria.
+     */
     public function getFoodItemsByCategoryId($categoryId)
     {
         // Sanitize the input
@@ -367,6 +464,18 @@ class Food
     }
 
 
+    /**
+     * Updates a food item in the database.
+     *
+     * @param int $id The ID of the food item to update.
+     * @param string|null $name The new name of the food item. Defaults to null.
+     * @param int|null $quantity The new quantity of the food item. Defaults to null.
+     * @param float|null $price The new price of the food item. Defaults to null.
+     * @param string|null $description The new description of the food item. Defaults to null.
+     * @param string|null $image The new image of the food item. Defaults to null.
+     * @param int|null $category The new category ID of the food item. Defaults to null.
+     * @return bool|string Returns true if the update is successful, an error message if there is an error, or a message indicating no fields to update if no fields are provided.
+     */
     public function updateFoodItem($id, $name = null, $quantity = null, $price = null, $description = null, $image = null, $category = null)
     {
         $id = intval($this->sanitizeInput($id));
@@ -449,6 +558,12 @@ class Food
         }
     }
 
+    /**
+     * Retrieves the top 3 favorite food items based on the number of orders they have received.
+     *
+     * @return array An array of associative arrays representing the favorite food items, each containing the
+     *               following keys: 'id', 'name', 'description', 'image', and 'order_count'.
+     */
     public function getFavorites()
     {
         $query = "SELECT f.id, f.name, f.description, f.image, COUNT(oi.food_id) AS order_count

@@ -30,5 +30,3 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     header('Location: ../add_food.php');
     exit();
 }
-
-?>

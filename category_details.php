@@ -2,6 +2,7 @@
 session_start();
 include("connection/connection.php");
 include_once("admin/model/Food.php");
+include("model/login_check.php");
 
 $category_id = isset($_GET['id']) ? intval($_GET['id']) : 0;
 

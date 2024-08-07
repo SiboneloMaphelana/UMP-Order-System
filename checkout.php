@@ -1,11 +1,6 @@
 <?php
-session_start();
-
-// Check if user is logged in
-if (!isset($_SESSION['id'])) {
-    header("Location: login.php");
-    exit();
-}
+include_once("model/login_check.php");
+include_once("functions/cart_functions.php");
 
 // Validate session cart
 if (!isset($_SESSION['cart']) || empty($_SESSION['cart'])) {
@@ -89,14 +84,4 @@ $totalItems = calculateTotalItems($_SESSION['cart']);
 
 <?php
 // Function to calculate total items in the cart
-function calculateTotalItems($cartItems)
-{
-    $totalItems = 0;
-    if (is_array($cartItems)) {
-        foreach ($cartItems as $item) {
-            $totalItems += $item['quantity'];
-        }
-    }
-    return $totalItems;
-}
-?>
+

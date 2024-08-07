@@ -1,16 +1,11 @@
 <?php
 include_once("connection/connection.php");
 include("model/User.php");
+include_once("model/login_check.php");
 
 $user = new User($conn);
 $userDetails = $user->getUserById($_SESSION['id']);
 
-// Check if user details are found
-if (!$userDetails) {
-    // Redirect to the login page if user details are not found
-    header("Location: login.php");
-    exit;
-}
 ?>
 
 <!DOCTYPE html>

@@ -3,7 +3,7 @@
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
-require '../../vendor/autoload.php'; 
+require '../../vendor/autoload.php';
 
 class Notifications
 {
@@ -14,6 +14,16 @@ class Notifications
         $this->conn = $conn;
     }
 
+    /**
+     * Sends an email using PHPMailer.
+     *
+     * @param string $to The email address of the recipient.
+     * @param string $subject The subject of the email.
+     * @param string $body The body of the email in HTML format.
+     * @param string $altBody The body of the email in plain text format.
+     * @throws Exception If there is an error sending the email.
+     * @return bool Returns true if the email is sent successfully, otherwise returns an error message.
+     */
     private function sendEmail($to, $subject, $body, $altBody)
     {
         $mail = new PHPMailer(true);
@@ -45,6 +55,15 @@ class Notifications
         }
     }
 
+    /**
+     * Sends an email with order completion details to the customer.
+     *
+     * @param array $orderDetails Details of the completed order.
+     * @param array $customer Information about the customer.
+     * @param array $orderItems Items included in the order.
+     * @throws Exception If there is an error sending the email.
+     * @return bool Returns true if the email is sent successfully, otherwise returns an error message.
+     */
     public function orderCompletionEmail($orderDetails, $customer, $orderItems)
     {
         $subject = 'Order Completed';
@@ -102,13 +121,22 @@ class Notifications
         return $this->sendEmail($customer['email'], $subject, $body, $altBody);
     }
 
+    /**
+     * Sends an email with order placement details to the customer.
+     *
+     * @param array $orderDetails Details of the placed order.
+     * @param array $customer Information about the customer.
+     * @param array $orderItems Items included in the order.
+     * @throws Exception If there is an error sending the email.
+     * @return bool Returns true if the email is sent successfully, otherwise returns an error message.
+     */
     public function orderPlacementEmail($orderDetails, $customer, $orderItems)
-{
-    $subject = 'Order Placed';
+    {
+        $subject = 'Order Placed';
 
-    $orderDate = date('F j, Y, g:i A', strtotime($orderDetails['order_date']));
+        $orderDate = date('F j, Y, g:i A', strtotime($orderDetails['order_date']));
 
-    $body = "
+        $body = "
     <div style='font-family: Arial, sans-serif; max-width: 600px; margin: auto; padding: 20px; border: 1px solid #dddddd; border-radius: 10px; background-color: #f9f9f9;'>
         <div style='text-align: center;'>
             <h2 style='color: #004080;'>TechCafe Solutions</h2>
@@ -130,15 +158,15 @@ class Notifications
             </thead>
             <tbody>";
 
-    foreach ($orderItems as $item) {
-        $body .= "<tr>
+        foreach ($orderItems as $item) {
+            $body .= "<tr>
             <td style='text-align: center; padding: 10px; border-bottom: 1px solid #dddddd;'>" . htmlspecialchars($item['name']) . "</td>
             <td style='text-align: center; padding: 10px; border-bottom: 1px solid #dddddd;'>{$item['quantity']}</td>
             <td style='text-align: center; padding: 10px; border-bottom: 1px solid #dddddd;'>R" . number_format($item['price'], 2) . "</td>
         </tr>";
-    }
+        }
 
-    $body .= "</tbody>
+        $body .= "</tbody>
         </table>
         <p><strong style='color: #004080;'>Total Amount:</strong> R" . number_format($orderDetails['total_amount'], 2) . "</p>
         <p><strong style='color: #004080;'>Payment Method:</strong> " . htmlspecialchars($orderDetails['payment_method']) . "</p>
@@ -146,36 +174,51 @@ class Notifications
         <p style='text-align: center; color: #004080;'>Best Regards,<br>TechCafe Solutions</p>
     </div>";
 
-    $altBody = "Dear " . htmlspecialchars($customer['name']) . ",\n\nYour order #{$orderDetails['order_id']} has been placed successfully.\n\nOrder Date: {$orderDate}\n\nOrdered Items:\n";
+        $altBody = "Dear " . htmlspecialchars($customer['name']) . ",\n\nYour order #{$orderDetails['order_id']} has been placed successfully.\n\nOrder Date: {$orderDate}\n\nOrdered Items:\n";
 
-    foreach ($orderItems as $item) {
-        $altBody .= "{$item['name']} - Quantity: {$item['quantity']} - Price: R" . number_format($item['price'], 2) . "\n";
+        foreach ($orderItems as $item) {
+            $altBody .= "{$item['name']} - Quantity: {$item['quantity']} - Price: R" . number_format($item['price'], 2) . "\n";
+        }
+
+        $altBody .= "\nTotal Amount: R" . number_format($orderDetails['total_amount'], 2) . "\nPayment Method: " . htmlspecialchars($orderDetails['payment_method']) . "\n";
+
+        return $this->sendEmail($customer['email'], $subject, $body, $altBody);
     }
 
-    $altBody .= "\nTotal Amount: R" . number_format($orderDetails['total_amount'], 2) . "\nPayment Method: " . htmlspecialchars($orderDetails['payment_method']) . "\n";
+    /**
+     * Generates a random token of a specified length.
+     *
+     * @param int $length The length of the token. Default is 50.
+     * @return string The generated token.
+     */
+    function generateToken($length = 50)
+    {
+        return bin2hex(random_bytes($length));
+    }
 
-    return $this->sendEmail($customer['email'], $subject, $body, $altBody);
-}
+    /**
+     * Sends an email with password reset details to the user.
+     *
+     * @param array $user The user details.
+     * @throws Exception If there is an error sending the email.
+     * @return bool Returns true if the email is sent successfully, otherwise returns an error message.
+     */
+    public function sendPasswordResetEmail($user)
+    {
 
-function generateToken($length = 50) {
-    return bin2hex(random_bytes($length));
-}
+        $token = $this->generateToken();
+        $userId = $user['id'];
 
-public function sendPasswordResetEmail($user) {
-    
-    $token = $this->generateToken();
-    $userId = $user['id'];
+        // Insert token into database
+        $stmt = $this->conn->prepare("INSERT INTO password_resets (user_id, token) VALUES (?, ?)");
+        $stmt->bind_param("is", $userId, $token);
+        $stmt->execute();
+        $stmt->close();
 
-    // Insert token into database
-    $stmt = $this->conn->prepare("INSERT INTO password_resets (user_id, token) VALUES (?, ?)");
-    $stmt->bind_param("is", $userId, $token);
-    $stmt->execute();
-    $stmt->close();
+        $resetLink = "http://localhost/UMP-Order-System/reset_password.php?token=" . $token;
 
-    $resetLink = "http://localhost/UMP-Order-System/reset_password.php?token=" . $token;
-
-    $subject = "Password Reset Request";
-    $body = "
+        $subject = "Password Reset Request";
+        $body = "
     <div style='font-family: Arial, sans-serif; max-width: 600px; margin: auto; padding: 20px; border: 1px solid #dddddd; border-radius: 10px; background-color: #f9f9f9;'>
         <div style='text-align: center;'>
             <h2 style='color: #004080;'>TechCafe Solutions</h2>
@@ -187,10 +230,8 @@ public function sendPasswordResetEmail($user) {
         <p style='text-align: center; color: #004080;'>Best Regards,<br>TechCafe Solutions</p>
     </div>";
 
-    $altBody = "Dear " . htmlspecialchars($user['name']) . ",\n\nYou requested a password reset. Click the link below to reset your password:\n" . $resetLink . "\n\nIf you did not request a password reset, please ignore this email.\n\nBest Regards,\nTechCafe Solutions";
+        $altBody = "Dear " . htmlspecialchars($user['name']) . ",\n\nYou requested a password reset. Click the link below to reset your password:\n" . $resetLink . "\n\nIf you did not request a password reset, please ignore this email.\n\nBest Regards,\nTechCafe Solutions";
 
-    return $this->sendEmail($user['email'], $subject, $body, $altBody);
-}
-
-
+        return $this->sendEmail($user['email'], $subject, $body, $altBody);
+    }
 }

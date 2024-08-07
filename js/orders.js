@@ -15,8 +15,6 @@ $(document).ready(function() {
                 data: { orderId: orderId },
                 success: function(response) {
                     showToast('Order ' + orderId + ' has been cancelled successfully.');
-                    // Optionally, update UI to reflect cancelled order
-                    // Example: Remove the cancelled order card from UI
                     $('.cancel-order-btn[data-order-id="' + orderId + '"]').closest('.card').fadeOut('slow');
                 },
                 error: function(xhr, status, error) {

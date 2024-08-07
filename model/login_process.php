@@ -21,7 +21,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
         
         $_SESSION['login'] = 'email';
-        header("Location: ../index.php");
+         // Check if there's a redirect URL
+         if (isset($_SESSION['redirect_url'])) {
+            $redirect_url = $_SESSION['redirect_url'];
+            unset($_SESSION['redirect_url']); // Clear the session variable
+        } else {
+            // Default redirect URL
+            $redirect_url = '../index.php';
+        }
+
+        header("Location: $redirect_url");
     } else {
         $_SESSION['error'] = "Invalid email or password, or your account is deactivated!";
         header("Location: ../login.php");

@@ -1,4 +1,4 @@
-<div class="header text-white" style="background-color: #353D55;">
+<div class="header text-white">
     <div class="container-fluid">
         <div class="row align-items-center py-2">
             <div class="col-12 d-md-none d-flex justify-content-between align-items-center">

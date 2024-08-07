@@ -1,3 +1,4 @@
+<?php include_once("model/login_check.php"); ?>
 <!DOCTYPE html>
 <html lang="en">
 

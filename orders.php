@@ -2,15 +2,13 @@
 include_once("connection/connection.php");
 include_once("admin/model/Order.php");
 include_once("functions/orders_functions.php");
+include_once("model/login_check.php");
 
 $orderModel = new Order($conn);
 
 // Retrieve orders for the logged-in user
 $user_id = $_SESSION['id'];
-if (!$user_id) {
-    header("Location: login.php");
-    exit;
-}
+
 $orders = $orderModel->getOrdersByUserId($user_id);
 
 // Separate orders into upcoming, past, and canceled orders
@@ -150,6 +148,11 @@ $groupedCanceledOrders = groupOrdersByDate($canceledOrders);
                             <a href="index.php" class="btn btn-primary">Back to Home</a>
                         </div>
                     </div>
+                    <div class="toast" id="toastMessage" role="alert" aria-live="assertive" aria-atomic="true">
+                        <div class="toast-body text-center text-danger">
+                            <!-- Toast message content will be dynamically inserted here -->
+                        </div>
+                    </div>
                 </main>
             </div>
         </div>
@@ -171,11 +174,6 @@ $groupedCanceledOrders = groupOrdersByDate($canceledOrders);
         </div>
     </div>
 
-    <div class="toast" id="toastMessage" role="alert" aria-live="assertive" aria-atomic="true">
-        <div class="toast-body text-center text-danger">
-            <!-- Toast message content will be dynamically inserted here -->
-        </div>
-    </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -184,4 +182,3 @@ $groupedCanceledOrders = groupOrdersByDate($canceledOrders);
 </body>
 
 </html>
-

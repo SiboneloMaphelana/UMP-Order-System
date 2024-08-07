@@ -9,7 +9,7 @@ if (session_status() == PHP_SESSION_NONE) {
 $food = new Food($conn);
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    
+
     $name = $_POST['name'];
     $image = $_FILES['image'];
 
@@ -20,15 +20,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     $target_dir = "../uploads/";
-    
+
     $target_file = $target_dir . basename($image["name"]);
-    
+
     $imageName = basename($image['name']);
-    
+
     if (move_uploaded_file($image["tmp_name"], $target_file)) {
         try {
             $result = $food->addCategory($name, $imageName);
-            
+
             if ($result === true) {
                 $_SESSION['add-cat'] = "New category added successfully";
                 header("Location: ../all_categories.php");
@@ -50,4 +50,3 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         exit();
     }
 }
-?>

@@ -18,14 +18,16 @@ const roleError = document.getElementById("roleError");
 
 // Password visibility toggle
 togglePassword.addEventListener("click", function () {
-  const type = password.getAttribute("type") === "password" ? "text" : "password";
+  const type =
+    password.getAttribute("type") === "password" ? "text" : "password";
   password.setAttribute("type", type);
   this.classList.toggle("fa-eye");
   this.classList.toggle("fa-eye-slash");
 });
 
 toggleConfirmPassword.addEventListener("click", function () {
-  const type = confirmPassword.getAttribute("type") === "password" ? "text" : "password";
+  const type =
+    confirmPassword.getAttribute("type") === "password" ? "text" : "password";
   confirmPassword.setAttribute("type", type);
   this.classList.toggle("fa-eye");
   this.classList.toggle("fa-eye-slash");
@@ -121,7 +123,8 @@ registrationForm.addEventListener("submit", function (event) {
   const passwordResult = zxcvbn(passwordValue);
 
   if (passwordResult.score < 3) {
-    passwordError.textContent = "Password is too weak. Try using a mix of letters, numbers, and special characters.";
+    passwordError.textContent =
+      "Password is too weak. Try using a mix of letters, numbers, and special characters.";
     valid = false; // Set valid to false if password is too weak
   } else {
     passwordError.textContent = ""; // Clear any previous error messages

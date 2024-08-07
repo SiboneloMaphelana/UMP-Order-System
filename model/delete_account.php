@@ -1,13 +1,7 @@
 <?php
 session_start();
 include_once("../connection/connection.php");
-include("User.php");
-
-// Check if user is logged in
-if (!isset($_SESSION['id'])) {
-    header("Location: ../login.php");
-    exit();
-}
+include_once("User.php");
 
 $user = new User($conn);
 $userId = intval($_SESSION['id']);  // Use session id for self-deletion
