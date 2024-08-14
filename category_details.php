@@ -35,7 +35,7 @@ $foodItems = $food->getFoodItemsByCategoryId($category_id);
                             <div class="row">
                                 <?php if ($category) : ?>
                                     <h2 class="text-center"><?php echo htmlspecialchars($category['name']); ?></h2>
-                                    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4 mt-3">
+                                    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-3 g-4 mt-3">
                                         <?php if (!empty($foodItems)) : ?>
                                             <?php foreach ($foodItems as $item) : ?>
                                                 <div class="col mb-4">
@@ -83,9 +83,8 @@ $foodItems = $food->getFoodItemsByCategoryId($category_id);
                         </div>
                     </div>
                 </main>
-                <footer class="row bg-light py-4 mt-auto">
-                    <div class="col text-center">Footer content here...</div>
-                </footer>
+                <!-- Footer -->
+                <?php include("partials/footer.php"); ?>
             </div>
         </div>
     </div>
@@ -97,7 +96,7 @@ $foodItems = $food->getFoodItemsByCategoryId($category_id);
         $(window).on('load', function() {
             $('.card-img-top').each(function() {
                 var img = $(this);
-                img.css('height', '200px'); // Set the desired height
+                img.css('height', '200px'); // Set initial height
                 img.css('object-fit', 'cover'); // Maintain aspect ratio
             });
         });

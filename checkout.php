@@ -1,12 +1,6 @@
 <?php
 session_start();
 
-// Check if user is logged in
-if (!isset($_SESSION['id'])) {
-    header("Location: login.php");
-    exit();
-}
-
 // Validate session cart
 if (!isset($_SESSION['cart']) || empty($_SESSION['cart'])) {
     $_SESSION['error'] = "Your cart is empty.";

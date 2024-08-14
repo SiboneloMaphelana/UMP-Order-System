@@ -4,7 +4,7 @@ include_once("../../connection/connection.php");
 include_once("Food.php");
 
 // Check if request method is POST and user is logged in
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_SESSION['id'])) {
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Initialize $_SESSION['cart'] if it doesn't exist or is null
     if (!isset($_SESSION['cart']) || !is_array($_SESSION['cart'])) {
         $_SESSION['cart'] = [];

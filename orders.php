@@ -2,15 +2,12 @@
 include_once("connection/connection.php");
 include_once("admin/model/Order.php");
 include_once("functions/orders_functions.php");
-
+include_once("model/login_check.php");
 $orderModel = new Order($conn);
 
 // Retrieve orders for the logged-in user
 $user_id = $_SESSION['id'];
-if (!$user_id) {
-    header("Location: login.php");
-    exit;
-}
+
 $orders = $orderModel->getOrdersByUserId($user_id);
 
 // Separate orders into upcoming, past, and canceled orders

@@ -123,12 +123,10 @@
 
   .card-img-top {
     height: 120px; /* Adjust image height for smaller screens */
-    width: 50%; /* Set width to 50% to take half of the card's width */
     flex-shrink: 0; /* Prevent image from shrinking */
   }
 
   .index-card-body {
-    width: 50%; /* Allow card body to take the remaining 50% of the card's width */
     padding: 0.75rem; /* Adjust padding inside the card body */
     display: flex;
     flex-direction: column; /* Arrange card content vertically */

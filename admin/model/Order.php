@@ -12,14 +12,23 @@ class Order{
     }
 
     public function addOrder($userId, $totalAmount, $paymentMethod) {
-        $stmt = $this->conn->prepare("INSERT INTO orders (user_id, total_amount, payment_method) VALUES (?, ?, ?)");
-        $stmt->bind_param("ids", $userId, $totalAmount, $paymentMethod);
+        // Check if userId is null for guest checkout
+        if (is_null($userId)) {
+            // Use NULL for user_id when inserting a guest order
+            $stmt = $this->conn->prepare("INSERT INTO orders (user_id, total_amount, payment_method) VALUES (NULL, ?, ?)");
+            $stmt->bind_param("ds", $totalAmount, $paymentMethod);
+        } else {
+            $stmt = $this->conn->prepare("INSERT INTO orders (user_id, total_amount, payment_method) VALUES (?, ?, ?)");
+            $stmt->bind_param("ids", $userId, $totalAmount, $paymentMethod);
+        }
+    
         if ($stmt->execute()) {
             return $stmt->insert_id; 
         } else {
             return false; 
         }
     }
+    
 
     public function addOrderItem($orderId, $foodId, $quantity, $price) {
         $stmt = $this->conn->prepare("INSERT INTO order_items (order_id, food_id, quantity, price) VALUES (?, ?, ?, ?)");

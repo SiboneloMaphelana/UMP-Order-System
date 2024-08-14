@@ -75,14 +75,7 @@ $favorites = $food->getFavorites();
                 </main>
 
                 <!-- Footer -->
-                <footer class="row bg-light py-4 mt-auto">
-                    <div class="col text-center">
-                        <p>&copy; 2024 TechCafe Solutions. All rights reserved.</p>
-                        <a href="about.php" class="text-dark">About Us</a> |
-                        <a href="contact.php" class="text-dark">Contact</a> |
-                        <a href="privacy.php" class="text-dark">Privacy Policy</a>
-                    </div>
-                </footer>
+                <?php include("partials/footer.php"); ?>
             </div>
         </div>
     </div>

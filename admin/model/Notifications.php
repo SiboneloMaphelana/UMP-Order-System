@@ -52,10 +52,10 @@ class Notifications
         }
     }
 
-    public function orderPlacementSMS($to, $orderDetails)
+    public function orderPlacementSMS($phone, $orderDetails)
     {
         // Check if $to and $orderDetails are not null and have expected keys
-        if (is_null($to) || !isset($to['phone'])) {
+        if (is_null($phone) || empty($phone)) {
             return "Error: Phone number is missing.";
         }
 
@@ -67,7 +67,7 @@ class Notifications
         $api_key = $_ENV['API_KEY'];
         $config = new Configuration(host: $base_url, apiKey: $api_key);
         $api = new SmsApi($config);
-        $destination = new SmsDestination(to: $to["phone"]);
+        $destination = new SmsDestination(to: $phone);
         $message = new SmsTextualMessage(
             destinations: [$destination],
             text: $message

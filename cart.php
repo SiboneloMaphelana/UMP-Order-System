@@ -1,8 +1,12 @@
 <?php
-include_once("model/login_check.php");
 include_once("connection/connection.php");
 include_once("admin/model/Food.php");
 include_once("functions/cart_functions.php");
+
+// Start session if not already started
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
 
 // Retrieve cart items from session
 $cartItems = isset($_SESSION['cart']) ? $_SESSION['cart'] : [];
@@ -18,6 +22,9 @@ handleItemRemovalRequest();
 
 // Handle item quantity update request
 handleItemQuantityUpdateRequest();
+
+// Check if the user is logged in
+$isLoggedIn = isset($_SESSION['id']);
 ?>
 
 <!DOCTYPE html>
@@ -35,7 +42,6 @@ handleItemQuantityUpdateRequest();
         /* Ensure the main content is pushed down below the navigation */
         .main-content {
             margin-top: 125px;
-            
         }
     </style>
 </head>
@@ -107,6 +113,15 @@ handleItemQuantityUpdateRequest();
                                             </li>
                                         </ul>
                                         <a href="checkout.php" class="btn btn-success w-100 mt-3">Proceed to Checkout</a>
+                                        <?php if (!$isLoggedIn) : ?>
+                                            <form action="admin/model/guest_checkout.php" method="post" class="mt-3">
+                                                <div class="mb-3">
+                                                    <label for="guest_phone" class="form-label">Enter Phone Number to receive order confirmation</label>
+                                                    <input type="tel" name="guest_phone" class="form-control" id="guest_phone" placeholder="+27XXXXXXXXX" pattern="^\+27[0-9]{9}$" required>
+                                                </div>
+                                                <button type="submit" name="guest_checkout" class="btn btn-primary w-100">Guest Checkout</button>
+                                            </form>
+                                        <?php endif; ?>
                                     <?php else : ?>
                                         <p>Your cart is empty.</p>
                                     <?php endif; ?>
@@ -117,9 +132,8 @@ handleItemQuantityUpdateRequest();
 
                     </div>
                 </main>
-                <footer class="row bg-light py-4 mt-auto">
-
-                </footer>
+                <!-- Footer -->
+                <?php include("partials/footer.php"); ?>
             </div>
         </div>
     </div>
