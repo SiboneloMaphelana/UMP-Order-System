@@ -5,6 +5,10 @@ include("../../model/User.php");
 include("Order.php");
 include("Notifications.php");
 
+require '../../vendor/autoload.php';
+$dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
+$dotenv->load();
+
 // Function to handle errors
 function handleError($message) {
     $_SESSION['error'] = $message;
@@ -47,9 +51,9 @@ try {
     // Process the payment
     if ($paymentMethod == 'payfast') {
         // PayFast sandbox credentials
-        $merchantId = '10034560';
-        $merchantKey = '7ihweq67use4r';
-        $payfastUrl = 'https://sandbox.payfast.co.za/eng/process';
+        $merchantId = $_ENV['MERCHANT_ID'];
+        $merchantKey = $_ENV['MERCHANT_KEY'];
+        $payfastUrl = $_ENV['PAYFAST_URL'];
 
         // PayFast payment data
         $payfastData = array(
@@ -99,9 +103,15 @@ try {
         // Send order completion email
         $emailSent = $notifications->orderPlacementEmail($orderDetails, $customer, $orderItems);
 
+        // Send sms notification
+        //$sms = $notifications->orderPlacementSMS($orderDetails, $customer, $orderItems);
         if (!$emailSent) {
             throw new Exception("Failed to send order completion email.");
-        }
+        } 
+
+        /*if (!$sms) {
+            throw new Exception("Failed to send SMS notification.");
+        }*/
 
         // Clear the cart
         unset($_SESSION['cart']);
@@ -136,10 +146,16 @@ try {
 
         // Send order completion email
         $emailSent = $notifications->orderPlacementEmail($orderDetails, $customer, $orderItems);
+        //$sms = $notifications->orderPlacementSMS($customer, $orderDetails);
 
-        if (!$emailSent) {
-            throw new Exception("Failed to send order completion email.");
+        // Send sms notification
+        if (!$sms) {
+            throw new Exception("Failed to send SMS notification.");
         }
+
+        /*if (!$emailSent) {
+            throw new Exception("Failed to send order completion email.");
+        }*/
 
         // Clear the cart
         unset($_SESSION['cart']);
@@ -150,45 +166,7 @@ try {
         // Redirect to order confirmation page
         header("Location: ../../order_confirmation.php");
         exit();
-    } else if ($paymentMethod == 'card') {
-        // Handle Card payment method
-        $orderId = $food->addOrder($userId, $totalAmount, $paymentMethod);
-
-        if (!$orderId) {
-            throw new Exception("Error adding order.");
-        }
-
-        // Insert order items into database
-        foreach ($cartItems as $item) {
-            $result = $food->addOrderItem($orderId, $item['food_id'], $item['quantity'], $item['price']);
-            if (!$result) {
-                throw new Exception("Error adding order items.");
-            }
-        }
-
-        // Retrieve order details
-        $orderDetails = $food->getOrderById($orderId);
-        $orderItems = $food->getOrderItems($orderId);
-        $customer = $food->getCustomerById($userId);
-
-        // Send order completion email
-        $emailSent = $notifications->orderPlacementEmail($orderDetails, $customer, $orderItems);
-
-        if (!$emailSent) {
-            throw new Exception("Failed to send order completion email.");
-        }
-
-        // Clear the cart
-        unset($_SESSION['cart']);
-
-        // Store orderId in session
-        $_SESSION['orderId'] = $orderId;
-
-        // Redirect to order confirmation page
-        header("Location: ../../order_confirmation.php");
-        exit();
-    }
-    else {
+    } else {
         throw new Exception("Invalid payment method.");
     }
 } catch (Exception $e) {

@@ -44,7 +44,7 @@ class Order{
     }
 
     public function getCustomerById(string $id): ?array {
-        $stmt = $this->conn->prepare('SELECT name, email FROM users WHERE id = ?');
+        $stmt = $this->conn->prepare('SELECT name, email, phone FROM users WHERE id = ?');
         $stmt->bind_param('s', $id);
         $stmt->execute();
         $result = $stmt->get_result();
