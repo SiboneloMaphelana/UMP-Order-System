@@ -53,29 +53,56 @@ class Notifications
     }
 
     public function orderPlacementSMS($phone, $orderDetails)
-    {
-        // Check if $to and $orderDetails are not null and have expected keys
-        if (is_null($phone) || empty($phone)) {
-            return "Error: Phone number is missing.";
-        }
+{
+    // Check if $phone and $orderDetails are valid
+    if (is_null($phone) || empty($phone)) {
+        error_log("Error: Phone number is missing.");
+        return false; // Indicate failure
+    }
 
-        if (is_null($orderDetails) || !isset($orderDetails['id'])) {
-            return "Error: Order details are missing.";
-        }
-        $message = "Thank you for your order. Your order number is " . $orderDetails['id'];
-        $base_url = $_ENV['BASE_URL'];
-        $api_key = $_ENV['API_KEY'];
+    if (is_null($orderDetails) || !isset($orderDetails['id'])) {
+        error_log("Error: Order details are missing.");
+        return false; // Indicate failure
+    }
+
+    // Construct the message
+    $messageText = "Thank you for your order. Your order number is " . $orderDetails['id'];
+
+    // Environment configurations
+    $base_url = $_ENV['BASE_URL'];
+    $api_key = $_ENV['API_KEY'];
+
+    try {
+        // Configure the SMS API
         $config = new Configuration(host: $base_url, apiKey: $api_key);
         $api = new SmsApi($config);
+
+        // Set the destination and message
         $destination = new SmsDestination(to: $phone);
         $message = new SmsTextualMessage(
             destinations: [$destination],
-            text: $message
+            text: $messageText
         );
 
+        // Create and send the request
         $request = new SmsAdvancedTextualRequest(messages: [$message]);
         $response = $api->sendSmsMessage($request);
+
+        // Check if the response indicates success
+        if ($response) {
+            return true; // Indicate success
+        } else {
+            // Log the response for debugging purposes
+            error_log("SMS API Response: " . print_r($response, true));
+            return false; // Indicate failure
+        }
+    } catch (Exception $e) {
+        // Log any exceptions for debugging
+        error_log("Exception occurred: " . $e->getMessage());
+        return false; // Indicate failure
     }
+}
+
 
     public function orderCompletionEmail($orderDetails, $customer, $orderItems)
     {

@@ -4,14 +4,6 @@ include_once("Food.php");
 include_once("../UMP-Order-System/connection/connection.php");
 
 try {
-    // Check if user is logged in
-    if (!isset($_SESSION['id'])) {
-        throw new Exception("User is not logged in.");
-    }
-
-    // Retrieve user ID from session
-    $userId = $_SESSION['id'];
-
     // Initialize variables to store order details
     $order = [];
     $orderItems = [];
@@ -26,9 +18,33 @@ try {
     // Start transaction
     mysqli_autocommit($conn, false);
 
-    // Fetch order details including status
-    $orderQuery = $conn->prepare("SELECT id, order_date, total_amount, status FROM orders WHERE id = ? AND user_id = ?");
-    $orderQuery->bind_param('ii', $orderId, $userId);
+    // Determine whether to check for user_id or assume it's a guest
+    if (isset($_SESSION['id'])) {
+        // Logged-in user
+        $userId = $_SESSION['id'];
+
+        // Fetch order details including status
+        $orderQuery = $conn->prepare("
+            SELECT id, order_date, total_amount, status 
+            FROM orders 
+            WHERE id = ? AND user_id = ?
+        ");
+        $orderQuery->bind_param('ii', $orderId, $userId);
+
+    } else {
+        // Guest user
+        // Fetch the most recent order if user_id is not set
+        $orderQuery = $conn->prepare("
+            SELECT id, order_date, total_amount, status 
+            FROM orders 
+            WHERE id = ? 
+            AND user_id IS NULL 
+            ORDER BY order_date DESC
+            LIMIT 1
+        ");
+        $orderQuery->bind_param('i', $orderId);
+    }
+
     $orderQuery->execute();
     $orderResult = $orderQuery->get_result();
     $order = $orderResult->fetch_assoc();
@@ -39,7 +55,12 @@ try {
     }
 
     // Fetch order items
-    $orderItemsQuery = $conn->prepare("SELECT oi.*, fi.name, fi.quantity AS available_quantity, oi.status FROM order_items oi JOIN food_items fi ON oi.food_id = fi.id WHERE oi.order_id = ?");
+    $orderItemsQuery = $conn->prepare("
+        SELECT oi.*, fi.name, fi.quantity AS available_quantity, oi.status 
+        FROM order_items oi 
+        JOIN food_items fi ON oi.food_id = fi.id 
+        WHERE oi.order_id = ?
+    ");
     $orderItemsQuery->bind_param('i', $orderId);
     $orderItemsQuery->execute();
     $orderItemsResult = $orderItemsQuery->get_result();
@@ -85,12 +106,11 @@ try {
     // Log the exception
     error_log('Exception caught in place_order.php: ' . $e->getMessage());
 
-    
+    // Set error message and redirect
     $_SESSION['error'] = "Failed to place order: " . $e->getMessage();
     header("Location: ../../cart.php");
     exit();
 } finally {
-    
     if (isset($orderQuery)) {
         $orderQuery->close();
     }

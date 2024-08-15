@@ -49,7 +49,5 @@ function addToCart(itemId) {
 
     // Log the details of the item being added to the cart
     console.log('Add to Cart:', itemId, 'Quantity:', quantity);
-
-    // Add your AJAX call here to handle the cart addition
 }
 

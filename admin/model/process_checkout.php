@@ -118,8 +118,21 @@ try {
                 throw new Exception("Failed to send order completion email.");
             }
         } else {
-            // Handle guest users if needed
+            // For guests
+            // Send SMS notification if phone number is available
+            if ($guestPhone) {
+                $smsSent = $notifications->orderPlacementSMS($guestPhone, $orderDetails);
+                if (!$smsSent) {
+                    throw new Exception("Failed to send SMS notification.");
+                }
+            }
         }
+
+        // Clear the cart
+        unset($_SESSION['cart']);
+
+        // Store orderId in session
+        $_SESSION['orderId'] = $orderId;
 
         // Redirect to PayFast payment page
         $queryString = http_build_query($payfastData);
@@ -164,15 +177,13 @@ try {
             }
         } else {
             // For guests
-            // Assuming you may not send an email for guests, you might omit this part or handle it differently
-
             // Send SMS notification if phone number is available
             if ($guestPhone) {
                 $smsSent = $notifications->orderPlacementSMS($guestPhone, $orderDetails);
                 if (!$smsSent) {
                     throw new Exception("Failed to send SMS notification.");
                 }
-            }
+            } 
         }
 
         // Clear the cart
