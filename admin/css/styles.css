@@ -1,0 +1,83 @@
+body {
+  display: flex;
+  min-height: 100vh;
+  margin: 0;
+  overflow-x: hidden;
+}
+
+#sidebar {
+  background-color: #343a40;
+  color: #fff;
+  transition: transform 0.3s ease;
+  transform: translateX(0); /* Sidebar is visible by default */
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 300px; /* Adjusted width */
+  height: 100vh; /* Full height of the viewport */
+  z-index: 1000;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between; /* Space between items and push profile to the bottom */
+}
+
+#sidebar .nav-link {
+  color: #adb5bd;
+}
+
+#sidebar .nav-link:hover {
+  color: #fff;
+}
+
+.sidebar-heading {
+  padding: 10px 15px;
+  font-size: 1.2rem;
+  text-transform: uppercase;
+}
+
+#content {
+  flex: 1;
+  margin-left: 300px; /* Adjust this to match sidebar width */
+  padding: 20px;
+  padding-top: 20px; /* Padding to account for content */
+  transition: margin-left 0.3s ease;
+}
+
+@media (max-width: 992px) {
+  #sidebar {
+    width: 50%;
+    transform: translateX(-100%); /* Hide sidebar off-screen by default */
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    z-index: 1000;
+  }
+
+  #sidebar.show {
+    transform: translateX(0); /* Show sidebar */
+  }
+
+  #content {
+    margin-left: 0;
+    padding-top: 20px; /* Adjusted padding for smaller devices */
+  }
+}
+
+#sidebar .navbar-brand img {
+  max-width: 100px; /* Adjust width as needed */
+  height: auto; /* Maintain aspect ratio */
+  padding: 10px; /* Add padding for spacing */
+  display: block;
+  margin: 0 auto; /* Center the image */
+}
+
+.profile-dropdown {
+  padding: 15px;
+  border-top: 1px solid #495057;
+}
+
+.profile-dropdown button {
+  width: 100%;
+}

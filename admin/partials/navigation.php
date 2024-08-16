@@ -40,7 +40,6 @@
                     <li><a class="dropdown-item" href="order_notifications.php">Order Notifications</a></li>
                     <li><a class="dropdown-item" href="password_reset_notifications.php">Password Reset Notifications</a></li>
                     <li><a class="dropdown-item" href="account_update_notifications.php">Account Update Notifications</a></li>
-                    <!-- Add more notification types as needed -->
                 </ul>
             </li>
         </ul>

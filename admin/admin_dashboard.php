@@ -1,3 +1,11 @@
+<?php
+require_once 'model/login_check.php';
+require_once '../connection/connection.php';
+require_once 'model/Food.php';
+
+$food = new Food($conn);
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -7,24 +15,28 @@
     <title>Admin Dashboard</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-    <link rel="stylesheet" href="css/admin.css">
-    <link rel="stylesheet" href="css/navigation.css">
+    <link rel="stylesheet" href="css/styles.css">
 </head>
 
 <body>
+    <?php include('partials/sidebar.php'); ?>
 
-    <div class="container-fluid overflow-hidden">
+    <div id="content" class="container-fluid overflow-hidden">
+        <button class="btn btn-dark d-md-none" type="button" id="toggleSidebar">
+            <i class="fas fa-bars"></i>
+        </button>
+
         <div class="row vh-100 overflow-auto">
-            <?php include("partials/navigation.php"); ?>
             <div class="col d-flex flex-column h-sm-100">
-                <main class="row overflow-auto">
-                    <div class="d-flex justify-content-between align-items-center mt-4">
+                <main class="row overflow-auto mt-4">
+                    <div class="d-flex justify-content-between align-items-center">
                         <h1>Admin Dashboard</h1>
                         <div class="notification-icon">
-                            <i class="bi bi-bell" style="font-size: 2rem;"></i> 
+                            <i class="bi bi-bell" style="font-size: 2rem;"></i>
                             <span id="notificationBadge" class="notification-badge">0</span>
                         </div>
                     </div>
+
                     <div class="col pt-4">
                         <div class="table-container">
                             <div class="card-body">
@@ -43,10 +55,9 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    
+                                    <!-- Data will be populated dynamically -->
                                 </tbody>
                             </table>
-
 
                             <!-- Modal for View Order Details -->
                             <div class="modal fade" id="viewOrderModal" tabindex="-1" aria-labelledby="viewOrderModalLabel" aria-hidden="true">
@@ -57,7 +68,7 @@
                                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                         </div>
                                         <div class="modal-body">
-                                            
+                                            <!-- Order details will be populated dynamically -->
                                         </div>
                                         <div class="modal-footer">
                                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -65,7 +76,6 @@
                                     </div>
                                 </div>
                             </div>
-
 
                             <!-- Modal for Update Status -->
                             <div class="modal fade" id="updateStatusModal" tabindex="-1" aria-labelledby="updateStatusModalLabel" aria-hidden="true">
@@ -99,14 +109,14 @@
                                 <button id="prevPage" class="btn btn-secondary me-3" disabled>Previous</button>
                                 <button id="nextPage" class="btn btn-secondary">Next</button>
                             </div>
-
-
-
                         </div>
                     </div>
                 </main>
+
                 <footer class="row bg-light py-4 mt-auto">
-                    <div class="col">WE HAVE NO FOOTER, BEING GHOSTED</div>
+                    <div class="col text-center">
+                        &copy; 2024 Food Ordering Admin. All Rights Reserved.
+                    </div>
                 </footer>
             </div>
         </div>
@@ -115,10 +125,12 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="js/admin_dashboard.js" defer></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/js/all.min.js"></script>
-
-
+    <script>
+        document.getElementById('toggleSidebar').addEventListener('click', function() {
+            document.getElementById('sidebar').classList.toggle('show');
+        });
+    </script>
 </body>
 
 </html>

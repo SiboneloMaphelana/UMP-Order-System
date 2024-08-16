@@ -18,26 +18,26 @@
         <img src="../images/logo.png" alt="Logo" class="logo img-fluid rounded-circle">
       </div>
       <div class="card">
-      <?php if (isset($_SESSION['register_error'])) : ?>
-            <div class="alert alert-danger alert-dismissible fade show" role="alert">
-              <?php echo $_SESSION['register_error'];
-              unset($_SESSION['register_error']); ?>
-              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
-          <?php endif; ?>
+        <?php if (isset($_SESSION['register_error'])) : ?>
+          <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <?php echo $_SESSION['register_error'];
+            unset($_SESSION['register_error']); ?>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+          </div>
+        <?php endif; ?>
 
-          <?php if (isset($_SESSION['register_error']) && !empty($_SESSION['register_error'])) : ?>
-            <div class="alert alert-danger alert-dismissible fade show" role="alert">
-              <ul>
-                <?php foreach ($_SESSION['register_error'] as $error) : ?>
-                  <li><?php echo $error; ?></li>
-                <?php endforeach;
-                unset($_SESSION['register_error']); ?>
-              </ul>
-              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
-          <?php endif; ?>
-          <h2 class="card-title text-center">Registration Form</h2>
+        <?php if (isset($_SESSION['register_error']) && !empty($_SESSION['register_error'])) : ?>
+          <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <ul>
+              <?php foreach ($_SESSION['register_error'] as $error) : ?>
+                <li><?php echo $error; ?></li>
+              <?php endforeach;
+              unset($_SESSION['register_error']); ?>
+            </ul>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+          </div>
+        <?php endif; ?>
+        <h2 class="card-title text-center">Registration Form</h2>
         <div class="card-body">
           <form id="registrationForm" action="model/register_process.php" method="post" enctype="multipart/form-data">
             <div class="row mb-3">

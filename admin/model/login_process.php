@@ -17,7 +17,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             setcookie('admin_email', $email, time() + (86400 * 30), "/"); // 30 days expiration
             setcookie('admin_password', $password, time() + (86400 * 30), "/"); // 30 days expiration
         }
-        header("Location: ../dashboard.php");
+        header("Location: ../home.php");
     } else {
         $_SESSION['login_error'] = "Invalid email or password!";
         header("Location: ../login.php");
