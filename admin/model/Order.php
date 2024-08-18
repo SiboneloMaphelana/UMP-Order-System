@@ -159,12 +159,13 @@ class Order{
 
     public function getAllOrdersPaginated($page, $itemsPerPage) {
         $offset = ($page - 1) * $itemsPerPage;
-        $stmt = $this->conn->prepare("SELECT * FROM orders WHERE is_deleted = FALSE LIMIT ?, ?");
+        $stmt = $this->conn->prepare("SELECT * FROM orders WHERE is_deleted = FALSE ORDER BY order_date DESC LIMIT ?, ?");
         $stmt->bind_param("ii", $offset, $itemsPerPage);
         $stmt->execute();
         $result = $stmt->get_result();
         return $result->fetch_all(MYSQLI_ASSOC);
     }
+    
 
     public function countOrders() {
         $stmt = $this->conn->prepare("SELECT COUNT(*) AS total FROM orders WHERE is_deleted = FALSE");
@@ -243,6 +244,50 @@ class Order{
 
         return $orders;
     }
+    public function getTotalOrders($period) {
+        $query = '';
+        switch($period) {
+            case 'today':
+                $query = "SELECT COUNT(*) AS total FROM orders WHERE DATE(order_date) = CURDATE()";
+                break;
+            case 'week':
+                $query = "SELECT COUNT(*) AS total FROM orders WHERE WEEK(order_date) = WEEK(CURDATE())";
+                break;
+            case 'month':
+                $query = "SELECT COUNT(*) AS total FROM orders WHERE MONTH(order_date) = MONTH(CURDATE())";
+                break;
+        }
+        $stmt = $this->conn->query($query);
+        $result = $stmt->fetch_assoc();
+        return $result['total'];
+    }
+    
+    public function getTotalRevenue($period) {
+        $query = '';
+        switch($period) {
+            case 'today':
+                $query = "SELECT SUM(total_amount) AS revenue FROM orders WHERE DATE(order_date) = CURDATE() AND status = 'completed'";
+                break;
+            case 'week':
+                $query = "SELECT SUM(total_amount) AS revenue FROM orders WHERE WEEK(order_date) = WEEK(CURDATE()) AND status = 'completed'";
+                break;
+            case 'month':
+                $query = "SELECT SUM(total_amount) AS revenue FROM orders WHERE MONTH(order_date) = MONTH(CURDATE()) AND status = 'completed'";
+                break;
+        }
+        $stmt = $this->conn->query($query);
+        $result = $stmt->fetch_assoc();
+        return $result['revenue'];
+    }
+    
+    
+    public function getAverageOrderValue() {
+        $query = "SELECT AVG(total_amount) AS average FROM orders WHERE DATE(order_date) = CURDATE()";
+        $stmt = $this->conn->query($query);
+        $result = $stmt->fetch_assoc();
+        return $result['average'];
+    }
+    
     
 }
 

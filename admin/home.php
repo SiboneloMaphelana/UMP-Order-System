@@ -1,3 +1,10 @@
+<?php
+session_start();
+include_once("../connection/connection.php");
+include_once("model/Order.php");
+
+$order = new Order($conn);
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -22,62 +29,52 @@
             <p>Your central hub for managing the application.</p>
 
             <!-- KPIs Overview -->
-            <h2>KPI Overview</h2>
             <div class="row mb-4">
-                <div class="col-md-4">
-                    <div class="card bg-primary text-white mb-4">
-                        <div class="card-body">
-                            <h5 class="card-title">Total Orders</h5>
-                            <p class="card-text">Today: 45</p>
-                            <p class="card-text">This Week: 320</p>
-                            <p class="card-text">This Month: 1400</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="card bg-success text-white mb-4">
-                        <div class="card-body">
-                            <h5 class="card-title">Total Revenue</h5>
-                            <p class="card-text">Today: R1,200</p>
-                            <p class="card-text">This Week: R1,500</p>
-                            <p class="card-text">This Month: R36,000</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="card bg-warning text-white mb-4">
-                        <div class="card-body">
-                            <h5 class="card-title">Average Order Value</h5>
-                            <p class="card-text">R25.00</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="card bg-info text-white mb-4">
-                        <div class="card-body">
-                            <h5 class="card-title">New Customers</h5>
-                            <p class="card-text">Today: 8</p>
-                            <p class="card-text">This Week: 45</p>
-                            <p class="card-text">This Month: 200</p>
-                        </div>
-                    </div>
-                </div>
+    <div class="col-md-4">
+        <div class="card bg-primary text-white mb-4">
+            <div class="card-body">
+                <h5 class="card-title">Total Orders</h5>
+                <p class="card-text">Today: <?= $order->getTotalOrders('today'); ?></p>
+                <p class="card-text">This Week: <?= $order->getTotalOrders('week'); ?></p>
+                <p class="card-text">This Month: <?= $order->getTotalOrders('month'); ?></p>
             </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card bg-success text-white mb-4">
+            <div class="card-body">
+                <h5 class="card-title">Total Revenue</h5>
+                <p class="card-text">Today: R<?= number_format($order->getTotalRevenue('today'), 2); ?></p>
+                <p class="card-text">This Week: R<?= number_format($order->getTotalRevenue('week'), 2); ?></p>
+                <p class="card-text">This Month: R<?= number_format($order->getTotalRevenue('month'), 2); ?></p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card bg-warning text-white mb-4">
+            <div class="card-body">
+                <h5 class="card-title">Average Order Value</h5>
+                <p class="card-text">R<?= number_format($order->getAverageOrderValue(), 2); ?></p>
+            </div>
+        </div>
+    </div>
+</div>
+
 
             <!-- Quick Links -->
             <h2>Quick Links</h2>
             <div class="row mb-4">
                 <div class="col-md-3">
-                    <a class="btn btn-primary btn-block" href="#"><i class="fas fa-plus"></i> Add Menu Item</a>
+                    <a class="btn btn-primary btn-block" href="add_menu.php"><i class="fas fa-plus"></i> Add Menu Item</a>
                 </div>
                 <div class="col-md-3">
-                    <a class="btn btn-success btn-block" href="#"><i class="fas fa-list"></i> View Orders</a>
+                    <a class="btn btn-success btn-block" href="orders.php"><i class="fas fa-list"></i> View Orders</a>
                 </div>
                 <div class="col-md-3">
-                    <a class="btn btn-warning btn-block" href="#"><i class="fas fa-users"></i> Manage Users</a>
+                    <a class="btn btn-warning btn-block" href="users.php"><i class="fas fa-users"></i> Manage Users</a>
                 </div>
                 <div class="col-md-3">
-                    <a class="btn btn-info btn-block" href="#"><i class="fas fa-cogs"></i> Settings</a>
+                    <a class="btn btn-info btn-block" href="settings.php"><i class="fas fa-cogs"></i> Settings</a>
                 </div>
             </div>
 
@@ -107,7 +104,7 @@
             <!-- Footer -->
             <footer class="footer mt-auto py-3 bg-dark text-light">
                 <div class="container text-center">
-                    <span>&copy; 2024 Your Company. All rights reserved.</span>
+                    <span>&copy; 2024 TechCafe Solutions. All rights reserved.</span>
                 </div>
             </footer>
         </div>
