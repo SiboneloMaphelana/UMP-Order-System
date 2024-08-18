@@ -81,6 +81,7 @@ document.addEventListener('DOMContentLoaded', function () {
         document.getElementById('surnameError').textContent = '';
         document.getElementById('emailError').textContent = '';
         document.getElementById('roleError').textContent = '';
+        document.getElementById('phoneError').textContent = '';
         passwordMatch.textContent = '';
 
         // Validate name
@@ -111,6 +112,15 @@ document.addEventListener('DOMContentLoaded', function () {
         const isEmailValid = validator.isEmail(email);
         if (!isEmailValid) {
             document.getElementById('emailError').textContent = 'Please enter a valid email address.';
+            isValid = false;
+        }
+
+        // Validate phone
+        const phoneInput = document.getElementById('phone');
+        const phone = phoneInput.value;
+        const countryCode = phoneInput.dataset.countryCode || 'ZA';  // Default to South Africa
+        if (!phone.match(/^\+?[0-9]{10,}$/)) {  // Basic validation for phone numbers
+            document.getElementById('phoneError').textContent = 'Please enter a valid phone number.';
             isValid = false;
         }
 

@@ -57,7 +57,14 @@ class Order{
         $stmt->bind_param('s', $id);
         $stmt->execute();
         $result = $stmt->get_result();
-        return $result->fetch_assoc();
+        $customer = $result->fetch_assoc();
+    
+        // Ensure the phone number has a '+' prefix if it doesn't already
+        if ($customer && $customer['phone'] && $customer['phone'][0] !== '+') {
+            $customer['phone'] = '+' . $customer['phone'];
+        }
+    
+        return $customer;
     }
 
     public function updateOrderStatus(string $order_id, string $new_status): bool {

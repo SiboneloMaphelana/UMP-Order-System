@@ -76,6 +76,13 @@ session_start();
                             </div>
                             <div class="row mb-3">
                                 <div class="col-12 col-md-6">
+                                    <label for="phone" class="form-label">Phone</label>
+                                    <input type="tel" class="form-control" id="phone" name="phone" placeholder="Enter Phone">
+                                    <div id="phoneError" class="text-danger mt-2"></div>
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-12 col-md-6">
                                     <label for="password" class="form-label">Password</label>
                                     <div class="input-group">
                                         <input type="password" class="form-control" id="password" name="password" aria-label="Password" aria-describedby="togglePassword" placeholder="Enter Password">

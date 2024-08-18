@@ -1,5 +1,8 @@
 <?php
-
+include_once("../vendor/autoload.php");
+use libphonenumber\PhoneNumberUtil;
+use libphonenumber\PhoneNumberFormat;
+use libphonenumber\NumberParseException;
 class User {
     private $conn;
 
@@ -13,9 +16,30 @@ class User {
         $sanitizedData['surname'] = filter_var($data['surname'], FILTER_SANITIZE_FULL_SPECIAL_CHARS);
         $sanitizedData['email'] = filter_var($data['email'], FILTER_SANITIZE_EMAIL);
         $sanitizedData['role'] = filter_var($data['role'], FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+        $sanitizedData['phone'] = $this->formatPhoneNumber($data['phone']); // Format phone number
         $sanitizedData['password'] = password_hash($data['password'], PASSWORD_DEFAULT);
         return $sanitizedData;
     }
+    
+    public function formatPhoneNumber($phone): ?string {
+        $phoneUtil = PhoneNumberUtil::getInstance();
+        try {
+            // Use the country code from the phone input data if available
+            $defaultCountryCode = 'ZA'; // Default to South Africa
+            $countryCode = isset($phoneInput['countryCode']) ? $phoneInput['countryCode'] : $defaultCountryCode;
+            $parsedPhone = $phoneUtil->parse($phone, $countryCode);
+            if ($phoneUtil->isValidNumber($parsedPhone)) {
+                return $phoneUtil->format($parsedPhone, PhoneNumberFormat::E164);
+            }
+        } catch (NumberParseException $e) {
+            // Handle parsing error
+        }
+        return null; // Return null if phone number is not valid
+    }
+    
+
+
+
     public function userExists(string $email): bool {
         $stmt = $this->conn->prepare('SELECT COUNT(*) FROM users WHERE email = ?');
         $stmt->bind_param('s', $email);
@@ -30,8 +54,8 @@ class User {
         if ($this->userExists($sanitizedData['email'])) {
             return false;
         }
-        $stmt = $this->conn->prepare('INSERT INTO users (name, surname, role, email, password) VALUES (?, ?, ?, ?, ?)');
-        $stmt->bind_param('sssss', $sanitizedData['name'], $sanitizedData['surname'], $sanitizedData['role'] ,$sanitizedData['email'], $sanitizedData['password']);
+        $stmt = $this->conn->prepare('INSERT INTO users (name, surname, role, phone, email, password) VALUES (?, ?, ?, ?, ?, ?)');
+        $stmt->bind_param('sssiss', $sanitizedData['name'], $sanitizedData['surname'], $sanitizedData['role'], $sanitizedData['phone'] ,$sanitizedData['email'], $sanitizedData['password']);
         return $stmt->execute();
     }
 
@@ -46,6 +70,7 @@ class User {
         }
 
         if (empty($data['role'])) $errors['role'] = "Role is required.";
+        if (empty($data['phone'])) $errors['phone'] = "Phone is required.";
         
         if (empty($data['password'])) {
             $errors['password'] = "Password is required.";
