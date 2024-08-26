@@ -194,7 +194,7 @@ class Food
             }
         } catch (Exception $e) {
             error_log("Exception caught: " . $e->getMessage());
-            return false; // Return false or handle as needed
+            return false; 
         }
     }
 

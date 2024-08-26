@@ -30,35 +30,35 @@ $order = new Order($conn);
 
             <!-- KPIs Overview -->
             <div class="row mb-4">
-    <div class="col-md-4">
-        <div class="card bg-primary text-white mb-4">
-            <div class="card-body">
-                <h5 class="card-title">Total Orders</h5>
-                <p class="card-text">Today: <?= $order->getTotalOrders('today'); ?></p>
-                <p class="card-text">This Week: <?= $order->getTotalOrders('week'); ?></p>
-                <p class="card-text">This Month: <?= $order->getTotalOrders('month'); ?></p>
+                <div class="col-md-4">
+                    <div class="card bg-primary text-white mb-4">
+                        <div class="card-body">
+                            <h5 class="card-title">Total Orders</h5>
+                            <p class="card-text">Today: <?= $order->getTotalOrders('today'); ?></p>
+                            <p class="card-text">This Week: <?= $order->getTotalOrders('week'); ?></p>
+                            <p class="card-text">This Month: <?= $order->getTotalOrders('month'); ?></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card bg-success text-white mb-4">
+                        <div class="card-body">
+                            <h5 class="card-title">Total Revenue</h5>
+                            <p class="card-text">Today: R<?= number_format($order->getTotalRevenue('today'), 2); ?></p>
+                            <p class="card-text">This Week: R<?= number_format($order->getTotalRevenue('week'), 2); ?></p>
+                            <p class="card-text">This Month: R<?= number_format($order->getTotalRevenue('month'), 2); ?></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card bg-warning text-white mb-4">
+                        <div class="card-body">
+                            <h5 class="card-title">Average Order Value</h5>
+                            <p class="card-text">R<?= number_format($order->getAverageOrderValue(), 2); ?></p>
+                        </div>
+                    </div>
+                </div>
             </div>
-        </div>
-    </div>
-    <div class="col-md-4">
-        <div class="card bg-success text-white mb-4">
-            <div class="card-body">
-                <h5 class="card-title">Total Revenue</h5>
-                <p class="card-text">Today: R<?= number_format($order->getTotalRevenue('today'), 2); ?></p>
-                <p class="card-text">This Week: R<?= number_format($order->getTotalRevenue('week'), 2); ?></p>
-                <p class="card-text">This Month: R<?= number_format($order->getTotalRevenue('month'), 2); ?></p>
-            </div>
-        </div>
-    </div>
-    <div class="col-md-4">
-        <div class="card bg-warning text-white mb-4">
-            <div class="card-body">
-                <h5 class="card-title">Average Order Value</h5>
-                <p class="card-text">R<?= number_format($order->getAverageOrderValue(), 2); ?></p>
-            </div>
-        </div>
-    </div>
-</div>
 
 
             <!-- Quick Links -->
@@ -82,23 +82,7 @@ $order = new Order($conn);
             <h2>Notifications</h2>
             <div id="notifications">
                 <!-- Low stock alerts will be inserted here -->
-                <?php
-                $lowStockItems = [
-                    ['item' => 'Item A', 'quantity' => 5],
-                    ['item' => 'Item B', 'quantity' => 2]
-                ];
-
-                if (!empty($lowStockItems)) {
-                    echo '<div class="alert alert-danger" role="alert">';
-                    echo '<h4 class="alert-heading">Low Stock Alert!</h4>';
-                    echo '<ul>';
-                    foreach ($lowStockItems as $item) {
-                        echo '<li>' . htmlspecialchars($item['item']) . ' is low in stock. Only ' . htmlspecialchars($item['quantity']) . ' left.</li>';
-                    }
-                    echo '</ul>';
-                    echo '</div>';
-                }
-                ?>
+                
             </div>
 
             <!-- Footer -->

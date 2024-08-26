@@ -1,9 +1,9 @@
 <?php
 session_start();
 include_once("../connection/connection.php");
-include_once("model/Order.php"); // Include your Food class file
+include_once("model/Order.php"); 
 
-// Initialize Order class with database connection
+
 $food = new Order($conn);
 
 // Check if order ID is provided in the query string

@@ -37,7 +37,7 @@ class Admin {
     public function signup(array $data): bool {
         $sanitizedData = $this->sanitizeUserDetails($data);
         $sanitizedData['password'] = password_hash($data['password'], PASSWORD_DEFAULT);
-        $sanitizedData['role'] = isset($data['role']) ? $data['role'] : 'admin'; // Default role if not provided
+        $sanitizedData['role'] = isset($data['role']) ? $data['role'] : 'staff'; // Default role if not provided
     
         if ($this->userExists($sanitizedData['email'])) {
             return false; // User with this email already exists
@@ -84,7 +84,7 @@ class Admin {
         if ($row && password_verify($password, $row['password'])) {
             session_start();
             $_SESSION['id'] = $row['id'];
-            $_SESSION['role'] = $row['role']; 
+            $_SESSION['role'] = $row['role'];
             return true;
         }
         return false;

@@ -59,7 +59,7 @@ class Order{
         $result = $stmt->get_result();
         $customer = $result->fetch_assoc();
     
-        // Ensure the phone number has a '+' prefix if it doesn't already
+        // Ensure the phone number has a '+' prefix if it does not have it
         if ($customer && $customer['phone'] && $customer['phone'][0] !== '+') {
             $customer['phone'] = '+' . $customer['phone'];
         }

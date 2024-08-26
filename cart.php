@@ -39,7 +39,7 @@ $isLoggedIn = isset($_SESSION['id']);
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
     <link rel="stylesheet" href="css/new.css">
     <style>
-        /* Ensure the main content is pushed down below the navigation */
+        /* Ensures the main content is pushed down below the navigation */
         .main-content {
             margin-top: 125px;
         }

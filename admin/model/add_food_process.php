@@ -23,7 +23,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } else {
         $errorMessage = "Failed to add food item: $result";
         $_SESSION['error'] = "Failed to add food item";
-        header('Location: ../add_food.php?error=' . urlencode($errorMessage));
+        header('Location: ../add_food.php?error=');
         exit();
     }
 } else {

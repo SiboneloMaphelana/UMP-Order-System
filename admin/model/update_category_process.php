@@ -50,7 +50,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         exit;
     } else {
         $_SESSION['error'] = "Failed to update category. Please try again.";
-        header("Location: ../update_category.php?id=" . urlencode($categoryId));
+        header("Location: ../update_category.php");
         exit;
     }
 } else {

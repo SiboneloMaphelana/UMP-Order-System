@@ -1,86 +1,85 @@
 body {
-    background-color: #353D55;
-  }
-  
-  .container-fluid {
-    height: 100vh; /* Full viewport height */
-    display: flex;
-    align-items: center; /* Center vertically */
-    justify-content: center; /* Center horizontally */
-    padding: 0; /* Remove default padding */
-  }
-  
-  .main-content {
-    width: 100%;
-    max-width: 500px; /* Max width for smaller devices */
-    margin: 0 auto; /* Center horizontally */
-    padding: 1.5rem; /* Padding around the content */
-  }
-  
-  .card {
-    border-radius: 0.5rem;
-    padding: 1.5rem; /* Add padding inside the card */
-  }
-  
-  .input-group {
-    position: relative;
-  }
-  
-  .input-group .form-control {
-    padding-right: 2.5rem; /* Space for the eye icon */
-  }
-  
+  background-color: #353d55;
+}
+
+.container-fluid {
+  height: 100vh;
+  display: flex;
+  align-items: center; /* Center vertically */
+  justify-content: center; /* Center horizontally */
+  padding: 0; /* Remove default padding */
+}
+
+.main-content {
+  width: 100%;
+  max-width: 500px; /* Max width for smaller devices */
+  margin: 0 auto; /* Center horizontally */
+  padding: 1.5rem; /* Padding around the content */
+}
+
+.card {
+  border-radius: 0.5rem;
+  padding: 1.5rem; /* Add padding inside the card */
+}
+
+.input-group {
+  position: relative;
+}
+
+.input-group .form-control {
+  padding-right: 2.5rem; /* Space for the eye icon */
+}
+
+.input-group .eye-icon {
+  position: absolute;
+  top: 50%;
+  right: 0.75rem;
+  transform: translateY(-50%);
+  z-index: 1;
+  cursor: pointer;
+}
+
+/* Smaller devices */
+@media (max-width: 576px) {
   .input-group .eye-icon {
-    position: absolute;
-    top: 50%;
-    right: 0.75rem;
-    transform: translateY(-50%);
-    z-index: 1;
-    cursor: pointer;
+    right: 0.5rem;
   }
-  
-  @media (max-width: 576px) {
-    .input-group .eye-icon {
-      right: 0.5rem;
-    }
-  
-    .main-content {
-      padding: 1rem; /* Adjust padding for small devices */
-    }
-  
-    .card-body {
-      padding: 1.5rem; /* Adjust padding inside the card body */
-    }
-  
-    .btn-rounded {
-      font-size: 0.9rem; /* Smaller button text on small screens */
-    }
+
+  .main-content {
+    padding: 1rem; 
   }
-  
+
   .card-body {
-    padding: 2rem; /* Padding inside the card body */
+    padding: 1.5rem; 
   }
-  
+
   .btn-rounded {
-    border-radius: 50px; /* Rounded button */
-    font-size: 1rem; /* Default font size for buttons */
+    font-size: 0.9rem; 
   }
-  
-  @media (max-width: 768px) {
-    .btn-rounded {
-      font-size: 0.9rem; /* Smaller button text for medium screens */
-    }
+}
+
+.card-body {
+  padding: 2rem; /* Padding inside the card body */
+}
+
+.btn-rounded {
+  border-radius: 50px; /* Rounded button */
+  font-size: 1rem; /* Default font size for buttons */
+}
+
+@media (max-width: 768px) {
+  .btn-rounded {
+    font-size: 0.9rem; /* Smaller button text for medium screens */
   }
-  
-  .card-text {
-    margin-bottom: 2rem; /* Space below the paragraph */
-    text-align: center; /* Center the text */
-  }
-  
-  .logo {
-    max-width: 100%; /* Ensure the logo scales with the container */
-    height: auto; /* Maintain aspect ratio */
-    max-height: 150px; /* Limit height to prevent oversized logos */
-    margin-bottom: 1.5rem; /* Add spacing below the logo */
-  }
-  
+}
+
+.card-text {
+  margin-bottom: 2rem;
+}
+
+.logo {
+  max-width: 100%; /* Ensure the logo scales with the container */
+  height: auto; /* Maintain aspect ratio */
+  max-height: 150px; 
+  margin-bottom: 1.5rem; 
+}

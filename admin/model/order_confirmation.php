@@ -103,10 +103,8 @@ try {
     // Rollback transaction on error
     mysqli_rollback($conn);
 
-    // Log the exception
-    error_log('Exception caught in place_order.php: ' . $e->getMessage());
+    error_log('Exception caught: ' . $e->getMessage());
 
-    // Set error message and redirect
     $_SESSION['error'] = "Failed to place order: " . $e->getMessage();
     header("Location: ../../cart.php");
     exit();

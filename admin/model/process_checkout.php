@@ -66,7 +66,7 @@ try {
             'notify_url' => 'http://localhost/UMP-Order-System/notify.php',
             'm_payment_id' => uniqid(), // Unique payment ID to identify the payment
             'amount' => number_format($totalAmount, 2, '.', ''),
-            'item_name' => 'Order #' . uniqid(), // Generic order name for cases of multiple products ordered
+            'item_name' => 'Order #' . uniqid(), // Used to identify the order for multiple items
             'item_description' => $itemDescription,
             'custom_str1' => $itemDescription,
         );

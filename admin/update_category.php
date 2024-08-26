@@ -64,12 +64,12 @@ if (isset($_GET['id']) && !empty($_GET['id'])) {
 
   } else {
     // Redirect if the category does not exist
-    header("Location: all_categories.php?error=" . urlencode("Category with ID $categoryId does not exist."));
+    header("Location: all_categories.php");
     exit;
   }
 } else {
   // Redirect if categoryId is not set or empty
-  header("Location: all_categories.php?error=" . urlencode("Invalid category ID."));
+  header("Location: all_categories.php");
   exit;
 }
 ?>

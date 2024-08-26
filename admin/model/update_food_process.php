@@ -24,9 +24,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     // Check if the food item exists
     if (!$foodModel->foodItemExists($id)) {
-        // Redirect with error message
         $_SESSION['error'] = "Food item with ID $id does not exist.";
-        header("Location: ../update_food.php?id=" . urlencode($id));
+        header("Location: ../update_food.php");
         exit;
     }
 
@@ -44,7 +43,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         } else {
             // Redirect with error message
             $_SESSION['error'] = "Error uploading image.";
-            header("Location: ../update_food.php?id=" . urlencode($id));
+            header("Location: ../update_food.php");
             exit;
         }
     } else {
@@ -61,7 +60,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     } else {
         // Redirect with error message
         $_SESSION['error'] = "Error updating food item: " . $updateResult;
-        header("Location: ../update_food.php?id=" . urlencode($id));
+        header("Location: ../update_food.php");
         exit;
     }
 } else {

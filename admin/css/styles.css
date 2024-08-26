@@ -9,18 +9,18 @@ body {
   background-color: #343a40;
   color: #fff;
   transition: transform 0.3s ease;
-  transform: translateX(0); /* Sidebar is visible by default */
+  transform: translateX(0); 
   position: fixed;
   top: 0;
   bottom: 0;
   left: 0;
-  width: 300px; /* Adjusted width */
-  height: 100vh; /* Full height of the viewport */
+  width: 300px; 
+  height: 100vh; 
   z-index: 1000;
   overflow-y: auto;
   display: flex;
   flex-direction: column;
-  justify-content: space-between; /* Space between items and push profile to the bottom */
+  justify-content: space-between; 
 }
 
 #sidebar .nav-link {
@@ -39,16 +39,17 @@ body {
 
 #content {
   flex: 1;
-  margin-left: 300px; /* Adjust this to match sidebar width */
+  margin-left: 300px; 
   padding: 20px;
-  padding-top: 20px; /* Padding to account for content */
+  padding-top: 20px; 
   transition: margin-left 0.3s ease;
 }
 
+/* Media Queries  for smaller screens */
 @media (max-width: 992px) {
   #sidebar {
     width: 50%;
-    transform: translateX(-100%); /* Hide sidebar off-screen by default */
+    transform: translateX(-100%); 
     position: fixed;
     top: 0;
     bottom: 0;
@@ -61,14 +62,14 @@ body {
 
   #content {
     margin-left: 0;
-    padding-top: 20px; /* Adjusted padding for smaller devices */
+    padding-top: 20px; 
   }
 }
 
 #sidebar .navbar-brand img {
-  max-width: 100px; /* Adjust width as needed */
-  height: auto; /* Maintain aspect ratio */
-  padding: 10px; /* Add padding for spacing */
+  max-width: 100px;
+  height: auto; 
+  padding: 10px; 
   display: block;
   margin: 0 auto; /* Center the image */
 }

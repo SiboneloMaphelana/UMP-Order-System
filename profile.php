@@ -28,7 +28,7 @@ if (!$userDetails) {
   <style>
     /* Adjust margin to ensure content is pushed down below the navigation */
     .main-content {
-        margin-top: 100px; /* Adjust this value based on your navigation height */
+        margin-top: 100px;
     }
   </style>
 </head>

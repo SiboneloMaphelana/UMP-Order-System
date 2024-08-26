@@ -63,7 +63,7 @@ password.addEventListener("input", function () {
   passwordStrength.style.color = strengthColor;
 });
 
-// Real-time confirm password validation
+
 confirmPassword.addEventListener("input", function () {
   const confirmPasswordValue = confirmPassword.value;
   const passwordValue = password.value;
@@ -78,7 +78,7 @@ confirmPassword.addEventListener("input", function () {
 
 // Form submission
 registrationForm.addEventListener("submit", function (event) {
-  let valid = true; // Assume the form is valid initially
+  let valid = true;
 
   // Email validation
   const emailValue = email.value;
@@ -106,10 +106,10 @@ registrationForm.addEventListener("submit", function (event) {
   // Phone number validation
   const phoneNumberValue = phoneNumber.value;
 
-  // South African phone number regex
-  const saPhoneNumberRegex = /^(?:\+27|0)[6-9]\d{8}$/;
+ 
+  const phoneNumberRegex = /^(?:\+27|0)[6-9]\d{8}$/;
 
-  if (!saPhoneNumberRegex.test(phoneNumberValue)) {
+  if (!phoneNumberRegex.test(phoneNumberValue)) {
     phoneNumberError.textContent = "Invalid phone number";
     valid = false; // Set valid to false if phone number is invalid
   } else {

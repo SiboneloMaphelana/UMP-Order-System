@@ -5,7 +5,7 @@ html {
   background-color: #353D55;
 }
 .container {
-  min-height: 100vh; /* Ensure container takes full viewport height */
+  min-height: 100vh; 
 }
 .logo {
   max-width: 150px;

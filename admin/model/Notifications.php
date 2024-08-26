@@ -54,18 +54,17 @@ class Notifications
 
     public function orderPlacementSMS($phone, $orderDetails)
 {
-    // Check if $phone and $orderDetails are valid
+    // Check if phone and orderDetails are valid
     if (is_null($phone) || empty($phone)) {
         error_log("Error: Phone number is missing.");
-        return false; // Indicate failure
+        return false;
     }
 
     if (is_null($orderDetails) || !isset($orderDetails['id'])) {
         error_log("Error: Order details are missing.");
-        return false; // Indicate failure
+        return false;
     }
 
-    // Construct the message
     $messageText = "Thank you for your order. Your order number is " . $orderDetails['id'];
 
     // Environment configurations
@@ -73,11 +72,11 @@ class Notifications
     $api_key = $_ENV['API_KEY'];
 
     try {
-        // Configure the SMS API
+        // SMS API
         $config = new Configuration(host: $base_url, apiKey: $api_key);
         $api = new SmsApi($config);
 
-        // Set the destination and message
+        // destination and message
         $destination = new SmsDestination(to: $phone);
         $message = new SmsTextualMessage(
             destinations: [$destination],
@@ -90,16 +89,14 @@ class Notifications
 
         // Check if the response indicates success
         if ($response) {
-            return true; // Indicate success
+            return true;
         } else {
-            // Log the response for debugging purposes
-            error_log("SMS API Response: " . print_r($response, true));
-            return false; // Indicate failure
+            error_log("SMS  Response: " . print_r($response, true));
+            return false;
         }
     } catch (Exception $e) {
-        // Log any exceptions for debugging
         error_log("Exception occurred: " . $e->getMessage());
-        return false; // Indicate failure
+        return false;
     }
 }
 

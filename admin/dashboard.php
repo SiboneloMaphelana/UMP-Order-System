@@ -33,7 +33,7 @@ $inventoryReport = $report->getInventoryReport();
         </button>
         <div class="container mt-4">
             <h1>Welcome to the Admin Dashboard</h1>
-            <h1>WILL CONTAIN GRAPHICS AND ANALYTICS MORE TO COME</h1>
+            <h1>WILL CONTAIN GRAPHICS</h1>
             <main class="row overflow-auto">
                 <h2 class="mb-4">Reports</h2>
 
