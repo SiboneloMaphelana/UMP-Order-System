@@ -202,7 +202,7 @@ class Notifications
         <p style='text-align: center; color: #004080;'>Best Regards,<br>TechCafe Solutions</p>
     </div>";
 
-        $altBody = "Dear " . htmlspecialchars($customer['name']) . ",\n\nYour order #{$orderDetails['order_id']} has been placed successfully.\n\nOrder Date: {$orderDate}\n\nOrdered Items:\n";
+        $altBody = "Dear " . htmlspecialchars($customer['name']) . ",\n\nYour order #{$orderDetails['id']} has been placed successfully.\n\nOrder Date: {$orderDate}\n\nOrdered Items:\n";
 
         foreach ($orderItems as $item) {
             $altBody .= "{$item['name']} - Quantity: {$item['quantity']} - Price: R" . number_format($item['price'], 2) . "\n";

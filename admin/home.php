@@ -71,7 +71,7 @@ $order = new Order($conn);
                     <a class="btn btn-success btn-block" href="orders.php"><i class="fas fa-list"></i> View Orders</a>
                 </div>
                 <div class="col-md-3">
-                    <a class="btn btn-warning btn-block" href="users.php"><i class="fas fa-users"></i> Manage Users</a>
+                    <a class="btn btn-warning btn-block" href="customers.php"><i class="fas fa-users"></i> Manage Users</a>
                 </div>
                 <div class="col-md-3">
                     <a class="btn btn-info btn-block" href="settings.php"><i class="fas fa-cogs"></i> Settings</a>

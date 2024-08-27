@@ -3,7 +3,7 @@ include_once("../../connection/connection.php");
 include("../../model/User.php");
 include("Order.php");
 include("Notifications.php");
-header( 'HTTP/1.0 200 OK' );
+header('HTTP/1.0 200 OK');
 flush();
 // Ensure the script is receiving POST data from PayFast
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -60,6 +60,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             // Send SMS notification if phone number is available
             if ($customer['phone']) {
                 $notifications->orderPlacementSMS($customer['phone'], $orderDetails);
+            }
+        }else{
+            if ($payfastData['custom_str3']) {
+                $notifications->orderPlacementSMS($payfastData['custom_str3'], $orderDetails);
             }
         }
     } else {
