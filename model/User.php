@@ -1,5 +1,4 @@
 <?php
-include_once("../vendor/autoload.php");
 use libphonenumber\PhoneNumberUtil;
 use libphonenumber\PhoneNumberFormat;
 use libphonenumber\NumberParseException;

@@ -105,8 +105,8 @@ try {
 
     error_log('Exception caught: ' . $e->getMessage());
 
-    $_SESSION['error'] = "Failed to place order: " . $e->getMessage();
-    header("Location: ../../cart.php");
+    error_log('Order not found: ' . $e->getMessage());
+    header("Location: https://001e-105-4-4-32.ngrok-free.app/UMP-Order-System/cart.php");
     exit();
 } finally {
     if (isset($orderQuery)) {

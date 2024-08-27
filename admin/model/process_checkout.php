@@ -13,7 +13,7 @@ $dotenv->load();
 function handleError($message)
 {
     $_SESSION['error'] = $message;
-    header("Location: ../../checkout.php");
+    header("Location: https://001e-105-4-4-32.ngrok-free.app/UMP-Order-System/checkout.php");
     exit();
 }
 
@@ -56,21 +56,43 @@ try {
         $merchantId = $_ENV['MERCHANT_ID'];
         $merchantKey = $_ENV['MERCHANT_KEY'];
         $payfastUrl = $_ENV['PAYFAST_URL'];
-
+    
+        // Store order in database and retrieve the orderId
+        $orderId = $food->addOrder($userId, $totalAmount, $paymentMethod);
+    
+        if (!$orderId) {
+            throw new Exception("Error adding order.");
+        }
+    
+        // Insert order items into database
+        foreach ($cartItems as $item) {
+            $result = $food->addOrderItem($orderId, $item['food_id'], $item['quantity'], $item['price']);
+            if (!$result) {
+                throw new Exception("Error adding order items.");
+            }
+        }
+    
+        // Clear the cart
+        unset($_SESSION['cart']);
+    
+        // Store orderId in session for later use if needed
+        $_SESSION['orderId'] = $orderId;
+    
         // PayFast payment data
         $payfastData = array(
             'merchant_id' => $merchantId,
             'merchant_key' => $merchantKey,
-            'return_url' => 'http://localhost/UMP-Order-System/order_confirmation.php',
-            'cancel_url' => 'http://localhost/UMP-Order-System/index.php',
-            'notify_url' => 'http://localhost/UMP-Order-System/notify.php',
-            'm_payment_id' => uniqid(), // Unique payment ID to identify the payment
+            'return_url' => 'https://001e-105-4-4-32.ngrok-free.app/UMP-Order-System/order_confirmation.php',
+            'cancel_url' => 'https://001e-105-4-4-32.ngrok-free.app/UMP-Order-System/index.php',
+            'notify_url' => 'https://001e-105-4-4-32.ngrok-free.app/UMP-Order-System/admin/model/notify.php',
+            'm_payment_id' => $orderId, // Order ID from database will be used as the item name
             'amount' => number_format($totalAmount, 2, '.', ''),
-            'item_name' => 'Order #' . uniqid(), // Used to identify the order for multiple items
+            'item_name' => 'Order #' . $orderId, // Order ID from database will be used as the item name
             'item_description' => $itemDescription,
             'custom_str1' => $itemDescription,
+            'custom_str2' => $userId
         );
-
+    
         // Generate signature for PayFast
         ksort($payfastData); // Ensure data is sorted by keys
         $signatureString = '';
@@ -80,65 +102,13 @@ try {
         $signatureString = rtrim($signatureString, '&');
         $signature = md5($signatureString);
         $payfastData['signature'] = $signature;
-
-        // Store order in database
-        $orderId = $food->addOrder($userId, $totalAmount, $paymentMethod);
-
-        if (!$orderId) {
-            throw new Exception("Error adding order.");
-        }
-
-        // Insert order items into database
-        foreach ($cartItems as $item) {
-            $result = $food->addOrderItem($orderId, $item['food_id'], $item['quantity'], $item['price']);
-            if (!$result) {
-                throw new Exception("Error adding order items.");
-            }
-        }
-
-        // Retrieve order details
-        $orderDetails = $food->getOrderById($orderId);
-        $orderItems = $food->getOrderItems($orderId);
-
-        // Send order completion email and SMS
-        if (!$isGuest) {
-            // For logged-in users
-            $customer = $food->getCustomerById($userId);
-            $emailSent = $notifications->orderPlacementEmail($orderDetails, $customer, $orderItems);
-
-            // Send SMS notification if phone number is available
-            if ($customer['phone']) {
-                $smsSent = $notifications->orderPlacementSMS($customer['phone'], $orderDetails);
-                if (!$smsSent) {
-                    throw new Exception("Failed to send SMS notification.");
-                }
-            }
-
-            if (!$emailSent) {
-                throw new Exception("Failed to send order completion email.");
-            }
-        } else {
-            // For guests
-            // Send SMS notification if phone number is available
-            if ($guestPhone) {
-                $smsSent = $notifications->orderPlacementSMS($guestPhone, $orderDetails);
-                if (!$smsSent) {
-                    throw new Exception("Failed to send SMS notification.");
-                }
-            }
-        }
-
-        // Clear the cart
-        unset($_SESSION['cart']);
-
-        // Store orderId in session
-        $_SESSION['orderId'] = $orderId;
-
+    
         // Redirect to PayFast payment page
         $queryString = http_build_query($payfastData);
         header("Location: $payfastUrl?$queryString");
         exit();
-    } else if ($paymentMethod == 'cash on collection') {
+    }
+     else if ($paymentMethod == 'cash on collection') {
         // Handle Cash on Collection payment method
         $orderId = $food->addOrder($userId, $totalAmount, $paymentMethod);
 
@@ -193,7 +163,7 @@ try {
         $_SESSION['orderId'] = $orderId;
 
         // Redirect to order confirmation page
-        header("Location: ../../order_confirmation.php");
+        header("Location: https://001e-105-4-4-32.ngrok-free.app/UMP-Order-System/order_confirmation.php");
         exit();
     } else {
         throw new Exception("Invalid payment method.");
