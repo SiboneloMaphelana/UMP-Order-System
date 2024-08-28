@@ -74,6 +74,7 @@ $groupedCanceledOrders = groupOrdersByDate($canceledOrders);
                                                 <div class="card mb-3">
                                                     <div class="card-body">
                                                         <h5 class="card-title">Order Details</h5>
+                                                        <p class="card-text"><strong>Order ID:</strong> <?php echo $order['id']; ?></p>
                                                         <p class="card-text"><strong>Total Amount:</strong> R<?php echo number_format($order['total_amount'], 2); ?></p>
                                                         <p class="card-text"><strong>Status:</strong> <span class="badge <?php echo getStatusBadgeClass($order['status']); ?>"><?php echo strtoupper($order['status']); ?></span></p>
                                                         <p class="card-text"><strong>Food Items:</strong> <?php echo htmlspecialchars($order['food_items']); ?></p>

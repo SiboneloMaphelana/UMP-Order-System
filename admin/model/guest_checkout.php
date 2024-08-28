@@ -1,34 +1,178 @@
 <?php
-// Start session if not already started
-if (session_status() == PHP_SESSION_NONE) {
-    session_start();
+session_start();
+include_once("../../connection/connection.php");
+include("../../model/User.php");
+include("Order.php");
+include("Notifications.php");
+
+require '../../vendor/autoload.php';
+$dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
+$dotenv->load();
+// Define global variables for the base URL
+$baseUrl = "https://688f-41-13-76-227.ngrok-free.app";
+$payfastNotifyUrl = $baseUrl . "/UMP-Order-System/admin/model/notify.php";
+$payfastReturnUrl = $baseUrl . "/UMP-Order-System/order_confirmation.php";
+$payfastCancelUrl = $baseUrl . "/UMP-Order-System/index.php";
+
+// Function to handle errors
+function handleError($message, $baseUrl)
+{
+    $_SESSION['error'] = $message;
+    header("Location: " . $baseUrl . "/UMP-Order-System/checkout.php");
+    exit();
 }
 
-// Include connection and model files
-include_once("../../connection/connection.php");
-include_once("admin/model/Food.php");
+try {
+    // Check if cart is set in session
+    if (!isset($_SESSION['cart']) || empty($_SESSION['cart'])) {
+        throw new Exception("Cart is empty or session expired.");
+    }
 
-// Check if the form was submitted
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['guest_checkout'])) {
-    // Get the guest phone number from the form
-    $guestPhone = trim($_POST['guest_phone']);
+    // Check if the user is logged in or a guest
+    $isGuest = !isset($_SESSION['id']); // Check if the user is not logged in
+    $userId = $isGuest ? null : $_SESSION['id']; // Set userId to null if guest
 
-    // Validate the phone number format
-    if (preg_match("/^\+27[0-9]{9}$/", $guestPhone)) {
-        // Store the guest phone number in the session
-        $_SESSION['guest_phone'] = $guestPhone;
+    // Retrieve form data
+    $paymentMethod = isset($_POST['payment_method']) ? $_POST['payment_method'] : '';
+    $totalAmount = $_SESSION['subtotal'] > 0.0 ? $_SESSION['subtotal'] : 0.0;
+    $cartItems = $_SESSION['cart'];
 
-        // Redirect to checkout page
-        header("Location: https://7ab7-105-0-2-186.ngrok-free.app/UMP-Order-System/checkout.php");
+    // Retrieve phone number from session
+    $guestPhone = isset($_SESSION['guest_phone']) ? $_SESSION['guest_phone'] : null;
+
+    // Validate total amount
+    if ($totalAmount <= 0.0) {
+        throw new Exception("Invalid total amount.");
+    }
+
+    // Generate a description of the items for PayFast
+    $itemDescriptions = [];
+    foreach ($cartItems as $item) {
+        $itemDescriptions[] = $item['name'] . ' x ' . $item['quantity'] . ' (R' . number_format($item['price'], 2) . ')';
+    }
+    $itemDescription = implode(', ', $itemDescriptions);
+
+    $food = new Order($conn);
+    $notifications = new Notifications($conn); // Create an instance of Notifications
+
+    // Process the payment
+    if ($paymentMethod == 'payfast') {
+        // PayFast sandbox credentials
+        $merchantId = $_ENV['MERCHANT_ID'];
+        $merchantKey = $_ENV['MERCHANT_KEY'];
+        $payfastUrl = $_ENV['PAYFAST_URL'];
+
+        // Store order in database and retrieve the orderId
+        $orderId = $food->addOrder($userId, $totalAmount, $paymentMethod);
+
+        if (!$orderId) {
+            throw new Exception("Error adding order.");
+        }
+
+        // Insert order items into database
+        foreach ($cartItems as $item) {
+            $result = $food->addOrderItem($orderId, $item['food_id'], $item['quantity'], $item['price']);
+            if (!$result) {
+                throw new Exception("Error adding order items.");
+            }
+        }
+
+        // Clear the cart
+        unset($_SESSION['cart']);
+
+        // Store orderId in session for later use if needed
+        $_SESSION['orderId'] = $orderId;
+
+        // PayFast payment data
+        $payfastData = array(
+            'merchant_id' => $merchantId,
+            'merchant_key' => $merchantKey,
+            'return_url' => $payfastReturnUrl,
+            'cancel_url' => $payfastCancelUrl,
+            'notify_url' => $payfastNotifyUrl,
+            'm_payment_id' => $orderId, // Order ID from database will be used as the item name
+            'amount' => number_format($totalAmount, 2, '.', ''),
+            'item_name' => 'Order #' . $orderId, // Order ID from database will be used as the item name
+            'item_description' => $itemDescription,
+            'custom_str1' => $itemDescription,
+            'custom_str2' => $userId,
+        );
+
+        // Include guest phone number only if it's a guest user
+        if ($isGuest && $guestPhone) {
+            $payfastData['custom_str3'] = $guestPhone;
+        }
+
+        // Generate signature for PayFast
+        ksort($payfastData); // Ensure data is sorted by keys
+        $signatureString = http_build_query($payfastData); // Properly encoded query string
+        $signature = md5($signatureString); // Generate the signature
+        $payfastData['signature'] = $signature;
+
+        // Redirect to PayFast payment page
+        $queryString = http_build_query($payfastData);
+        header("Location: $payfastUrl?$queryString");
+        exit();
+    } else if ($paymentMethod == 'cash on collection') {
+        // Handle Cash on Collection payment method
+        $orderId = $food->addOrder($userId, $totalAmount, $paymentMethod);
+
+        if (!$orderId) {
+            throw new Exception("Error adding order.");
+        }
+
+        // Insert order items into database
+        foreach ($cartItems as $item) {
+            $result = $food->addOrderItem($orderId, $item['food_id'], $item['quantity'], $item['price']);
+            if (!$result) {
+                throw new Exception("Error adding order items.");
+            }
+        }
+
+        // Retrieve order details
+        $orderDetails = $food->getOrderById($orderId);
+        $orderItems = $food->getOrderItems($orderId);
+
+        // Send order completion email and SMS
+        if (!$isGuest) {
+            // For logged-in users
+            $customer = $food->getCustomerById($userId);
+            $emailSent = $notifications->orderPlacementEmail($orderDetails, $customer, $orderItems);
+
+            // Send SMS notification if phone number is available
+            if ($customer['phone']) {
+                $smsSent = $notifications->orderPlacementSMS($customer['phone'], $orderDetails);
+                if (!$smsSent) {
+                    throw new Exception("Failed to send SMS notification.");
+                }
+            }
+
+            if (!$emailSent) {
+                throw new Exception("Failed to send order completion email.");
+            }
+        } else {
+            // For guests
+            // Send SMS notification if phone number is available
+            if ($guestPhone) {
+                $smsSent = $notifications->orderPlacementSMS($guestPhone, $orderDetails);
+                if (!$smsSent) {
+                    throw new Exception("Failed to send SMS notification.");
+                }
+            }
+        }
+
+        // Clear the cart
+        unset($_SESSION['cart']);
+
+        // Store orderId in session
+        $_SESSION['orderId'] = $orderId;
+
+        // Redirect to order confirmation page
+        header($baseUrl . "/UMP-Order-System/order_confirmation.php");
         exit();
     } else {
-        // Set an error message and redirect back to cart
-        $_SESSION['error'] = "Invalid phone number format. Please enter a valid South African phone number.";
-        header("Location: https://7ab7-105-0-2-186.ngrok-free.app/UMP-Order-System/cart.php");
-        exit();
+        throw new Exception("Invalid payment method.");
     }
-} else {
-    // Redirect to cart if the request method is not POST or 'guest_checkout' is not set
-    header("Location: https://7ab7-105-0-2-186.ngrok-free.app/UMP-Order-System/cart.php");
-    exit();
+} catch (Exception $e) {
+    handleError($e->getMessage(), $baseUrl);
 }

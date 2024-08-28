@@ -8,12 +8,11 @@ include("Notifications.php");
 require '../../vendor/autoload.php';
 $dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
 $dotenv->load();
-// Define a global variables for the base URL
-$baseUrl = "https://61fb-105-245-102-18.ngrok-free.app";
+// Define global variables for the base URL
+$baseUrl = "https://688f-41-13-76-227.ngrok-free.app";
 $payfastNotifyUrl = $baseUrl . "/UMP-Order-System/admin/model/notify.php";
 $payfastReturnUrl = $baseUrl . "/UMP-Order-System/order_confirmation.php";
 $payfastCancelUrl = $baseUrl . "/UMP-Order-System/index.php";
-
 
 // Function to handle errors
 function handleError($message, $baseUrl)
@@ -97,19 +96,22 @@ try {
             'item_description' => $itemDescription,
             'custom_str1' => $itemDescription,
             'custom_str2' => $userId,
-            
         );
+
+        // Include guest phone number only if it's a guest user
+        if ($isGuest && $guestPhone) {
+            $payfastData['custom_str3'] = $guestPhone;
+        }
 
         // Generate signature for PayFast
         ksort($payfastData); // Ensure data is sorted by keys
         $signatureString = '';
         foreach ($payfastData as $key => $val) {
-            $signatureString .= $key . "=" .urlencode(trim($val)) . "&";
+            $signatureString .= $key . "=" . urlencode(trim($val)) . "&";
         }
         $signatureString = rtrim($signatureString, '&'); // Remove the trailing '&'
         $signature = md5($signatureString); // Generate the signature
         $payfastData['signature'] = $signature;
-
 
         // Redirect to PayFast payment page
         $queryString = http_build_query($payfastData);

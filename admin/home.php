@@ -78,8 +78,8 @@ $order = new Order($conn);
                 </div>
             </div>
 
-            <!-- Notifications -->
-            <h2>Notifications</h2>
+            <!-- Notifications 
+            <h2>Notifications</h2>-->
             <div id="notifications">
                 <!-- Low stock alerts will be inserted here -->
                 
