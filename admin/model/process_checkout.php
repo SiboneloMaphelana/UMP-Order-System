@@ -8,12 +8,18 @@ include("Notifications.php");
 require '../../vendor/autoload.php';
 $dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
 $dotenv->load();
+// Define a global variables for the base URL
+$baseUrl = "https://61fb-105-245-102-18.ngrok-free.app";
+$payfastNotifyUrl = $baseUrl . "/UMP-Order-System/admin/model/notify.php";
+$payfastReturnUrl = $baseUrl . "/UMP-Order-System/order_confirmation.php";
+$payfastCancelUrl = $baseUrl . "/UMP-Order-System/index.php";
+
 
 // Function to handle errors
-function handleError($message)
+function handleError($message, $baseUrl)
 {
     $_SESSION['error'] = $message;
-    header("Location: https://49bf-41-150-248-102.ngrok-free.app/UMP-Order-System/checkout.php");
+    header("Location: " . $baseUrl . "/UMP-Order-System/checkout.php");
     exit();
 }
 
@@ -56,14 +62,14 @@ try {
         $merchantId = $_ENV['MERCHANT_ID'];
         $merchantKey = $_ENV['MERCHANT_KEY'];
         $payfastUrl = $_ENV['PAYFAST_URL'];
-    
+
         // Store order in database and retrieve the orderId
         $orderId = $food->addOrder($userId, $totalAmount, $paymentMethod);
-    
+
         if (!$orderId) {
             throw new Exception("Error adding order.");
         }
-    
+
         // Insert order items into database
         foreach ($cartItems as $item) {
             $result = $food->addOrderItem($orderId, $item['food_id'], $item['quantity'], $item['price']);
@@ -71,45 +77,45 @@ try {
                 throw new Exception("Error adding order items.");
             }
         }
-    
+
         // Clear the cart
         unset($_SESSION['cart']);
-    
+
         // Store orderId in session for later use if needed
         $_SESSION['orderId'] = $orderId;
-    
+
         // PayFast payment data
         $payfastData = array(
             'merchant_id' => $merchantId,
             'merchant_key' => $merchantKey,
-            'return_url' => 'https://275d-41-150-250-25.ngrok-free.app/UMP-Order-System/order_confirmation.php',
-            'cancel_url' => 'https://275d-41-150-250-25.ngrok-free.app/UMP-Order-System/index.php',
-            'notify_url' => 'https://275d-41-150-250-25.ngrok-free.app/UMP-Order-System/admin/model/notify.php',
+            'return_url' => $payfastReturnUrl,
+            'cancel_url' => $payfastCancelUrl,
+            'notify_url' => $payfastNotifyUrl,
             'm_payment_id' => $orderId, // Order ID from database will be used as the item name
             'amount' => number_format($totalAmount, 2, '.', ''),
             'item_name' => 'Order #' . $orderId, // Order ID from database will be used as the item name
             'item_description' => $itemDescription,
             'custom_str1' => $itemDescription,
             'custom_str2' => $userId,
-            'custom_str3' => $guestPhone
+            
         );
-    
+
         // Generate signature for PayFast
         ksort($payfastData); // Ensure data is sorted by keys
         $signatureString = '';
         foreach ($payfastData as $key => $val) {
-            $signatureString .= $key . '=' . urlencode(trim($val)) . '&';
+            $signatureString .= $key . "=" .urlencode(trim($val)) . "&";
         }
-        $signatureString = rtrim($signatureString, '&');
-        $signature = md5($signatureString);
+        $signatureString = rtrim($signatureString, '&'); // Remove the trailing '&'
+        $signature = md5($signatureString); // Generate the signature
         $payfastData['signature'] = $signature;
-    
+
+
         // Redirect to PayFast payment page
         $queryString = http_build_query($payfastData);
         header("Location: $payfastUrl?$queryString");
         exit();
-    }
-     else if ($paymentMethod == 'cash on collection') {
+    } else if ($paymentMethod == 'cash on collection') {
         // Handle Cash on Collection payment method
         $orderId = $food->addOrder($userId, $totalAmount, $paymentMethod);
 
@@ -154,7 +160,7 @@ try {
                 if (!$smsSent) {
                     throw new Exception("Failed to send SMS notification.");
                 }
-            } 
+            }
         }
 
         // Clear the cart
@@ -164,11 +170,11 @@ try {
         $_SESSION['orderId'] = $orderId;
 
         // Redirect to order confirmation page
-        header("https://49bf-41-150-248-102.ngrok-free.app/UMP-Order-System/order_confirmation.php");
+        header($baseUrl . "/UMP-Order-System/order_confirmation.php");
         exit();
     } else {
         throw new Exception("Invalid payment method.");
     }
 } catch (Exception $e) {
-    handleError($e->getMessage());
+    handleError($e->getMessage(), $baseUrl);
 }

@@ -57,14 +57,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $customer = $food->getCustomerById($userId);
             $notifications->orderPlacementEmail($orderDetails, $customer, $orderItems);
 
+            // Log successful email notification
+            $logMessage = "Email notification sent successfully to user ID: $userId for order ID: $orderId\n";
+            file_put_contents($logFile, $logMessage, FILE_APPEND);
+
             // Send SMS notification if phone number is available
             if ($customer['phone']) {
                 $notifications->orderPlacementSMS($customer['phone'], $orderDetails);
+
+                // Log successful SMS notification
+                $logMessage = "SMS notification sent successfully to phone number: " . $customer['phone'] . " for order ID: $orderId\n";
+                file_put_contents($logFile, $logMessage, FILE_APPEND);
             }
-        }else{
-            if ($payfastData['custom_str3']) {
-                $notifications->orderPlacementSMS($payfastData['custom_str3'], $orderDetails);
-            }
+        } else {
+            // for guest users
         }
     } else {
         // Payment was not successful

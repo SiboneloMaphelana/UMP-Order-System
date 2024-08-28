@@ -3,6 +3,11 @@ session_start();
 include_once("Food.php");
 include_once("../UMP-Order-System/connection/connection.php");
 
+// Define a global variable for the base URL
+$baseUrl = "https://61fb-105-245-102-18.ngrok-free.app";
+
+// You can now use this variable throughout your script for URLs
+
 try {
     // Initialize variables to store order details
     $order = [];
@@ -105,8 +110,8 @@ try {
 
     error_log('Exception caught: ' . $e->getMessage());
 
-    error_log('Order not found: ' . $e->getMessage());
-    header("Location: https://49bf-41-150-248-102.ngrok-free.app/UMP-Order-System/cart.php");
+    // Use the global base URL variable in the header redirection
+    header("Location: " . $baseUrl . "/UMP-Order-System/cart.php");
     exit();
 } finally {
     if (isset($orderQuery)) {
