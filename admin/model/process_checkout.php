@@ -13,7 +13,7 @@ $dotenv->load();
 function handleError($message)
 {
     $_SESSION['error'] = $message;
-    header("Location: https://7ab7-105-0-2-186.ngrok-free.app/UMP-Order-System/checkout.php");
+    header("Location: https://49bf-41-150-248-102.ngrok-free.app/UMP-Order-System/checkout.php");
     exit();
 }
 
@@ -82,9 +82,9 @@ try {
         $payfastData = array(
             'merchant_id' => $merchantId,
             'merchant_key' => $merchantKey,
-            'return_url' => 'https://7ab7-105-0-2-186.ngrok-free.app/UMP-Order-System/order_confirmation.php',
-            'cancel_url' => 'https://7ab7-105-0-2-186.ngrok-free.app/UMP-Order-System/index.php',
-            'notify_url' => 'https://7ab7-105-0-2-186.ngrok-free.app/UMP-Order-System/admin/model/notify.php',
+            'return_url' => 'https://275d-41-150-250-25.ngrok-free.app/UMP-Order-System/order_confirmation.php',
+            'cancel_url' => 'https://275d-41-150-250-25.ngrok-free.app/UMP-Order-System/index.php',
+            'notify_url' => 'https://275d-41-150-250-25.ngrok-free.app/UMP-Order-System/admin/model/notify.php',
             'm_payment_id' => $orderId, // Order ID from database will be used as the item name
             'amount' => number_format($totalAmount, 2, '.', ''),
             'item_name' => 'Order #' . $orderId, // Order ID from database will be used as the item name
@@ -164,7 +164,7 @@ try {
         $_SESSION['orderId'] = $orderId;
 
         // Redirect to order confirmation page
-        header("https://7ab7-105-0-2-186.ngrok-free.app/UMP-Order-System/order_confirmation.php");
+        header("https://49bf-41-150-248-102.ngrok-free.app/UMP-Order-System/order_confirmation.php");
         exit();
     } else {
         throw new Exception("Invalid payment method.");
