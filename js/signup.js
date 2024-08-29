@@ -1,5 +1,4 @@
 document.addEventListener('DOMContentLoaded', function () {
-    // Toggle password visibility
     const togglePassword = document.getElementById('togglePassword');
     const passwordField = document.getElementById('password');
     const confirmPasswordField = document.getElementById('confirmPassword');
@@ -16,7 +15,6 @@ document.addEventListener('DOMContentLoaded', function () {
         eyeIcon.classList.toggle('fa-eye-slash');
     });
 
-    // Toggle confirm password visibility
     toggleConfirmPassword.addEventListener('click', function () {
         const type = confirmPasswordField.type === 'password' ? 'text' : 'password';
         confirmPasswordField.type = type;
@@ -24,7 +22,6 @@ document.addEventListener('DOMContentLoaded', function () {
         eyeIconConfirm.classList.toggle('fa-eye-slash');
     });
 
-    // Password strength check with zxcvbn
     passwordField.addEventListener('input', function () {
         const password = passwordField.value;
         const result = zxcvbn(password);
@@ -59,7 +56,6 @@ document.addEventListener('DOMContentLoaded', function () {
         passwordStrength.style.color = color;
     });
 
-    // Check if passwords match
     confirmPasswordField.addEventListener('input', function () {
         const password = passwordField.value;
         const confirmPassword = confirmPasswordField.value;
@@ -71,7 +67,6 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 
-    // Form validation
     const signupForm = document.getElementById('signupForm');
     signupForm.addEventListener('submit', function (event) {
         let isValid = true;
@@ -80,17 +75,17 @@ document.addEventListener('DOMContentLoaded', function () {
         document.getElementById('nameError').textContent = '';
         document.getElementById('surnameError').textContent = '';
         document.getElementById('emailError').textContent = '';
-        document.getElementById('roleError').textContent = '';
         document.getElementById('phoneError').textContent = '';
         passwordMatch.textContent = '';
 
         // Validate name
         const nameInput = document.getElementById('name');
         const name = nameInput.value.trim();
+        console.log('Name:', name); // Debug output
         if (name === '') {
             document.getElementById('nameError').textContent = 'First name is required.';
             isValid = false;
-        } else if (/[^a-zA-Z\s]/.test(name)) {  // Check for illegal characters
+        } else if (/[^a-zA-Z\s]/.test(name)) {
             document.getElementById('nameError').textContent = 'First name contains illegal characters.';
             isValid = false;
         }
@@ -98,10 +93,11 @@ document.addEventListener('DOMContentLoaded', function () {
         // Validate surname
         const surnameInput = document.getElementById('surname');
         const surname = surnameInput.value.trim();
+        console.log('Surname:', surname); // Debug output
         if (surname === '') {
             document.getElementById('surnameError').textContent = 'Last name is required.';
             isValid = false;
-        } else if (/[^a-zA-Z\s]/.test(surname)) {  // Check for illegal characters
+        } else if (/[^a-zA-Z\s]/.test(surname)) {
             document.getElementById('surnameError').textContent = 'Last name contains illegal characters.';
             isValid = false;
         }
@@ -109,6 +105,7 @@ document.addEventListener('DOMContentLoaded', function () {
         // Validate email
         const emailInput = document.getElementById('email');
         const email = emailInput.value;
+        console.log('Email:', email); // Debug output
         const isEmailValid = validator.isEmail(email);
         if (!isEmailValid) {
             document.getElementById('emailError').textContent = 'Please enter a valid email address.';
@@ -118,16 +115,9 @@ document.addEventListener('DOMContentLoaded', function () {
         // Validate phone
         const phoneInput = document.getElementById('phone');
         const phone = phoneInput.value;
-        const countryCode = phoneInput.dataset.countryCode || 'ZA';  // Default to South Africa
-        if (!phone.match(/^\+?[0-9]{10,}$/)) {  // Basic validation for phone numbers
+        console.log('Phone:', phone); // Debug output
+        if (!phone.match(/^\+?[0-9]{10,}$/)) {
             document.getElementById('phoneError').textContent = 'Please enter a valid phone number.';
-            isValid = false;
-        }
-
-        // Validate role
-        const roleInput = document.getElementById('role');
-        if (roleInput.value === '' || roleInput.value === 'Select Role') {
-            document.getElementById('roleError').textContent = 'Please select a role.';
             isValid = false;
         }
 

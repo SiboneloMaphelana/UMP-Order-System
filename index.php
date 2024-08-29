@@ -1,5 +1,5 @@
 <?php
-include("connection/connection.php");
+include_once("connection/connection.php");
 include_once("admin/model/Food.php");
 $food = new Food($conn);
 
@@ -21,7 +21,7 @@ $favorites = $food->getFavorites();
 </head>
 
 <body>
-    <?php include("partials/navigation.php"); ?>
+    <?php include_once("partials/navigation.php"); ?>
 
     <div class="container-fluid overflow-hidden">
         <div class="row vh-100 overflow-auto">
@@ -52,26 +52,7 @@ $favorites = $food->getFavorites();
                     </div>
 
                     <!-- Favorite Dishes -->
-                    <div class="col-12">
-                        <div class="container my-4">
-                            <h2 class="text-center mb-4">Our Favorite Dishes</h2>
-                            <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 g-4">
-                                <?php foreach ($favorites as $favorite) : ?>
-                                    <div class="col mb-4">
-                                        <div class="card index-card h-100">
-                                            <a href="category_details.php?id=<?php echo htmlspecialchars($favorite['id']); ?>" class="text-decoration-none text-muted">
-                                                <img src="admin/foods/<?php echo htmlspecialchars($favorite['image']); ?>" class="index-img" alt="<?php echo htmlspecialchars($favorite['name']); ?>">
-                                                <div class="index-card-body text-center">
-                                                    <h5 class="card-title"><?php echo htmlspecialchars($favorite['name']); ?></h5>
-                                                    <p class="card-text"><?php echo htmlspecialchars($favorite['description']); ?></p>
-                                                </div>
-                                            </a>
-                                        </div>
-                                    </div>
-                                <?php endforeach; ?>
-                            </div>
-                        </div>
-                    </div>
+
                 </main>
 
                 <!-- Footer -->

@@ -18,7 +18,7 @@ $inventoryReport = $report->getInventoryReport();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Responsive Sidebar with Centered Content</title>
+    <title>Dashboard</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="css/styles.css">
@@ -32,8 +32,7 @@ $inventoryReport = $report->getInventoryReport();
             <i class="fas fa-bars"></i>
         </button>
         <div class="container mt-4">
-            <h1>Welcome to the Admin Dashboard</h1>
-            <h1>WILL CONTAIN GRAPHICS</h1>
+
             <main class="row overflow-auto">
                 <h2 class="mb-4">Reports</h2>
 
@@ -188,12 +187,12 @@ $inventoryReport = $report->getInventoryReport();
 
             </main>
 
-            <!-- Footer -->
+            <!-- Footer 
             <footer class="footer mt-auto py-3 bg-dark text-light">
                 <div class="container text-center">
                     <span>&copy; 2024 Your Company. All rights reserved.</span>
                 </div>
-            </footer>
+            </footer> -->
         </div>
     </div>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>

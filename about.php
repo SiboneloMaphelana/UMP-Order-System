@@ -13,21 +13,19 @@
 </head>
 
 <body>
-  <!-- Navigation -->
-  <?php include("partials/navigation.php"); ?>
 
 
 
   <div class="container-fluid overflow-hidden">
     <div class="row vh-100 overflow-auto">
-      <?php include("partials/navigation.php"); ?>
+      <?php include_once("partials/navigation.php"); ?>
       <div class="col d-flex flex-column h-sm-100">
         <main class="row overflow-auto main-content">
           <div class="col-md-6 mx-auto">
             <!-- About Us Section -->
             <section class="about-us">
               <div class="hero-image">
-                <img src="images/about.png" alt="Hero Image" class="img-fluid">
+                <img src="images/about.png" alt="Hero" class="img-fluid">
               </div>
               <div class="container mt-4">
                 <div class="row">

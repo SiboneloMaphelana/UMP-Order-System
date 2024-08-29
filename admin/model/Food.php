@@ -280,7 +280,8 @@ class Food
               IFNULL(C.name, 'Uncategorized') AS Category
               FROM food_items F
               LEFT JOIN category C ON F.category_id = C.id
-              WHERE F.deleted = 0";
+              WHERE F.deleted = 0
+              ORDER BY Category ASC";
         $result = mysqli_query($this->conn, $query);
         $foodItems = [];
 

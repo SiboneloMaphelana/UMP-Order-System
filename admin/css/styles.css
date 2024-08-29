@@ -4,7 +4,18 @@ body {
   margin: 0;
   overflow-x: hidden;
 }
+.notification-icon {
+  cursor: pointer; /* Add a pointer cursor on hover */
+}
 
+.notification-icon:hover {
+  color: #333; /* Change the icon color on hover */
+}
+
+.notification-badge {
+  padding: 0.2rem 0.5rem; /* Add some padding to the badge */
+  font-size: 0.8rem; /* Reduce the font size of the badge text */
+}
 #sidebar {
   background-color: #343a40;
   color: #fff;

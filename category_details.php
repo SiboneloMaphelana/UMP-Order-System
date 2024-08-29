@@ -1,6 +1,6 @@
 <?php
 session_start();
-include("connection/connection.php");
+include_once("connection/connection.php");
 include_once("admin/model/Food.php");
 
 $category_id = isset($_GET['id']) ? intval($_GET['id']) : 0;
@@ -27,7 +27,7 @@ $foodItems = $food->getFoodItemsByCategoryId($category_id);
 <body>
     <div class="container-fluid overflow-hidden">
         <div class="row vh-100 overflow-auto">
-            <?php include("partials/navigation.php"); ?>
+            <?php include_once("partials/navigation.php"); ?>
             <div class="col d-flex flex-column h-sm-100">
                 <main class="row overflow-auto main-content">
                     <div class="col-12">
@@ -43,7 +43,7 @@ $foodItems = $food->getFoodItemsByCategoryId($category_id);
                                                         <img src="admin/foods/<?php echo htmlspecialchars($item['image']); ?>" class="card-img-top" alt="<?php echo htmlspecialchars($item['name']); ?>" style="height: 200px;">
                                                         <div class="card-body text-center">
                                                             <h5 class="card-title"><?php echo htmlspecialchars($item['name']); ?></h5>
-                                                            <p class="card-text text-success">R<?php echo htmlspecialchars($item['price']); ?></p>
+                                                            <p class="card-text text-secondary">R<?php echo htmlspecialchars($item['price']); ?></p>
                                                         </div>
                                                     </div>
 
@@ -58,13 +58,13 @@ $foodItems = $food->getFoodItemsByCategoryId($category_id);
                                                                 <div class="modal-body">
                                                                     <img src="admin/foods/<?php echo htmlspecialchars($item['image']); ?>" class="card-img-top" alt="<?php echo htmlspecialchars($item['name']); ?>">
                                                                     <p><?php echo htmlspecialchars($item['description']); ?></p>
-                                                                    <p class="text-success food-price">R<?php echo htmlspecialchars($item['price']); ?></p>
+                                                                    <p class="text-secondary food-price">R<?php echo htmlspecialchars($item['price']); ?></p>
                                                                     <div class="d-flex justify-content-center align-items-center mb-3">
                                                                         <button class="btn btn-outline-secondary btn-sm me-2" onclick="changeQuantity(this, -1)">-</button>
                                                                         <input type="text" class="form-control text-center quantity-input" value="1" style="width: 50px;" readonly>
                                                                         <button class="btn btn-outline-secondary btn-sm ms-2" onclick="changeQuantity(this, 1)">+</button>
                                                                     </div>
-                                                                    <button class="btn btn-success w-100" onclick="addToCart(<?php echo $item['id']; ?>, '<?php echo htmlspecialchars($item['name']); ?>')">Add to Cart</button>
+                                                                    <button class="btn btn-outline-secondary w-100" onclick="addToCart(<?php echo $item['id']; ?>, '<?php echo htmlspecialchars($item['name']); ?>')">Add to Cart</button>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -84,7 +84,7 @@ $foodItems = $food->getFoodItemsByCategoryId($category_id);
                     </div>
                 </main>
                 <!-- Footer -->
-                <?php include("partials/footer.php"); ?>
+                <?php include_once("partials/footer.php"); ?>
             </div>
         </div>
     </div>

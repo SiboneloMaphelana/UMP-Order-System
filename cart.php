@@ -50,7 +50,7 @@ $isLoggedIn = isset($_SESSION['id']);
 
     <div class="container-fluid overflow-hidden">
         <div class="row vh-100 overflow-auto">
-            <?php include("partials/navigation.php"); ?>
+            <?php include_once("partials/navigation.php"); ?>
             <div class="col d-flex flex-column h-sm-100">
                 <main class="row overflow-auto main-content">
                     <h2 class="text-center">My Cart</h2>
@@ -112,14 +112,16 @@ $isLoggedIn = isset($_SESSION['id']);
                                                 <span>R<?php echo number_format($subtotal, 2); ?></span>
                                             </li>
                                         </ul>
-                                        <a href="checkout.php" class="btn btn-success w-100 mt-3">Proceed to Checkout</a>
+                                        <?php if($isLoggedIn) : ?>
+                                            <a href="checkout.php" class="btn btn-outline-secondary w-100 mt-3">Proceed to Checkout</a>
+                                        <?php endif; ?>
                                         <?php if (!$isLoggedIn) : ?>
                                             <form action="admin/model/guest_checkout.php" method="post" class="mt-3">
                                                 <div class="mb-3">
                                                     <label for="guest_phone" class="form-label">Enter Phone Number to receive order confirmation</label>
                                                     <input type="tel" name="guest_phone" class="form-control" id="guest_phone" placeholder="+27XXXXXXXXX" pattern="^\+27[0-9]{9}$" required>
                                                 </div>
-                                                <button type="submit" name="guest_checkout" class="btn btn-primary w-100">Guest Checkout</button>
+                                                <button type="submit" name="guest_checkout" class="btn btn-outline-secondary w-100">Guest Checkout</button>
                                             </form>
                                         <?php endif; ?>
                                     <?php else : ?>
@@ -133,7 +135,7 @@ $isLoggedIn = isset($_SESSION['id']);
                     </div>
                 </main>
                 <!-- Footer -->
-                <?php include("partials/footer.php"); ?>
+                <?php include_once("partials/footer.php"); ?>
             </div>
         </div>
     </div>

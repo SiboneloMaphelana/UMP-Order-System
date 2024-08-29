@@ -28,7 +28,7 @@ class Report {
     
     
     public function getOrdersReport() {
-        $sql = "SELECT status, COUNT(id) AS count FROM orders GROUP BY status";
+        $sql = "SELECT status, COUNT(id) AS count FROM orders WHERE status = 'completed' OR status = 'cancelled' OR status = 'pending' GROUP BY status";
         $result = $this->conn->query($sql);
         $orders = [];
         while ($row = $result->fetch_assoc()) {

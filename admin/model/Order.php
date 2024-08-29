@@ -81,7 +81,7 @@ class Order{
             LEFT JOIN order_items oi ON o.id = oi.order_id
             LEFT JOIN food_items fi ON oi.food_id = fi.id
             WHERE o.user_id = ? AND o.is_deleted = FALSE
-            GROUP BY o.id
+            GROUP BY o.id desc
         ");
     
         if (!$stmt) {

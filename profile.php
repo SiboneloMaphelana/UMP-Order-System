@@ -1,20 +1,21 @@
 <?php
 include_once("connection/connection.php");
-include("model/User.php");
+include_once("model/User.php");
 
 $user = new User($conn);
 $userDetails = $user->getUserById($_SESSION['id']);
 
 // Check if user details are found
 if (!$userDetails) {
-    // Redirect to the login page if user details are not found
-    header("Location: login.php");
-    exit;
+  // Redirect to the login page if user details are not found
+  header("Location: login.php");
+  exit;
 }
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -26,9 +27,9 @@ if (!$userDetails) {
   <!-- Bootstrap Icons CSS -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
   <style>
-    /* Adjust margin to ensure content is pushed down below the navigation */
+    /* Ensures the main content is pushed down below the navigation */
     .main-content {
-        margin-top: 100px;
+      margin-top: 100px;
     }
   </style>
 </head>
@@ -36,7 +37,7 @@ if (!$userDetails) {
 <body>
   <div class="container-fluid overflow-hidden">
     <div class="row vh-100 overflow-auto">
-      <?php include("partials/navigation.php"); ?>
+      <?php include_once("partials/navigation.php"); ?>
       <div class="col d-flex flex-column h-sm-100">
 
         <main class="row overflow-auto main-content">
@@ -62,7 +63,7 @@ if (!$userDetails) {
                     <label for="name" class="form-label me-3">Name</label>
                   </div>
                   <div class="col-md-9">
-                    <input type="text" class="form-control" id="name" value="<?php echo htmlspecialchars($userDetails['name']); ?>" readonly>
+                    <span class="form-control-static" id="name"><?php echo htmlspecialchars($userDetails['name']); ?></span>
                   </div>
                 </div>
                 <div class="row mb-3">
@@ -70,7 +71,7 @@ if (!$userDetails) {
                     <label for="surname" class="form-label me-3">Surname</label>
                   </div>
                   <div class="col-md-9">
-                    <input type="text" class="form-control" id="surname" value="<?php echo htmlspecialchars($userDetails['surname']); ?>" readonly>
+                    <span class="form-control-static" id="surname"><?php echo htmlspecialchars($userDetails['surname']); ?></span>
                   </div>
                 </div>
                 <div class="row mb-3">
@@ -78,37 +79,37 @@ if (!$userDetails) {
                     <label for="email" class="form-label me-3">Email</label>
                   </div>
                   <div class="col-md-9">
-                    <input type="email" class="form-control" id="email" value="<?php echo htmlspecialchars($userDetails['email']); ?>" readonly>
+                    <span class="form-control-static" id="email"><?php echo htmlspecialchars($userDetails['email']); ?></span>
                   </div>
                 </div>
                 <div class="row mb-3">
                   <div class="col-md-3 d-flex align-items-center">
-                    <label for="role" class="form-label me-3">Role</label>
+                    <label for="role" class="form-label me-3">Phone</label>
                   </div>
                   <div class="col-md-9">
-                    <input type="text" class="form-control" id="role" value="<?php echo htmlspecialchars($userDetails['role']); ?>" readonly>
+                    <span class="form-control-static" id="role"><?php echo htmlspecialchars($userDetails['phone']); ?></span>
                   </div>
                 </div>
               </div>
               <div class="text-center mt-4">
-    <div class="row justify-content-center">
-        <div class="col-auto mb-2">
-            <a href="edit_profile.php?id=<?php echo htmlspecialchars($userDetails['id']); ?>" class="btn btn-primary">
-                <i class="bi bi-pencil-fill"></i> Edit Profile
-            </a>
-        </div>
-        <div class="col-auto mb-2">
-            <a href="model/logout.php" class="btn btn-danger">
-                <i class="bi bi-box-arrow-left"></i> Logout
-            </a>
-        </div>
-        <div class="col-auto mb-2">
-            <a href="model/delete_account.php?id=<?php echo htmlspecialchars($userDetails['id']); ?>" class="btn btn-danger">
-                <i class="bi bi-trash-fill"></i> Delete Account
-            </a>
-        </div>
-    </div>
-</div>
+                <div class="row justify-content-center">
+                  <div class="col-auto mb-2">
+                    <a href="edit_profile.php?id=<?php echo htmlspecialchars($userDetails['id']); ?>" class="btn btn-outline-primary">
+                      <i class="bi bi-pencil-fill"></i> Edit Profile
+                    </a>
+                  </div>
+                  <div class="col-auto mb-2">
+                    <a href="model/logout.php" class="btn btn-outline-danger">
+                      <i class="bi bi-box-arrow-left"></i> Logout
+                    </a>
+                  </div>
+                  <div class="col-auto mb-2">
+                    <a href="model/delete_account.php?id=<?php echo htmlspecialchars($userDetails['id']); ?>" class="btn btn-outline-danger">
+                      <i class="bi bi-trash-fill"></i> Delete Account
+                    </a>
+                  </div>
+                </div>
+              </div>
 
             </div>
           </div>
@@ -122,4 +123,5 @@ if (!$userDetails) {
   <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/js/all.min.js"></script>
 
 </body>
+
 </html>

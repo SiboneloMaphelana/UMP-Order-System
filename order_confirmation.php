@@ -1,5 +1,5 @@
 <?php
-$data = include('admin/model/order_confirmation.php');
+$data = include_once('admin/model/order_confirmation.php');
 
 // Extract order and order items from included data
 $order = $data['order'];
@@ -23,7 +23,7 @@ $orderItems = $data['orderItems'];
 <body>
     <div class="container-fluid overflow-hidden">
         <div class="row vh-100 overflow-auto">
-            <?php include("partials/navigation.php"); ?>
+            <?php include_once("partials/navigation.php"); ?>
             <div class="col d-flex flex-column h-sm-100">
                 <main class="row overflow-auto">
                     <div class="col-lg-8 mx-auto">

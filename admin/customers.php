@@ -46,7 +46,6 @@ $customers = $admin->getAllCustomers();
                             <th>NAME</th>
                             <th>SURNAME</th>
                             <th>EMAIL</th>
-                            <th>ROLE</th>
                             <th>PHONE</th>
                             <th>ACTIONS</th>
                         </tr>
@@ -57,12 +56,12 @@ $customers = $admin->getAllCustomers();
                                 <td><?php echo htmlspecialchars($customer['name']); ?></td>
                                 <td><?php echo htmlspecialchars($customer['surname']); ?></td>
                                 <td><?php echo htmlspecialchars($customer['email']); ?></td>
-                                <td><?php echo htmlspecialchars($customer['role']); ?></td>
                                 <td><?php echo htmlspecialchars($customer['phone']); ?></td>
                                 <td>
+                                    <!--
                                     <a href="update_customer.php?id=<?php echo $customer['id']; ?>" class="btn btn-sm btn-primary">
                                         <i class="fas fa-edit"></i>
-                                    </a>
+                                    </a> -->
                                     <form action="model/delete_customer.php" method="POST" style="display: inline-block;">
                                         <input type="hidden" name="id" value="<?php echo $customer['id']; ?>">
                                         <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure you want to delete this customer?')">
@@ -77,11 +76,12 @@ $customers = $admin->getAllCustomers();
             </div>
         </div>
 
-        <footer class="footer mt-auto py-3 bg-dark text-light">
-            <div class="container text-center">
-                <span>&copy; 2024 Food Ordering Admin. All Rights Reserved.</span>
-            </div>
-        </footer>
+        <!-- Footer 
+            <footer class="footer mt-auto py-3 bg-dark text-light">
+                <div class="container text-center">
+                    <span>&copy; 2024 Your Company. All rights reserved.</span>
+                </div>
+            </footer> -->
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>

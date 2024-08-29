@@ -63,24 +63,13 @@ session_start();
                                     <div id="emailError" class="text-danger mt-2"></div>
                                 </div>
                                 <div class="col-12 col-md-6">
-                                    <label for="role" class="form-label">Role</label>
-                                    <select class="form-select" id="role" name="role">
-                                        <option selected disabled>Select Role</option>
-                                        <option value="student">Student</option>
-                                        <option value="lecturer">Lecturer</option>
-                                        <option value="guest">Guest</option>
-                                        <option value="other">Other</option>
-                                    </select>
-                                    <div id="roleError" class="text-danger mt-2"></div>
-                                </div>
-                            </div>
-                            <div class="row mb-3">
-                                <div class="col-12 col-md-6">
                                     <label for="phone" class="form-label">Phone</label>
                                     <input type="tel" class="form-control" id="phone" name="phone" placeholder="Enter Phone">
                                     <div id="phoneError" class="text-danger mt-2"></div>
                                 </div>
+                                
                             </div>
+                            
                             <div class="row mb-3">
                                 <div class="col-12 col-md-6">
                                     <label for="password" class="form-label">Password</label>

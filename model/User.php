@@ -1,26 +1,32 @@
 <?php
+
 use libphonenumber\PhoneNumberUtil;
 use libphonenumber\PhoneNumberFormat;
 use libphonenumber\NumberParseException;
-class User {
+
+include_once("../vendor/autoload.php");
+class User
+{
     private $conn;
 
-    public function __construct($conn) {
+    public function __construct($conn)
+    {
         $this->conn = $conn;
     }
 
-    public function sanitizeUserDetails(array $data): array {
+    public function sanitizeUserDetails(array $data): array
+    {
         $sanitizedData = [];
         $sanitizedData['name'] = filter_var($data['name'], FILTER_SANITIZE_FULL_SPECIAL_CHARS);
         $sanitizedData['surname'] = filter_var($data['surname'], FILTER_SANITIZE_FULL_SPECIAL_CHARS);
         $sanitizedData['email'] = filter_var($data['email'], FILTER_SANITIZE_EMAIL);
-        $sanitizedData['role'] = filter_var($data['role'], FILTER_SANITIZE_FULL_SPECIAL_CHARS);
         $sanitizedData['phone'] = $this->formatPhoneNumber($data['phone']); // Format phone number
         $sanitizedData['password'] = password_hash($data['password'], PASSWORD_DEFAULT);
         return $sanitizedData;
     }
-    
-    public function formatPhoneNumber($phone): ?string {
+
+    public function formatPhoneNumber($phone): ?string
+    {
         $phoneUtil = PhoneNumberUtil::getInstance();
         try {
             // Use the country code from the phone input data if available
@@ -35,11 +41,12 @@ class User {
         }
         return null; // Return null if phone number is not valid
     }
-    
 
 
 
-    public function userExists(string $email): bool {
+
+    public function userExists(string $email): bool
+    {
         $stmt = $this->conn->prepare('SELECT COUNT(*) FROM users WHERE email = ?');
         $stmt->bind_param('s', $email);
         $stmt->execute();
@@ -48,17 +55,19 @@ class User {
         return $row['COUNT(*)'] > 0;
     }
 
-    public function signup(array $data): bool {
+    public function signup(array $data): bool
+    {
         $sanitizedData = $this->sanitizeUserDetails($data);
         if ($this->userExists($sanitizedData['email'])) {
             return false;
         }
-        $stmt = $this->conn->prepare('INSERT INTO users (name, surname, role, phone, email, password) VALUES (?, ?, ?, ?, ?, ?)');
-        $stmt->bind_param('sssiss', $sanitizedData['name'], $sanitizedData['surname'], $sanitizedData['role'], $sanitizedData['phone'] ,$sanitizedData['email'], $sanitizedData['password']);
+        $stmt = $this->conn->prepare('INSERT INTO users (name, surname, phone, email, password) VALUES (?, ?, ?, ?, ?)');
+        $stmt->bind_param('sssis', $sanitizedData['name'], $sanitizedData['surname'],  $sanitizedData['phone'], $sanitizedData['email'], $sanitizedData['password']);
         return $stmt->execute();
     }
 
-    public function validateSignup(array $data): array {
+    public function validateSignup(array $data): array
+    {
         $errors = [];
         if (empty($data['name'])) $errors['name'] = "First Name is required.";
         if (empty($data['surname'])) $errors['surname'] = "Last Name is required.";
@@ -68,9 +77,8 @@ class User {
             $errors['email'] = "Invalid email format.";
         }
 
-        if (empty($data['role'])) $errors['role'] = "Role is required.";
         if (empty($data['phone'])) $errors['phone'] = "Phone is required.";
-        
+
         if (empty($data['password'])) {
             $errors['password'] = "Password is required.";
         } elseif (strlen($data['password']) < 8) {
@@ -80,10 +88,10 @@ class User {
             $errors['confirmPassword'] = "Passwords do not match.";
         }
         return $errors;
-
     }
 
-    public function login(string $email, string $password): bool {
+    public function login(string $email, string $password): bool
+    {
         if (empty($email) || empty($password)) {
             return false;
         }
@@ -103,8 +111,9 @@ class User {
         }
         return false;
     }
-    
-    public function getUserById( $id): ?array {
+
+    public function getUserById($id): ?array
+    {
         $stmt = $this->conn->prepare('SELECT * FROM users WHERE id = ?');
         $stmt->bind_param('s', $id);
         $stmt->execute();
@@ -112,23 +121,24 @@ class User {
         return $result->fetch_assoc();
     }
 
-    public function deleteUserAccount($userId) {
+    public function deleteUserAccount($userId)
+    {
         try {
             // Begin transaction
             $this->conn->begin_transaction();
-    
+
             // Soft delete user's orders
             $sqlOrders = "UPDATE orders SET is_deleted = TRUE WHERE user_id = ?";
             $stmtOrders = $this->conn->prepare($sqlOrders);
             $stmtOrders->bind_param("i", $userId);
             $stmtOrders->execute();
-    
+
             // Soft delete user account
             $sqlUsers = "UPDATE users SET is_deleted = TRUE WHERE id = ?";
             $stmtUsers = $this->conn->prepare($sqlUsers);
             $stmtUsers->bind_param("i", $userId);
             $stmtUsers->execute();
-    
+
             // Commit transaction
             $this->conn->commit();
             return true;
@@ -140,7 +150,8 @@ class User {
         }
     }
 
-    public function reactivateAccount($userId): bool {
+    public function reactivateAccount($userId): bool
+    {
         $stmt = $this->conn->prepare("UPDATE users SET is_active = TRUE WHERE id = ?");
         $stmt->bind_param('i', $userId);
         if (!$stmt->execute()) {
@@ -149,8 +160,9 @@ class User {
         }
         return true;
     }
-    
-    public function updateUser($id, $name = null, $surname = null, $email = null, $role = null) {
+
+    public function updateUser($id, $name = null, $surname = null, $email = null)
+    {
         $id = intval($id); // Sanitize the ID as an integer
 
         // Check if the provided email already exists for another user
@@ -165,24 +177,22 @@ class User {
         $name = $name ?: $existingDetails['name'];
         $surname = $surname ?: $existingDetails['surname'];
         $email = $email ?: $existingDetails['email'];
-        $role = $role ?: $existingDetails['role'];
 
         // Sanitize parameters
-        $sanitizedDetails = $this->sanitizeUserDetails(['name' => $name, 'surname' => $surname, 'email' => $email, 'role' => $role]);
+        $sanitizedDetails = $this->sanitizeUserDetails(['name' => $name, 'surname' => $surname, 'email' => $email]);
         $name = $sanitizedDetails['name'];
         $surname = $sanitizedDetails['surname'];
         $email = $sanitizedDetails['email'];
-        $role = $sanitizedDetails['role'];
 
         // Prepare SQL query
-        $update_sql = "UPDATE users SET name = ?, surname = ?, email = ?, role = ? WHERE id = ?";
+        $update_sql = "UPDATE users SET name = ?, surname = ?, email = ? WHERE id = ?";
 
         // Prepare and bind parameters
         $stmt = $this->conn->prepare($update_sql);
         if (!$stmt) {
             return "Error preparing statement: " . $this->conn->error;
         }
-        $stmt->bind_param('ssssi', $name, $surname, $email, $role, $id);
+        $stmt->bind_param('sssi', $name, $surname, $email, $id);
 
         // Execute the update query
         if ($stmt->execute()) {
@@ -195,8 +205,9 @@ class User {
             return "Error updating user: " . $this->conn->error;
         }
     }
-    
-    private function emailExists($id, $email): bool {
+
+    private function emailExists($id, $email): bool
+    {
         $stmt = $this->conn->prepare('SELECT COUNT(*) as count FROM users WHERE email = ? AND id <> ?');
         $stmt->bind_param('si', $email, $id);
         $stmt->execute();
@@ -204,10 +215,4 @@ class User {
         $row = $result->fetch_assoc();
         return $row['count'] > 0;
     }
-
-    
-    
-    
-
-    
 }

@@ -41,22 +41,21 @@ $groupedCanceledOrders = groupOrdersByDate($canceledOrders);
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <link rel="stylesheet" href="css/new.css">
-    <link rel="stylesheet" href="css/cart.css">
 </head>
 
 <body>
 
     <div class="container-fluid">
         <div class="row">
-            <?php include("partials/navigation.php"); ?>
+            <?php include_once("partials/navigation.php"); ?>
             <div class="col-md-9 col-lg-10 ms-auto main-content">
                 <main class="p-4">
                     <h1 class="mt-5 mb-2 text-center">My Orders</h1>
                     <div class="d-flex justify-content-center mb-4">
                         <div class="btn-group mt-5" role="group" aria-label="Order Toggle">
-                            <button type="button" class="btn btn-success" id="upcomingOrdersBtn">Upcoming Orders</button>
-                            <button type="button" class="btn btn-secondary" id="pastOrdersBtn">Past Orders</button>
-                            <button type="button" class="btn btn-danger" id="canceledOrdersBtn">Canceled Orders</button>
+                            <button type="button" class="btn btn-outline-success" id="upcomingOrdersBtn">Upcoming Orders</button>
+                            <button type="button" class="btn btn-outline-secondary" id="pastOrdersBtn">Past Orders</button>
+                            <button type="button" class="btn btn-outline-danger" id="canceledOrdersBtn">Canceled Orders</button>
                         </div>
                     </div>
 
@@ -65,24 +64,21 @@ $groupedCanceledOrders = groupOrdersByDate($canceledOrders);
                         <div id="upcomingOrders" class="orders-table">
                             <?php if (!empty($groupedUpcomingOrders)) : ?>
                                 <?php foreach ($groupedUpcomingOrders as $formattedDate => $orders) : ?>
-                                    <div class="card mb-4">
-                                        <div class="card-header">
-                                            <h4 class="card-title"><?php echo $formattedDate; ?></h4>
-                                        </div>
-                                        <div class="card-body">
-                                            <?php foreach ($orders as $order) : ?>
-                                                <div class="card mb-3">
+                                    <h4 class="mt-4"><?php echo $formattedDate; ?></h4>
+                                    <div class="row">
+                                        <?php foreach ($orders as $order) : ?>
+                                            <div class="col-md-4 mb-3">
+                                                <div class="card">
                                                     <div class="card-body">
-                                                        <h5 class="card-title">Order Details</h5>
-                                                        <p class="card-text"><strong>Order ID:</strong> <?php echo $order['id']; ?></p>
+                                                        <h5 class="card-title">Order ID: <?php echo $order['id']; ?></h5>
                                                         <p class="card-text"><strong>Total Amount:</strong> R<?php echo number_format($order['total_amount'], 2); ?></p>
                                                         <p class="card-text"><strong>Status:</strong> <span class="badge <?php echo getStatusBadgeClass($order['status']); ?>"><?php echo strtoupper($order['status']); ?></span></p>
                                                         <p class="card-text"><strong>Food Items:</strong> <?php echo htmlspecialchars($order['food_items']); ?></p>
-                                                        <button type="button" class="btn btn-danger cancel-order-btn" data-order-id="<?php echo $order['id']; ?>">Cancel Order</button>
+                                                        <button type="button" class="btn btn-outline-danger cancel-order-btn" data-order-id="<?php echo $order['id']; ?>">Cancel Order</button>
                                                     </div>
                                                 </div>
-                                            <?php endforeach; ?>
-                                        </div>
+                                            </div>
+                                        <?php endforeach; ?>
                                     </div>
                                 <?php endforeach; ?>
                             <?php else : ?>
@@ -94,22 +90,20 @@ $groupedCanceledOrders = groupOrdersByDate($canceledOrders);
                         <div id="pastOrders" class="orders-table" style="display: none;">
                             <?php if (!empty($groupedPastOrders)) : ?>
                                 <?php foreach ($groupedPastOrders as $formattedDate => $orders) : ?>
-                                    <div class="card mb-4">
-                                        <div class="card-header">
-                                            <h4 class="card-title"><?php echo $formattedDate; ?></h4>
-                                        </div>
-                                        <div class="card-body">
-                                            <?php foreach ($orders as $order) : ?>
-                                                <div class="card mb-3">
+                                    <h4 class="mt-4"><?php echo $formattedDate; ?></h4>
+                                    <div class="row">
+                                        <?php foreach ($orders as $order) : ?>
+                                            <div class="col-md-4 mb-3">
+                                                <div class="card">
                                                     <div class="card-body">
-                                                        <h5 class="card-title">Order Details</h5>
+                                                        <h5 class="card-title">Order ID: <?php echo $order['id']; ?></h5>
                                                         <p class="card-text"><strong>Total Amount:</strong> R<?php echo number_format($order['total_amount'], 2); ?></p>
                                                         <p class="card-text"><strong>Status:</strong> <span class="badge <?php echo getStatusBadgeClass($order['status']); ?>"><?php echo strtoupper($order['status']); ?></span></p>
                                                         <p class="card-text"><strong>Food Items:</strong> <?php echo htmlspecialchars($order['food_items']); ?></p>
                                                     </div>
                                                 </div>
-                                            <?php endforeach; ?>
-                                        </div>
+                                            </div>
+                                        <?php endforeach; ?>
                                     </div>
                                 <?php endforeach; ?>
                             <?php else : ?>
@@ -121,28 +115,27 @@ $groupedCanceledOrders = groupOrdersByDate($canceledOrders);
                         <div id="canceledOrders" class="orders-table" style="display: none;">
                             <?php if (!empty($groupedCanceledOrders)) : ?>
                                 <?php foreach ($groupedCanceledOrders as $formattedDate => $orders) : ?>
-                                    <div class="card mb-4">
-                                        <div class="card-header">
-                                            <h4 class="card-title"><?php echo $formattedDate; ?></h4>
-                                        </div>
-                                        <div class="card-body">
-                                            <?php foreach ($orders as $order) : ?>
-                                                <div class="card mb-3">
+                                    <h4 class="mt-4"><?php echo $formattedDate; ?></h4>
+                                    <div class="row">
+                                        <?php foreach ($orders as $order) : ?>
+                                            <div class="col-md-4 mb-3">
+                                                <div class="card">
                                                     <div class="card-body">
-                                                        <h5 class="card-title">Order Details</h5>
+                                                        <h5 class="card-title">Order ID: <?php echo $order['id']; ?></h5>
                                                         <p class="card-text"><strong>Total Amount:</strong> R<?php echo number_format($order['total_amount'], 2); ?></p>
                                                         <p class="card-text"><strong>Status:</strong> <span class="badge <?php echo getStatusBadgeClass($order['status']); ?>"><?php echo strtoupper($order['status']); ?></span></p>
                                                         <p class="card-text"><strong>Food Items:</strong> <?php echo htmlspecialchars($order['food_items']); ?></p>
                                                     </div>
                                                 </div>
-                                            <?php endforeach; ?>
-                                        </div>
+                                            </div>
+                                        <?php endforeach; ?>
                                     </div>
                                 <?php endforeach; ?>
                             <?php else : ?>
                                 <div class="alert alert-info" role="alert">You have no canceled orders.</div>
                             <?php endif; ?>
                         </div>
+
 
                         <div class="text-center">
                             <a href="index.php" class="btn btn-primary">Back to Home</a>
@@ -174,6 +167,8 @@ $groupedCanceledOrders = groupOrdersByDate($canceledOrders);
             <!-- Toast message content will be dynamically inserted here -->
         </div>
     </div>
+    <!-- Footer -->
+    <?php include_once("partials/footer.php"); ?>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -182,4 +177,3 @@ $groupedCanceledOrders = groupOrdersByDate($canceledOrders);
 </body>
 
 </html>
-

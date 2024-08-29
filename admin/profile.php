@@ -48,29 +48,32 @@ if (!$userDetails) {
 
                         <!-- Display user details -->
                         <div class="mb-3 row">
-                            <label for="name" class="col-md-4 col-form-label text-md-end">Name</label>
+                            <label for="name" class="col-md-4 col-form-label text-md-start">Name</label>
                             <div class="col-md-8">
-                                <input type="text" class="form-control" id="name" value="<?php echo htmlspecialchars($userDetails['name']); ?>" readonly>
+                                <span class="form-control-plaintext" id="name">
+                                    <?php echo htmlspecialchars($userDetails['name']); ?>
+                                </span>
                             </div>
                         </div>
                         <div class="mb-3 row">
-                            <label for="email" class="col-md-4 col-form-label text-md-end">Email</label>
+                            <label for="email" class="col-md-4 col-form-label text-md-start">Email</label>
                             <div class="col-md-8">
-                                <input type="email" class="form-control" id="email" value="<?php echo htmlspecialchars($userDetails['email']); ?>" readonly>
+                                <span class="form-control-plaintext" id="email">
+                                    <?php echo htmlspecialchars($userDetails['email']); ?>
+                                </span>
                             </div>
                         </div>
                         <div class="mb-3 row">
-                            <label for="phone_number" class="col-md-4 col-form-label text-md-end">Phone Number</label>
+                            <label for="phone_number" class="col-md-4 col-form-label text-md-start">Phone Number</label>
                             <div class="col-md-8">
-                                <input type="tel" class="form-control" id="phone_number" value="<?php echo htmlspecialchars($userDetails['phone_number']); ?>" readonly>
+                                <span class="form-control-plaintext" id="phone_number">
+                                    <?php echo htmlspecialchars($userDetails['phone_number']); ?>
+                                </span>
                             </div>
                         </div>
 
                         <!-- Buttons for editing, logout, and delete account -->
-                        <div class="d-grid gap-2 d-md-flex justify-content-md-center">
-                            <a href="edit_profile.php?id=<?php echo htmlspecialchars($userDetails['id']); ?>" class="btn btn-dark me-2">
-                                <i class="fas fa-user-edit"></i> Edit Profile
-                            </a>
+                        <div class="d-grid gap-2 d-md-flex ">
                             <a href="model/logout.php" class="btn btn-danger me-2">
                                 <i class="fas fa-sign-out-alt"></i> Logout
                             </a>

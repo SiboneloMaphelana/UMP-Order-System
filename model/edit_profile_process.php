@@ -14,7 +14,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $name = isset($_POST["name"]) ? $_POST["name"] : null;
     $surname = isset($_POST["surname"]) ? $_POST["surname"] : null;
     $email = isset($_POST["email"]) ? $_POST["email"] : null;
-    $role = isset($_POST["role"]) ? $_POST["role"] : null;
 
     // Check if the user exists
     if (!$user->getUserById($id)) {
@@ -24,7 +23,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 
     // Update the user details
-    $updateResult = $user->updateUser($id, $name, $surname, $email, $role);
+    $updateResult = $user->updateUser($id, $name, $surname, $email);
 
     // Check the result of the update operation
     if ($updateResult === true) {

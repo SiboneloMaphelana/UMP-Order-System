@@ -6,25 +6,25 @@
                 <a href="#" class="navbar-brand text-white mx-auto mx-md-0">
                     <img src="images/logo.png" class="me-2" alt="logo" style="height: 36px;">
                 </a>
-                <form action="admin/model/search.php" method="GET" class="w-75 mx-auto">
+                <form action="search.php" method="POST" class="w-75 mx-auto">
                     <div class="input-group">
-                        <input type="text" class="form-control" placeholder="Search" name="search" style="height: 36px;">
-                        <button class="btn btn-outline-light" type="submit"><i class="fas fa-search"></i></button>
+                        <input type="text" class="form-control py-2 px-3" placeholder="Search" name="search">
+                        <button class="btn btn-outline-light" type="submit"><i class="fas fa-search border-0"></i></button>
                     </div>
                 </form>
-                
+
             </div>
 
             <div class="col-12 d-none d-md-block">
                 <!-- Desktop Navbar Brand, Search Bar, Cart, and Account Dropdown -->
                 <div class="row align-items-center">
-                    <div class="col-md-3">
+                    <div class="col-md-3 d-flex align-items-center">
                         <a href="#" class="navbar-brand text-white mx-auto mx-md-0">
                             <img src="images/logo.png" alt="logo" class="me-2 logo">
                         </a>
                     </div>
                     <div class="col-md-9 d-flex justify-content-end align-items-center">
-                        <form action="" method="GET" class="me-3" style="width: 300px;" id="search">
+                        <form action="search.php" method="POST" class="me-3" style="width: 300px;" id="search">
                             <div class="input-group">
                                 <input type="text" class="form-control" placeholder="Search" name="search" style="height: 36px;">
                                 <button class="btn btn-outline-light" type="submit"><i class="fas fa-search"></i></button>
@@ -45,7 +45,8 @@
                     </div>
                 </div>
             </div>
-            
+
+
         </div>
     </div>
 </div>
@@ -62,9 +63,6 @@
                     <a class="nav-link text-dark fs-4" href="index.php">Menu</a>
                 </li>
                 <li class="nav-item me-4">
-                    <a class="nav-link text-dark fs-4" href="specials.php">Today's Specials</a>
-                </li>
-                <li class="nav-item me-4">
                     <a class="nav-link text-dark fs-4" href="orders.php">Track Orders</a>
                 </li>
                 <li class="nav-item me-4">
@@ -79,7 +77,6 @@
 <nav class="navbar navbar-dark d-md-none fixed-bottom">
     <div class="container-fluid d-flex justify-content-around">
         <a class="nav-link text-white" href="index.php"><i class="fas fa-utensils"></i><br>Menu</a>
-        <a class="nav-link text-white" href="specials.php"><i class="fas fa-star"></i><br>Specials</a>
         <a class="nav-link text-white" href="cart.php"><i class="fas fa-shopping-cart"></i><br>Cart</a>
         <a class="nav-link text-white" href="orders.php"><i class="fas fa-box"></i><br>Orders</a>
         <div class="dropup">
@@ -94,5 +91,3 @@
         </div>
     </div>
 </nav>
-
-

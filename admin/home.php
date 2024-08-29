@@ -41,7 +41,7 @@ $order = new Order($conn);
                     </div>
                 </div>
                 <div class="col-md-4">
-                    <div class="card bg-success text-white mb-4">
+                    <div class="card bg-primary text-white mb-4">
                         <div class="card-body">
                             <h5 class="card-title">Total Revenue</h5>
                             <p class="card-text">Today: R<?= number_format($order->getTotalRevenue('today'), 2); ?></p>
@@ -51,7 +51,7 @@ $order = new Order($conn);
                     </div>
                 </div>
                 <div class="col-md-4">
-                    <div class="card bg-warning text-white mb-4">
+                    <div class="card bg-primary text-white mb-4">
                         <div class="card-body">
                             <h5 class="card-title">Average Order Value</h5>
                             <p class="card-text">R<?= number_format($order->getAverageOrderValue(), 2); ?></p>
@@ -68,13 +68,10 @@ $order = new Order($conn);
                     <a class="btn btn-primary btn-block" href="add_menu.php"><i class="fas fa-plus"></i> Add Menu Item</a>
                 </div>
                 <div class="col-md-3">
-                    <a class="btn btn-success btn-block" href="orders.php"><i class="fas fa-list"></i> View Orders</a>
+                    <a class="btn btn-primary btn-block" href="orders.php"><i class="fas fa-list"></i> View Orders</a>
                 </div>
                 <div class="col-md-3">
-                    <a class="btn btn-warning btn-block" href="customers.php"><i class="fas fa-users"></i> Manage Users</a>
-                </div>
-                <div class="col-md-3">
-                    <a class="btn btn-info btn-block" href="settings.php"><i class="fas fa-cogs"></i> Settings</a>
+                    <a class="btn btn-primary btn-block" href="customers.php"><i class="fas fa-users"></i> Manage Users</a>
                 </div>
             </div>
 
@@ -85,12 +82,12 @@ $order = new Order($conn);
                 
             </div>
 
-            <!-- Footer -->
-            <footer class="footer mt-auto py-3 bg-dark text-light">
+            <!-- Footer 
+            <footer class="footer mt-auto py-3 bg-dark text-light fixed-bottom px-5">
                 <div class="container text-center">
                     <span>&copy; 2024 TechCafe Solutions. All rights reserved.</span>
                 </div>
-            </footer>
+            </footer> -->
         </div>
     </div>
 
