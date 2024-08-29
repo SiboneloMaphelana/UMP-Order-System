@@ -40,7 +40,7 @@ $foodItems = $food->getFoodItemsByCategoryId($category_id);
                                             <?php foreach ($foodItems as $item) : ?>
                                                 <div class="col mb-4">
                                                     <div class="card h-100" data-bs-toggle="modal" data-bs-target="#foodModal<?php echo $item['id']; ?>">
-                                                        <img src="admin/foods/<?php echo htmlspecialchars($item['image']); ?>" class="card-img-top" alt="<?php echo htmlspecialchars($item['name']); ?>" style="height: 200px;">
+                                                        <img src="admin/foods/<?php echo htmlspecialchars($item['image']); ?>" class="card-img-top lazyload" alt="<?php echo htmlspecialchars($item['name']); ?>" style="height: 200px;">
                                                         <div class="card-body text-center">
                                                             <h5 class="card-title"><?php echo htmlspecialchars($item['name']); ?></h5>
                                                             <p class="card-text text-secondary">R<?php echo htmlspecialchars($item['price']); ?></p>

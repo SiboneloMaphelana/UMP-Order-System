@@ -23,7 +23,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $_SESSION['login'] = 'email';
         header("Location: ../index.php");
     } else {
-        $_SESSION['error'] = "Invalid email or password, or your account is deactivated!";
+        $_SESSION['login_user_error'] = "Incorrect email or password";
         header("Location: ../login.php");
     }
 } else {

@@ -17,17 +17,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $result = $food->addFoodItem($name, $description, $categoryId, $quantity, $price, $image, $adminId);
 
     if ($result === true) {
-        $_SESSION['success'] = "Food item added successfully!";
+        $_SESSION['menu_success'] = "Food item added successfully!";
         header('Location: ../all_menus.php');
         exit();
     } else {
         $errorMessage = "Failed to add food item: $result";
-        $_SESSION['error'] = "Failed to add food item";
-        header('Location: ../add_food.php?error=');
+        $_SESSION['menu_error'] = "Failed to add food item";
+        header('Location: ../add_menu.php');
         exit();
     }
 } else {
-    header('Location: ../add_food.php');
+    header('Location: ../add_menu.php');
     exit();
 }
 

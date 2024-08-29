@@ -5,10 +5,13 @@ include("Order.php");
 include("Notifications.php");
 header('HTTP/1.0 200 OK');
 flush();
+
 // Ensure the script is receiving POST data from PayFast
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Retrieve PayFast data
     $payfastData = $_POST;
+
+    $guestPhone = isset($_SESSION['guest_phone']) ? $_SESSION['guest_phone'] : '';
 
     // Directory and file for logging
     $logDir = '../../logs/';
@@ -42,7 +45,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // The payment was successful
 
         $orderId = $payfastData['m_payment_id'];
-        $userId = $payfastData['custom_str2'];
+        $userId = isset($payfastData['custom_str2']) ? $payfastData['custom_str2'] : '';
         $totalAmount = $payfastData['amount_gross'];
 
         $food = new Order($conn);
@@ -53,7 +56,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $orderItems = $food->getOrderItems($orderId);
 
         // Send order completion email and SMS
-        if ($userId) {
+        if (!empty($userId)) {
             $customer = $food->getCustomerById($userId);
             $notifications->orderPlacementEmail($orderDetails, $customer, $orderItems);
 
@@ -62,7 +65,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             file_put_contents($logFile, $logMessage, FILE_APPEND);
 
             // Send SMS notification if phone number is available
-            if ($customer['phone']) {
+            if (!empty($customer['phone'])) {
                 $notifications->orderPlacementSMS($customer['phone'], $orderDetails);
 
                 // Log successful SMS notification
@@ -70,11 +73,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 file_put_contents($logFile, $logMessage, FILE_APPEND);
             }
         } else {
-            // for guest users
+            // For guests
+            // Send SMS notification if phone number is available
+            if (!empty($guestPhone)) {
+                $smsSent = $notifications->orderPlacementSMS($guestPhone, $orderDetails);
+                if (!$smsSent) {
+                    $logMessage = "Failed to send SMS notification to guest phone number: " . $guestPhone . " for order ID: $orderId\n";
+                    file_put_contents($logFile, $logMessage, FILE_APPEND);
+                    throw new Exception("Failed to send SMS notification.");
+                } else {
+                    $logMessage = "SMS notification sent successfully to guest phone number: " . $guestPhone . " for order ID: $orderId\n";
+                    file_put_contents($logFile, $logMessage, FILE_APPEND);
+                }
+            }
         }
     } else {
         // Payment was not successful
         echo 'Payment was not successful';
     }
+
     echo $payfastData['m_payment_id'];
 }

@@ -21,7 +21,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if ($phone_number !== null) $updateData['phone_number'] = $phone_number; 
     $file = isset($_FILES['image']) ? $_FILES['image'] : null; 
     if (empty($updateData) && $file === null) {
-        $_SESSION['error'] = "No data to update.";
+        $_SESSION['admin_error'] = "No data to update.";
         header("Location: ../profile.php");
         exit;
     }
@@ -29,9 +29,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Update admin details
     $success = $adminModel->updateAdmin($id, $updateData, $file); 
     if ($success) {
-        $_SESSION['success'] = "User details updated successfully."; // Set success message
+        $_SESSION['admin_success'] = "User details updated successfully."; // Set success message
     } else {
-        $_SESSION['error'] = "Failed to update user details."; // Set error message
+        $_SESSION['admin_error'] = "Failed to update user details."; // Set error message
     }
     
     // Redirect to profile page

@@ -48,14 +48,9 @@ if (!$userDetails) {
               </div>
               <div class="card-body">
                 <?php
-                if (isset($_SESSION['update_success'])) {
-                  echo '<div class="alert alert-success">' . $_SESSION['update_success'] . '</div>';
-                  unset($_SESSION['update_success']);
-                }
-
-                if (isset($_SESSION['update_error'])) {
-                  echo '<div class="alert alert-danger">' . $_SESSION['update_error'] . '</div>';
-                  unset($_SESSION['update_error']);
+                if (isset($_SESSION['update_user_success'])) {
+                  echo '<div class="alert alert-success">' . $_SESSION['update_user_success'] . '</div>';
+                  unset($_SESSION['update_user_success']);
                 }
                 ?>
                 <div class="row mb-3">

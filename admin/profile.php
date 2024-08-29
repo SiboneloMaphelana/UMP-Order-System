@@ -24,7 +24,7 @@ if (!$userDetails) {
 </head>
 
 <body>
-    <?php include("partials/sidebar.php"); ?>
+    <?php include_once("partials/sidebar.php"); ?>
 
     <div id="content" class="container-fluid">
         <button class="btn btn-dark d-md-none" type="button" id="toggleSidebar">
@@ -37,13 +37,9 @@ if (!$userDetails) {
                         <h4>User Profile</h4>
                     </div>
                     <div class="card-body">
-                        <?php if (isset($_SESSION['success'])) : ?>
-                            <div class="alert alert-success"><?php echo $_SESSION['success']; ?></div>
-                            <?php unset($_SESSION['success']); ?>
-                        <?php endif; ?>
-                        <?php if (isset($_SESSION['error'])) : ?>
-                            <div class="alert alert-danger"><?php echo $_SESSION['error']; ?></div>
-                            <?php unset($_SESSION['error']); ?>
+                        <?php if (isset($_SESSION['admin_success'])) : ?>
+                            <div class="alert alert-success"><?php echo $_SESSION['admin_success']; ?></div>
+                            <?php unset($_SESSION['admin_success']); ?>
                         <?php endif; ?>
 
                         <!-- Display user details -->
@@ -112,8 +108,8 @@ if (!$userDetails) {
                         <h4>Edit Profile</h4>
                     </div>
                     <div class="card-body">
-                        <?php if (isset($error)) : ?>
-                            <div class="alert alert-danger"><?php echo htmlspecialchars($error); ?></div>
+                        <?php if (isset($_SESSION["admin_error"])) : ?>
+                            <div class="alert alert-danger"><?php echo htmlspecialchars($_SESSION["admin_error"]); ?></div>
                         <?php endif; ?>
                         <form action="model/edit_profile_process.php" method="post" enctype="multipart/form-data">
                             <div class="mb-3">

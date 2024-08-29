@@ -9,7 +9,7 @@ require '../../vendor/autoload.php';
 $dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
 $dotenv->load();
 // Define global variables for the base URL
-$baseUrl = "https://688f-41-13-76-227.ngrok-free.app";
+$baseUrl = "https://a3b5-41-13-118-47.ngrok-free.app";
 $payfastNotifyUrl = $baseUrl . "/UMP-Order-System/admin/model/notify.php";
 $payfastReturnUrl = $baseUrl . "/UMP-Order-System/order_confirmation.php";
 $payfastCancelUrl = $baseUrl . "/UMP-Order-System/index.php";
@@ -30,7 +30,7 @@ try {
 
     // Check if the user is logged in or a guest
     $isGuest = !isset($_SESSION['id']); // Check if the user is not logged in
-    $userId = $isGuest ? null : $_SESSION['id']; // Set userId to null if guest
+    $userId = $isGuest ? "" : $_SESSION['id']; // Set userId to null if guest
 
     // Retrieve form data
     $paymentMethod = isset($_POST['payment_method']) ? $_POST['payment_method'] : '';

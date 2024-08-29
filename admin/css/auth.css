@@ -17,6 +17,22 @@ html {
 .btn {
   width: 100%;
 }
+.text-danger {
+  color: red;
+  display: block; /* Ensure the error message is block-level and visible */
+  margin-top: 0.5rem;
+}
+
+.form-text {
+  font-size: 0.875rem;
+  color: #6c757d;
+  display: block; /* Ensure the strength meter is also block-level */
+}
+
+input.error {
+  border-color: red; /* Change the border color to red */
+}
+
 .input-group {
   position: relative;
 }

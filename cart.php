@@ -91,6 +91,8 @@ $isLoggedIn = isset($_SESSION['id']);
                                                 </div>
                                             </div>
                                         </div>
+                                        <span class="text-muted"><a href="admin/model/clear_cart.php" class="card-link text-decoration-none text-danger"> <i class="bi bi-trash fs-4"></i> Clear Cart</a> </span>
+
                                     <?php endforeach; ?>
                                 <?php else : ?>
                                     <p>Your cart is empty. Let's start an Order! <a href="index.php" class="btn btn-success rounded-pill text-decoration-none">Start Order <i class="bi bi-cart"></i> </a></p>
@@ -116,7 +118,7 @@ $isLoggedIn = isset($_SESSION['id']);
                                             <a href="checkout.php" class="btn btn-outline-secondary w-100 mt-3">Proceed to Checkout</a>
                                         <?php endif; ?>
                                         <?php if (!$isLoggedIn) : ?>
-                                            <form action="admin/model/guest_checkout.php" method="post" class="mt-3">
+                                            <form action="admin/model/process_checkout.php" method="post" class="mt-3">
                                                 <div class="mb-3">
                                                     <label for="guest_phone" class="form-label">Enter Phone Number to receive order confirmation</label>
                                                     <input type="tel" name="guest_phone" class="form-control" id="guest_phone" placeholder="+27XXXXXXXXX" pattern="^\+27[0-9]{9}$" required>
@@ -130,7 +132,6 @@ $isLoggedIn = isset($_SESSION['id']);
                                 </div>
                             </div>
                         </div>
-                        <span class="text-muted"><a href="admin/model/clear_cart.php" class="card-link text-decoration-none text-danger"> <i class="bi bi-trash fs-4"></i> Clear Cart</a> </span>
 
                     </div>
                 </main>

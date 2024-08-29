@@ -1,5 +1,7 @@
 body {
   background-color: #353d55;
+  margin: 0; /* Remove default margin */
+  overflow: hidden; /* Prevent scrolling */
 }
 
 .container-fluid {
@@ -15,11 +17,18 @@ body {
   max-width: 500px; /* Max width for smaller devices */
   margin: 0 auto; /* Center horizontally */
   padding: 1.5rem; /* Padding around the content */
+  box-sizing: border-box; /* Include padding in width/height calculations */
+}
+
+.text-center {
+  margin-top: 2rem; /* Add margin-top to create space above the logo */
+  margin-bottom: 1.5rem; /* Adjust margin as needed */
 }
 
 .card {
   border-radius: 0.5rem;
   padding: 1.5rem; /* Add padding inside the card */
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.1); /* Optional: Add a subtle shadow for better visual appeal */
 }
 
 .input-group {
@@ -39,25 +48,6 @@ body {
   cursor: pointer;
 }
 
-/* Smaller devices */
-@media (max-width: 576px) {
-  .input-group .eye-icon {
-    right: 0.5rem;
-  }
-
-  .main-content {
-    padding: 1rem; 
-  }
-
-  .card-body {
-    padding: 1.5rem; 
-  }
-
-  .btn-rounded {
-    font-size: 0.9rem; 
-  }
-}
-
 .card-body {
   padding: 2rem; /* Padding inside the card body */
 }
@@ -67,19 +57,11 @@ body {
   font-size: 1rem; /* Default font size for buttons */
 }
 
-@media (max-width: 768px) {
-  .btn-rounded {
-    font-size: 0.9rem; /* Smaller button text for medium screens */
-  }
-}
-
 .card-text {
   margin-bottom: 2rem;
 }
 
 .logo {
   max-width: 100%; /* Ensure the logo scales with the container */
-  height: auto; /* Maintain aspect ratio */
-  max-height: 150px; 
-  margin-bottom: 1.5rem; 
+  max-height: 100px; 
 }

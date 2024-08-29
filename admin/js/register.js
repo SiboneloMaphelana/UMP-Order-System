@@ -82,74 +82,66 @@ registrationForm.addEventListener("submit", function (event) {
 
   // Email validation
   const emailValue = email.value;
-
   if (!validator.isEmail(emailValue)) {
     emailError.textContent = "Invalid email address";
-    valid = false; // Set valid to false if email is invalid
+    valid = false;
   } else {
-    emailError.textContent = ""; // Clear any previous error messages
+    emailError.textContent = "";
   }
 
-  // Name validation and illegal characters check
+  // Name validation
   const nameValue = name.value;
-
   if (/[^a-zA-Z\s]/.test(nameValue)) {
     nameError.textContent = "Name contains illegal characters";
-    valid = false; // Set valid to false if name contains illegal characters
+    valid = false;
   } else if (nameValue.trim() === "") {
     nameError.textContent = "Name is required";
-    valid = false; // Set valid to false if name is empty
+    valid = false;
   } else {
-    nameError.textContent = ""; // Clear any previous error messages
+    nameError.textContent = "";
   }
 
   // Phone number validation
   const phoneNumberValue = phoneNumber.value;
-
- 
   const phoneNumberRegex = /^(?:\+27|0)[6-9]\d{8}$/;
-
   if (!phoneNumberRegex.test(phoneNumberValue)) {
     phoneNumberError.textContent = "Invalid phone number";
-    valid = false; // Set valid to false if phone number is invalid
+    valid = false;
   } else {
-    phoneNumberError.textContent = ""; // Clear any previous error messages
+    phoneNumberError.textContent = "";
   }
 
-  // Password strength validation using zxcvbn
+  // Password strength validation
   const passwordValue = password.value;
   const passwordResult = zxcvbn(passwordValue);
-
   if (passwordResult.score < 3) {
     passwordError.textContent = "Password is too weak. Try using a mix of letters, numbers, and special characters.";
-    valid = false; // Set valid to false if password is too weak
+    valid = false;
   } else {
-    passwordError.textContent = ""; // Clear any previous error messages
+    passwordError.textContent = "";
   }
 
   // Confirm password validation
   const confirmPasswordValue = confirmPassword.value;
-
   if (confirmPasswordValue !== passwordValue) {
     confirmPasswordError.textContent = "Passwords do not match";
     confirmPasswordError.style.color = "red";
-    valid = false; // Set valid to false if passwords do not match
+    valid = false;
   } else {
-    confirmPasswordError.textContent = ""; // Clear any previous error messages
+    confirmPasswordError.textContent = "";
   }
 
   // Role validation
   const roleValue = role.value;
-
   if (!roleValue) {
     roleError.textContent = "Please select a role";
-    valid = false; // Set valid to false if no role is selected
+    valid = false;
   } else {
-    roleError.textContent = ""; // Clear any previous error messages
+    roleError.textContent = "";
   }
 
-  // Prevent form submission if any validation fails
   if (!valid) {
-    event.preventDefault();
+    event.preventDefault(); // Prevent form submission if validation fails
   }
 });
+

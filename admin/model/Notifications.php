@@ -65,7 +65,7 @@ class Notifications
         return false;
     }
 
-    $messageText = "Thank you for your order. Your order number is " . $orderDetails['id'];
+    $messageText = "Thank you for your order. Your order number is " . $orderDetails['id']. ". Your order will be ready in 15 minutes.";
 
     // Environment configurations
     $base_url = $_ENV['BASE_URL'];

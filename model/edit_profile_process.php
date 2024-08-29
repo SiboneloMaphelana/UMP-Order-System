@@ -27,17 +27,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     // Check the result of the update operation
     if ($updateResult === true) {
-        $_SESSION['update_success'] = "Details updated successfully.";
+        $_SESSION['update_user_success'] = "Details updated successfully.";
         header("Location: ../profile.php");
         exit;
     } else {
-        $_SESSION['update_error'] = $updateResult;
+        $_SESSION['update_user_failure'] = $updateResult;
         header("Location: ../edit_profile.php");
         exit;
     }
 } else {
     // If the form is not submitted, redirect back to the edit profile page
-    $_SESSION['update_error'] = "Form not submitted.";
+    $_SESSION['update_user_failure'] = "Form not submitted.";
     header("Location: ../edit_profile.php" . urlencode($_POST["id"]));
     exit;
 }

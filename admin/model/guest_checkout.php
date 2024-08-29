@@ -9,7 +9,7 @@ require '../../vendor/autoload.php';
 $dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
 $dotenv->load();
 // Define global variables for the base URL
-$baseUrl = "https://688f-41-13-76-227.ngrok-free.app";
+$baseUrl = "https://a3b5-41-13-118-47.ngrok-free.app";
 $payfastNotifyUrl = $baseUrl . "/UMP-Order-System/admin/model/notify.php";
 $payfastReturnUrl = $baseUrl . "/UMP-Order-System/order_confirmation.php";
 $payfastCancelUrl = $baseUrl . "/UMP-Order-System/index.php";

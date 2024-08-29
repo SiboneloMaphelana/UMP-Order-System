@@ -5,6 +5,12 @@ require_once 'model/Report.php';
 
 $report = new Report($conn);
 
+if ($_SESSION['role'] === 'staff') {
+    $_SESSION['error'] = "Access denied. You are not authorized to view the page.";
+    header("Location: orders.php");
+    exit();
+}
+
 // Fetch report data
 $salesReport = $report->getSalesReport();
 $ordersReport = $report->getOrdersReport();

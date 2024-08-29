@@ -37,7 +37,7 @@ $favorites = $food->getFavorites();
                                     <div class="col mb-4">
                                         <div class="card index-card h-100">
                                             <a href="category_details.php?id=<?php echo htmlspecialchars($category['id']); ?>" class="text-decoration-none text-muted">
-                                                <img src="admin/uploads/<?php echo htmlspecialchars($category['imageName']); ?>" class="index-img" alt="<?php echo htmlspecialchars($category['name']); ?>">
+                                                <img src="admin/uploads/<?php echo htmlspecialchars($category['imageName']); ?>" class="index-img lazyload" alt="<?php echo htmlspecialchars($category['name']); ?>">
                                                 <div class="card-body text-center">
                                                     <h5 class="card-title">
                                                         <?php echo htmlspecialchars($category['name']); ?>

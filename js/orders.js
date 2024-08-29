@@ -15,9 +15,9 @@ $(document).ready(function() {
                 data: { orderId: orderId },
                 success: function(response) {
                     showToast('Order ' + orderId + ' has been cancelled successfully.');
-                    // Optionally, update UI to reflect cancelled order
-                    // Example: Remove the cancelled order card from UI
-                    $('.cancel-order-btn[data-order-id="' + orderId + '"]').closest('.card').fadeOut('slow');
+
+                    // Reload the page to reflect changes
+                    window.location.reload();
                 },
                 error: function(xhr, status, error) {
                     showToast('Failed to cancel order ' + orderId + '. Please try again.');
@@ -28,11 +28,12 @@ $(document).ready(function() {
 
     // Function to show toast message
     function showToast(message) {
-        var toast = $('#toastMessage');
+        let toast = $('#toastMessage');
         toast.find('.toast-body').text(message);
         toast.toast({ delay: 3000 });
         toast.toast('show');
     }
+
     // Toggle buttons for orders view
     $('#upcomingOrdersBtn').on('click', function() {
         $('#upcomingOrders').show();

@@ -126,6 +126,10 @@
     flex-shrink: 0; /* Prevent image from shrinking */
   }
 
+  .index-img {
+    width: 250px; /* Larger image height for larger screens */
+  }
+
   .index-card-body {
     padding: 0.75rem; /* Adjust padding inside the card body */
     display: flex;

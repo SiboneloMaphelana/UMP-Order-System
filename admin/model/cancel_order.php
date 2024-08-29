@@ -16,14 +16,14 @@ if (isset($_POST['orderId'])) {
     $success = $food->cancelOrder($order_id);
 
     if ($success) {
-        header('Location: ../../orders.php?cancelled=cancelled');
+        header('Location: ../../orders.php');
         exit();
     } else {
-        header('Location: ../../orders.php?cancel_error=failed');
+        header('Location: ../../orders.php');
         exit();
     }
 } else {
-    header('Location: ../../orders.php?cancel_error=orderId_not_provided');
+    header('Location: ../../orders.php');
     exit();
 }
 ?>

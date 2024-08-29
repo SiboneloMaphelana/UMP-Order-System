@@ -21,7 +21,8 @@ $foodItems = $food->getAllFoodItems();
             overflow-x: auto;
         }
 
-        .table th, .table td {
+        .table th,
+        .table td {
             vertical-align: middle;
             text-align: center;
         }
@@ -34,7 +35,9 @@ $foodItems = $food->getAllFoodItems();
 
         /* Responsive font size */
         @media (max-width: 576px) {
-            .table th, .table td {
+
+            .table th,
+            .table td {
                 font-size: 14px;
             }
 
@@ -42,9 +45,11 @@ $foodItems = $food->getAllFoodItems();
                 font-size: 16px;
             }
         }
-        
+
         @media (max-width: 768px) {
-            .table th, .table td {
+
+            .table th,
+            .table td {
                 font-size: 16px;
             }
 
@@ -52,9 +57,11 @@ $foodItems = $food->getAllFoodItems();
                 font-size: 18px;
             }
         }
-        
+
         @media (max-width: 992px) {
-            .table th, .table td {
+
+            .table th,
+            .table td {
                 font-size: 16px;
             }
 
@@ -73,14 +80,11 @@ $foodItems = $food->getAllFoodItems();
             <i class="fas fa-bars"></i>
         </button>
         <div class="container mt-4">
+            <!-- Success and Error Messages -->
             <?php
-            if (isset($_SESSION['success'])) {
-                echo '<div class="alert alert-success">' . htmlspecialchars($_SESSION['success']) . '</div>';
-                unset($_SESSION['success']);
-            }
-            if (isset($_SESSION['error'])) {
-                echo '<div class="alert alert-danger">' . htmlspecialchars($_SESSION['error']) . '</div>';
-                unset($_SESSION['error']);
+            if (isset($_SESSION['menu_success'])) {
+                echo '<div class="alert alert-success">' . htmlspecialchars($_SESSION['menu_success']) . '</div>';
+                unset($_SESSION['menu_success']);
             }
             ?>
             <h2 class="text-center mb-4">Food Items</h2>
@@ -108,7 +112,7 @@ $foodItems = $food->getAllFoodItems();
                                 <td><?= htmlspecialchars($food['quantity']); ?></td>
                                 <td>R <?= htmlspecialchars($food['price']); ?></td>
                                 <td><?= htmlspecialchars($food['description']); ?></td>
-                                <td><img src="foods/<?= htmlspecialchars($food['image']); ?>" alt="Food Image" class="img-thumbnail"></td>
+                                <td><img src="foods/<?= htmlspecialchars($food['image']); ?>" alt="Food Image" class="img-thumbnail img-fluid lazyload"></td>
                                 <td><?= htmlspecialchars($food['Category']); ?></td>
                                 <td>
                                     <div class="btn-group-vertical">
@@ -127,6 +131,7 @@ $foodItems = $food->getAllFoodItems();
                 </table>
             </div>
         </div>
+
 
         <!-- Footer 
             <footer class="footer mt-auto py-3 bg-dark text-light">

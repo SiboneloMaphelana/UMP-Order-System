@@ -38,10 +38,6 @@ $categories = $food->getCategories();
             echo '<div class="alert alert-success">' . htmlspecialchars($_SESSION['add-cat']) . '</div>';
             unset($_SESSION['add-cat']);
         }
-        if (isset($_SESSION['fail-cat'])) {
-            echo '<div class="alert alert-danger">' . htmlspecialchars($_SESSION['fail-cat']) . '</div>';
-            unset($_SESSION['fail-cat']);
-        }
         ?>
         <h1 class="text-center mb-4">Categories</h1>
         <div class="d-flex justify-content-center mb-3">
@@ -51,7 +47,7 @@ $categories = $food->getCategories();
             <?php foreach ($categories as $category) : ?>
                 <div class="col-lg-4 col-md-6 mb-4">
                     <div class="card">
-                        <img src="uploads/<?php echo htmlspecialchars($category['imageName']); ?>" class="card-img-top category-image" alt="<?php echo htmlspecialchars($category['name']); ?>">
+                        <img src="uploads/<?php echo htmlspecialchars($category['imageName']); ?>" class="card-img-top category-image img-fluid lazyload" alt="<?php echo htmlspecialchars($category['name']); ?>">
                         <div class="card-body text-center">
                             <h5 class="card-title"><?php echo htmlspecialchars($category['name']); ?></h5>
                         </div>

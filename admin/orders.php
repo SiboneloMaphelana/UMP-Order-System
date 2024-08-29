@@ -19,7 +19,7 @@ $food = new Food($conn);
 </head>
 
 <body>
-    <?php include('partials/sidebar.php'); ?>
+    <?php include_once('partials/sidebar.php'); ?>
 
     <div id="content" class="container-fluid overflow-hidden">
         <button class="btn btn-dark d-md-none" type="button" id="toggleSidebar">

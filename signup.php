@@ -67,9 +67,7 @@ session_start();
                                     <input type="tel" class="form-control" id="phone" name="phone" placeholder="Enter Phone">
                                     <div id="phoneError" class="text-danger mt-2"></div>
                                 </div>
-                                
                             </div>
-                            
                             <div class="row mb-3">
                                 <div class="col-12 col-md-6">
                                     <label for="password" class="form-label">Password</label>

@@ -1,3 +1,4 @@
+<?php $userId = isset($_SESSION['id']) ? $_SESSION['id'] : null; ?>
 <div class="header text-white" style="background-color: #353D55;">
     <div class="container-fluid">
         <div class="row align-items-center py-2">
@@ -23,6 +24,7 @@
                             <img src="images/logo.png" alt="logo" class="me-2 logo">
                         </a>
                     </div>
+
                     <div class="col-md-9 d-flex justify-content-end align-items-center">
                         <form action="search.php" method="POST" class="me-3" style="width: 300px;" id="search">
                             <div class="input-group">
@@ -37,10 +39,12 @@
                             <a href="#" class="text-white text-decoration-none d-flex align-items-center dropdown-toggle" id="accountDropdown" data-bs-toggle="dropdown" aria-expanded="false">
                                 <i class="fas fa-user"></i> <span class="d-none d-md-inline ms-2">Account</span>
                             </a>
+                            <?php if ($userId): ?>
                             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="accountDropdown">
                                 <li><a class="dropdown-item" href="profile.php">Profile</a></li>
                                 <li><a class="dropdown-item" href="model/logout.php">Logout</a></li>
                             </ul>
+                            <?php endif;?>
                         </div>
                     </div>
                 </div>
@@ -68,6 +72,14 @@
                 <li class="nav-item me-4">
                     <a class="nav-link text-dark fs-4" href="about.php">About Us</a>
                 </li>
+                <?php if (!$userId): ?>
+                    <li class="nav-item me-4">
+                        <a class="nav-link text-dark fs-4" href="login.php">Login</a>
+                    </li>
+                    <li class="nav-item me-4">
+                        <a class="nav-link text-dark fs-4" href="signup.php">Sign Up</a>
+                    </li>
+                <?php endif; ?>
             </ul>
         </div>
     </div>
@@ -84,9 +96,15 @@
                 <i class="fas fa-user"></i><br>More
             </a>
             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="mobileDropdown">
-                <li><a class="dropdown-item" href="profile.php">Profile</a></li>
-                <li><a class="dropdown-item" href="about.php">About Us</a></li>
-                <li><a class="dropdown-item" href="model/logout.php">Logout</a></li>
+                <?php if ($userId): ?>
+                    <li><a class="dropdown-item" href="profile.php">Profile</a></li>
+                    <li><a class="dropdown-item" href="about.php">About Us</a></li>
+                    <li><a class="dropdown-item" href="model/logout.php">Logout</a></li>
+                <?php endif; ?>
+                <?php if ($userId): ?>
+                    <li><a class="dropdown-item" href="login.php">Login</a></li>
+                    <li><a class="dropdown-item" href="signup.php">Sign Up</a></li>
+                <?php endif; ?>
             </ul>
         </div>
     </div>

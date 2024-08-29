@@ -14,7 +14,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $image = $_FILES['image'];
 
     if (empty($name) || empty($image['name'])) {
-        $_SESSION['error'] = "Name and image are required.";
+        $_SESSION['fail-cat'] = "Name and image are required.";
         header("Location: ../add_category.php");
         exit();
     }

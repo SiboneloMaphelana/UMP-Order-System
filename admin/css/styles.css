@@ -17,7 +17,7 @@ body {
   font-size: 0.8rem; /* Reduce the font size of the badge text */
 }
 #sidebar {
-  background-color: #343a40;
+  background-color: #1d2249 ;
   color: #fff;
   transition: transform 0.3s ease;
   transform: translateX(0); 

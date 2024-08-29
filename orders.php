@@ -51,12 +51,18 @@ $groupedCanceledOrders = groupOrdersByDate($canceledOrders);
             <div class="col-md-9 col-lg-10 ms-auto main-content">
                 <main class="p-4">
                     <h1 class="mt-5 mb-2 text-center">My Orders</h1>
+                    <div class="toast" id="toastMessage" role="alert" aria-live="assertive" aria-atomic="true">
+                            <div class="toast-body text-center text-danger">
+                                <!-- Toast message content will be dynamically inserted here -->
+                            </div>
+                        </div>
                     <div class="d-flex justify-content-center mb-4">
                         <div class="btn-group mt-5" role="group" aria-label="Order Toggle">
-                            <button type="button" class="btn btn-outline-success" id="upcomingOrdersBtn">Upcoming Orders</button>
-                            <button type="button" class="btn btn-outline-secondary" id="pastOrdersBtn">Past Orders</button>
-                            <button type="button" class="btn btn-outline-danger" id="canceledOrdersBtn">Canceled Orders</button>
+                            <button type="button" class="btn btn-success" id="upcomingOrdersBtn">Upcoming Orders</button>
+                            <button type="button" class="btn btn-secondary" id="pastOrdersBtn">Past Orders</button>
+                            <button type="button" class="btn btn-danger" id="canceledOrdersBtn">Canceled Orders</button>
                         </div>
+                        
                     </div>
 
                     <div class="orders-container">
@@ -173,6 +179,9 @@ $groupedCanceledOrders = groupOrdersByDate($canceledOrders);
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/js/all.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
     <script src="js/orders.js"></script>
 </body>
 

@@ -16,7 +16,7 @@ $categories = $food->getCategories();
     <title>Add Food Item</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-    <link rel="stylesheet" href="css/styles.css"> 
+    <link rel="stylesheet" href="css/styles.css">
 </head>
 
 <body>
@@ -28,6 +28,13 @@ $categories = $food->getCategories();
         </button>
         <div class="container mt-4">
             <h2 class="text-center">Add New Food Item</h2>
+            <!-- Success and Error Messages -->
+            <?php
+            if (isset($_SESSION['menu_error'])) {
+                echo '<div class="alert alert-success">' . htmlspecialchars($_SESSION['menu_error']) . '</div>';
+                unset($_SESSION['menu_error']);
+            }
+            ?>
             <form action="model/add_food_process.php" method="post" enctype="multipart/form-data">
                 <div class="mb-3">
                     <label for="foodName" class="form-label">Food Name</label>

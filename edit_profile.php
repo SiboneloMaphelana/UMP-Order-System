@@ -1,3 +1,4 @@
+<?php session_start(); ?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -23,10 +24,16 @@
                     <div class="card mx-auto" style="max-width: 400px;">
                         <div class="card-body">
                             <p class="card-text text-center">Update your profile.</p>
+                            <?php if (isset($_SESSION['update_user_failure'])): ?>
+                                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                    <?php echo $_SESSION['update_user_failure'];
+                                    unset($_SESSION['update_user_failure']); ?>
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                </div>
+                            <?php endif; ?>
 
                             <form id="editProfile" action="model/edit_profile_process.php" method="POST" autocomplete="on">
-                                <input type="hidden" name="id" value="<?php echo htmlspecialchars($_GET['id']); ?>">
-                                <div class="mb-3">
+                            <input type="hidden" name="id" value="<?php echo htmlspecialchars(filter_input(INPUT_GET, 'id', FILTER_SANITIZE_NUMBER_INT)); ?>">                                <div class="mb-3">
                                     <label for="name" class="form-label">First Name</label>
                                     <input type="text" class="form-control" id="name" name="name">
                                 </div>

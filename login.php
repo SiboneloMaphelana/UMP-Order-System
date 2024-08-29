@@ -1,3 +1,4 @@
+<?php session_start(); ?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -27,6 +28,13 @@
                             <p class="card-text text-center">
                                 Welcome Back! Just Enter Your Details And See What We Can Serve You Today.
                             </p>
+                            <?php if (isset($_SESSION['login_user_error'])): ?>
+                                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                    <?php echo $_SESSION['login_user_error'];
+                                    unset($_SESSION['login_user_error']); ?>
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                </div>
+                            <?php endif; ?>
                             <form id="loginForm" action="model/login_process.php" method="post">
                                 <div class="mb-3">
                                     <label for="email" class="form-label">Email</label>

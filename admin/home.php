@@ -2,7 +2,11 @@
 session_start();
 include_once("../connection/connection.php");
 include_once("model/Order.php");
-
+if ($_SESSION['role'] === 'staff') {
+    $_SESSION['error'] = "Access denied. You are not authorized to view the page.";
+    header("Location: orders.php");
+    exit();
+}
 $order = new Order($conn);
 ?>
 <!DOCTYPE html>

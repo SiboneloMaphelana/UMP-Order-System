@@ -19,7 +19,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
         header("Location: ../home.php");
     } else {
-        $_SESSION['login_error'] = "Invalid email or password!";
+        $_SESSION['login_error'] = "Incorrect email or password!";
         header("Location: ../login.php");
     }
 } else {
