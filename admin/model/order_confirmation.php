@@ -4,7 +4,7 @@ include_once("Food.php");
 include_once("../UMP-Order-System/connection/connection.php");
 
 // Define a global variable for the base URL
-$baseUrl = "https://a3b5-41-13-118-47.ngrok-free.app";
+$baseUrl = "localhost";
 
 // You can now use this variable throughout your script for URLs
 

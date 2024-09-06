@@ -38,12 +38,7 @@ $isLoggedIn = isset($_SESSION['id']);
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
     <link rel="stylesheet" href="css/new.css">
-    <style>
-        /* Ensures the main content is pushed down below the navigation */
-        .main-content {
-            margin-top: 125px;
-        }
-    </style>
+    
 </head>
 
 <body>
@@ -91,11 +86,12 @@ $isLoggedIn = isset($_SESSION['id']);
                                                 </div>
                                             </div>
                                         </div>
-                                        <span class="text-muted"><a href="admin/model/clear_cart.php" class="card-link text-decoration-none text-danger"> <i class="bi bi-trash fs-4"></i> Clear Cart</a> </span>
 
                                     <?php endforeach; ?>
+                                    <span class="text-muted"><a href="admin/model/clear_cart.php" class="card-link text-decoration-none text-danger"> <i class="bi bi-trash fs-4"></i> Clear Cart</a> </span>
+
                                 <?php else : ?>
-                                    <p>Your cart is empty. Let's start an Order! <a href="index.php" class="btn btn-success rounded-pill text-decoration-none">Start Order <i class="bi bi-cart"></i> </a></p>
+                                    <p>Your cart is empty! <a href="index.php" class="btn btn-success rounded-pill text-decoration-none">Start Order <i class="bi bi-cart"></i> </a></p>
                                 <?php endif; ?>
                             </div>
                         </div>

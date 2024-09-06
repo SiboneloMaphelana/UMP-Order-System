@@ -1,4 +1,5 @@
 <?php $userId = isset($_SESSION['id']) ? $_SESSION['id'] : null; ?>
+
 <div class="header text-white" style="background-color: #353D55;">
     <div class="container-fluid">
         <div class="row align-items-center py-2">
@@ -40,11 +41,11 @@
                                 <i class="fas fa-user"></i> <span class="d-none d-md-inline ms-2">Account</span>
                             </a>
                             <?php if ($userId): ?>
-                            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="accountDropdown">
-                                <li><a class="dropdown-item" href="profile.php">Profile</a></li>
-                                <li><a class="dropdown-item" href="model/logout.php">Logout</a></li>
-                            </ul>
-                            <?php endif;?>
+                                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="accountDropdown">
+                                    <li><a class="dropdown-item" href="profile.php">Profile</a></li>
+                                    <li><a class="dropdown-item" href="model/logout.php">Logout</a></li>
+                                </ul>
+                            <?php endif; ?>
                         </div>
                     </div>
                 </div>
@@ -101,7 +102,7 @@
                     <li><a class="dropdown-item" href="about.php">About Us</a></li>
                     <li><a class="dropdown-item" href="model/logout.php">Logout</a></li>
                 <?php endif; ?>
-                <?php if ($userId): ?>
+                <?php if (!$userId): ?>
                     <li><a class="dropdown-item" href="login.php">Login</a></li>
                     <li><a class="dropdown-item" href="signup.php">Sign Up</a></li>
                 <?php endif; ?>

@@ -58,8 +58,8 @@ $groupedCanceledOrders = groupOrdersByDate($canceledOrders);
                         </div>
                     <div class="d-flex justify-content-center mb-4">
                         <div class="btn-group mt-5" role="group" aria-label="Order Toggle">
-                            <button type="button" class="btn btn-success" id="upcomingOrdersBtn">Upcoming Orders</button>
-                            <button type="button" class="btn btn-secondary" id="pastOrdersBtn">Past Orders</button>
+                            <button type="button" class="btn btn-success" id="upcomingOrdersBtn">Pending Orders</button>
+                            <button type="button" class="btn btn-secondary" id="pastOrdersBtn">Completed Orders</button>
                             <button type="button" class="btn btn-danger" id="canceledOrdersBtn">Canceled Orders</button>
                         </div>
                         
@@ -88,7 +88,7 @@ $groupedCanceledOrders = groupOrdersByDate($canceledOrders);
                                     </div>
                                 <?php endforeach; ?>
                             <?php else : ?>
-                                <div class="alert alert-info" role="alert">You have no upcoming orders.</div>
+                                <div class="alert alert-info" role="alert">You have no pending orders. <i class="fas fa-utensils"></i></div>
                             <?php endif; ?>
                         </div>
 
@@ -144,7 +144,7 @@ $groupedCanceledOrders = groupOrdersByDate($canceledOrders);
 
 
                         <div class="text-center">
-                            <a href="index.php" class="btn btn-primary">Back to Home</a>
+                            <a href="index.php" class="btn btn-outline-primary">Back to Home</a>
                         </div>
                     </div>
                 </main>
@@ -175,12 +175,11 @@ $groupedCanceledOrders = groupOrdersByDate($canceledOrders);
     </div>
     <!-- Footer -->
     <?php include_once("partials/footer.php"); ?>
-
+    
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.7/dist/umd/popper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/js/all.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
     <script src="js/orders.js"></script>
 </body>

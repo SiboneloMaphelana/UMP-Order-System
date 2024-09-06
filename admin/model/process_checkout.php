@@ -9,7 +9,7 @@ require '../../vendor/autoload.php';
 $dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
 $dotenv->load();
 // Define global variables for the base URL
-$baseUrl = "https://a3b5-41-13-118-47.ngrok-free.app";
+$baseUrl = "localhost";
 $payfastNotifyUrl = $baseUrl . "/UMP-Order-System/admin/model/notify.php";
 $payfastReturnUrl = $baseUrl . "/UMP-Order-System/order_confirmation.php";
 $payfastCancelUrl = $baseUrl . "/UMP-Order-System/index.php";
@@ -138,6 +138,7 @@ try {
         $orderItems = $food->getOrderItems($orderId);
 
         // Send order completion email and SMS
+        /*
         if (!$isGuest) {
             // For logged-in users
             $customer = $food->getCustomerById($userId);
@@ -164,7 +165,7 @@ try {
                 }
             }
         }
-
+        */
         // Clear the cart
         unset($_SESSION['cart']);
 
