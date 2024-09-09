@@ -38,7 +38,7 @@ $isLoggedIn = isset($_SESSION['id']);
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
     <link rel="stylesheet" href="css/new.css">
-    
+
 </head>
 
 <body>
@@ -49,7 +49,12 @@ $isLoggedIn = isset($_SESSION['id']);
             <div class="col d-flex flex-column h-sm-100">
                 <main class="row overflow-auto main-content">
                     <h2 class="text-center">My Cart</h2>
-
+                    <?php if (isset($_SESSION['error'])) : ?>
+                        <div class="alert alert-danger" role="alert">
+                            <?php echo $_SESSION['error'];
+                            unset($_SESSION['error']); ?>
+                        </div>
+                    <?php endif; ?>
                     <div class="row">
                         <div class="col-md-8">
                             <div class="cart-container">
@@ -58,8 +63,8 @@ $isLoggedIn = isset($_SESSION['id']);
                                         <a href="index.php" class="card-link text-decoration-none text-success">
                                             <i class="fas fa-arrow-left"></i>Continue Shopping
                                         </a>
-                                    </span>
-
+                                    </span><br>
+                                    <h5 class="text-end">Please select 10 items per product or less</h5>
                                     <?php foreach ($cartItems as $index => $item) : ?>
                                         <div class="card mb-3">
                                             <div class="card-body bg-light">
@@ -110,7 +115,7 @@ $isLoggedIn = isset($_SESSION['id']);
                                                 <span>R<?php echo number_format($subtotal, 2); ?></span>
                                             </li>
                                         </ul>
-                                        <?php if($isLoggedIn) : ?>
+                                        <?php if ($isLoggedIn) : ?>
                                             <a href="checkout.php" class="btn btn-outline-secondary w-100 mt-3">Proceed to Checkout</a>
                                         <?php endif; ?>
                                         <?php if (!$isLoggedIn) : ?>

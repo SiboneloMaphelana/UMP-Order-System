@@ -29,6 +29,45 @@ class Order{
         }
     }
     
+    // Function to check quantity
+    public function checkQuantity($foodId, $quantity) {
+        $stmt = $this->conn->prepare("SELECT quantity FROM food_items WHERE id = ?");
+        $stmt->bind_param("i", $foodId);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $row = $result->fetch_assoc();
+        return $row['quantity'] >= $quantity;
+    }
+
+    // Function to update quantity
+    public function updateItemQuantity($foodId, $quantityPurchased) {
+        // Prepare SQL statement
+        $sql = "UPDATE food_items SET quantity = quantity - ? WHERE id = ?";
+        $stmt = $this->conn->prepare($sql);
+    
+        // Check if preparation was successful
+        if (!$stmt) {
+            throw new Exception("Error preparing the SQL statement: " . $this->conn->error);
+        }
+    
+        // Bind parameters
+        $stmt->bind_param("ii", $quantityPurchased, $foodId);
+    
+        // Execute statement
+        $result = $stmt->execute();
+    
+        // Check if execution was successful
+        if (!$result) {
+            throw new Exception("Error executing the SQL statement: " . $stmt->error);
+        }
+    
+        // Close statement
+        $stmt->close();
+    
+        return $result;
+    }
+    
+    
 
     public function addOrderItem($orderId, $foodId, $quantity, $price) {
         $stmt = $this->conn->prepare("INSERT INTO order_items (order_id, food_id, quantity, price) VALUES (?, ?, ?, ?)");

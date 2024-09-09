@@ -3,10 +3,9 @@ session_start();
 include_once("Food.php");
 include_once("../UMP-Order-System/connection/connection.php");
 
-// Define a global variable for the base URL
-$baseUrl = "localhost";
+//global variable for the base URL
+$baseUrl = "";
 
-// You can now use this variable throughout your script for URLs
 
 try {
     // Initialize variables to store order details
@@ -20,31 +19,24 @@ try {
 
     $orderId = intval($_SESSION['orderId']);
 
-    // Start transaction
-    mysqli_autocommit($conn, false);
-
-    // Determine whether to check for user_id or assume it's a guest
+    // Fetch order details
     if (isset($_SESSION['id'])) {
         // Logged-in user
         $userId = $_SESSION['id'];
 
-        // Fetch order details including status
         $orderQuery = $conn->prepare("
-            SELECT id, order_date, total_amount, status 
-            FROM orders 
+            SELECT id, order_date, total_amount, status
+            FROM orders
             WHERE id = ? AND user_id = ?
         ");
         $orderQuery->bind_param('ii', $orderId, $userId);
-
     } else {
         // Guest user
-        // Fetch the most recent order if user_id is not set
         $orderQuery = $conn->prepare("
-            SELECT id, order_date, total_amount, status 
-            FROM orders 
-            WHERE id = ? 
-            AND user_id IS NULL 
-            ORDER BY order_date DESC
+            SELECT id, order_date, total_amount, status
+            FROM orders
+            WHERE id = ?
+            AND user_id IS NULL
             LIMIT 1
         ");
         $orderQuery->bind_param('i', $orderId);
@@ -61,9 +53,9 @@ try {
 
     // Fetch order items
     $orderItemsQuery = $conn->prepare("
-        SELECT oi.*, fi.name, fi.quantity AS available_quantity, oi.status 
-        FROM order_items oi 
-        JOIN food_items fi ON oi.food_id = fi.id 
+        SELECT oi.*, fi.name
+        FROM order_items oi
+        JOIN food_items fi ON oi.food_id = fi.id
         WHERE oi.order_id = ?
     ");
     $orderItemsQuery->bind_param('i', $orderId);
@@ -73,41 +65,12 @@ try {
         $orderItems[] = $row;
     }
 
-    // Check if any food item has insufficient quantity
-    foreach ($orderItems as $item) {
-        $foodItemId = $item['food_id'];
-        $quantityOrdered = $item['quantity'];
-        $availableQuantity = $item['available_quantity'];
-
-        // Ensure available quantity is sufficient
-        if ($availableQuantity < $quantityOrdered) {
-            throw new Exception("Insufficient quantity for food item: " . $item['name']);
-        }
-
-        // Reduce the quantity of each ordered food item
-        $updateQuantityQuery = $conn->prepare("UPDATE food_items SET quantity = quantity - ? WHERE id = ? AND quantity >= ?");
-        $updateQuantityQuery->bind_param('iii', $quantityOrdered, $foodItemId, $quantityOrdered);
-        $updateQuantityQuery->execute();
-
-        // Check if update was successful
-        if ($updateQuantityQuery->affected_rows === 0) {
-            throw new Exception("Failed to update quantity for food item ID: " . $foodItemId);
-        }
-    }
-
-    // Commit transaction
-    mysqli_commit($conn);
-
     // Clear orderId from session after displaying the order
     unset($_SESSION['orderId']);
 
-    // Return order and order items for use
+    // Return order and order items for use in the confirmation display
     return compact('order', 'orderItems');
-
 } catch (Exception $e) {
-    // Rollback transaction on error
-    mysqli_rollback($conn);
-
     error_log('Exception caught: ' . $e->getMessage());
 
     // Use the global base URL variable in the header redirection
@@ -120,7 +83,5 @@ try {
     if (isset($orderItemsQuery)) {
         $orderItemsQuery->close();
     }
-    mysqli_autocommit($conn, true);
     mysqli_close($conn);
 }
-?>

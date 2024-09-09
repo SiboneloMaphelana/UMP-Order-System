@@ -49,17 +49,17 @@ $totalItems = calculateTotalItems($_SESSION['cart']);
                                         <span>R<?php echo number_format($subtotal, 2); ?></span>
                                     </li>
                                 </ul>
-                                <form action="admin/model/process_checkout.php" method="POST" class="mt-3">
+                                <form action="admin/model/process_checkout1.php" method="POST" class="mt-3">
                                     <div>
                                         <h6>Select Payment Method:</h6>
                                         <div class="form-check">
-                                            <input class="form-check-input" type="radio" name="payment_method" id="payment_payfast" value="payfast" required>
+                                            <input class="form-check-input" type="radio" name="payment_method" id="payment_payfast" value="payfast" >
                                             <label class="form-check-label" for="payment_payfast">
                                                 <i class="fas fa-credit-card"></i> PayFast
                                             </label>
                                         </div>
                                         <div class="form-check mt-2">
-                                            <input class="form-check-input" type="radio" name="payment_method" id="cash_on_collection" value="cash on collection" required>
+                                            <input class="form-check-input" type="radio" name="payment_method" id="cash_on_collection" value="cash on collection" >
                                             <label class="form-check-label" for="cash_on_collection">
                                                 <i class="fas fa-money-bill-wave"></i> Cash on Collection
                                             </label>
