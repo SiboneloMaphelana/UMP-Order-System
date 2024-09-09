@@ -18,7 +18,7 @@ $payfastCancelUrl = $baseUrl . "/UMP-Order-System/index.php";
 function handleError($message, $baseUrl)
 {
     $_SESSION['error'] = $message;
-    header("Location: " . $baseUrl . "/UMP-Order-System/checkout.php");
+    header("Location: " . $baseUrl . "/UMP-Order-System/cart.php");
     exit();
 }
 
@@ -62,8 +62,19 @@ try {
         $merchantKey = $_ENV['MERCHANT_KEY'];
         $payfastUrl = $_ENV['PAYFAST_URL'];
 
+        // Check quantity before processing payment
+        foreach ($cartItems as $item) {
+            if (!$food->checkQuantity($item['food_id'], $item['quantity'])) {
+                header("Location: " . $baseUrl . "/UMP-Order-System/cart.php");
+                error_log("We don't have enough " . $item['name'] . " in stock. Please add more items to your cart.");
+                throw new Exception("We don't have enough " . $item['name'] . " in stock. Please reduce items to your cart.");
+                exit;
+            }
+        }
+
         // Store order in database and retrieve the orderId
         $orderId = $food->addOrder($userId, $totalAmount, $paymentMethod);
+        error_log("Items added to order. Order ID: " . $orderId);
 
         if (!$orderId) {
             throw new Exception("Error adding order.");
@@ -123,6 +134,7 @@ try {
             if (!$food->checkQuantity($item['food_id'], $item['quantity'])) {
                 header("Location: " . $baseUrl . "/UMP-Order-System/cart.php");
                 error_log("We don't have enough " . $item['name'] . " in stock. Please add more items to your cart.");
+                throw new Exception("We don't have enough " . $item['name'] . " in stock. Please reduce items to your cart.");
                 exit;
             }
         }
@@ -130,6 +142,7 @@ try {
 
         // Handle Cash on Collection payment method
         $orderId = $food->addOrder($userId, $totalAmount, $paymentMethod);
+        error_log("Items added to order. Order ID: " . $orderId);
 
         if (!$orderId) {
             throw new Exception("Error adding order.");

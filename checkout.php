@@ -49,7 +49,7 @@ $totalItems = calculateTotalItems($_SESSION['cart']);
                                         <span>R<?php echo number_format($subtotal, 2); ?></span>
                                     </li>
                                 </ul>
-                                <form action="admin/model/process_checkout1.php" method="POST" class="mt-3">
+                                <form action="admin/model/process_checkout.php" method="POST" class="mt-3">
                                     <div>
                                         <h6>Select Payment Method:</h6>
                                         <div class="form-check">

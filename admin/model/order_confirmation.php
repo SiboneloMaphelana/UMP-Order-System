@@ -36,7 +36,7 @@ try {
             SELECT id, order_date, total_amount, status
             FROM orders
             WHERE id = ?
-            AND user_id IS NULL
+            AND user_id = 0
             LIMIT 1
         ");
         $orderQuery->bind_param('i', $orderId);

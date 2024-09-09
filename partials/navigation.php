@@ -67,9 +67,11 @@
                 <li class="nav-item me-4">
                     <a class="nav-link text-dark fs-4" href="index.php">Menu</a>
                 </li>
-                <li class="nav-item me-4">
-                    <a class="nav-link text-dark fs-4" href="orders.php">Track Orders</a>
-                </li>
+                <?php if ($userId): ?>
+                    <li class="nav-item me-4">
+                        <a class="nav-link text-dark fs-4" href="orders.php">Track Orders</a>
+                    </li>
+                <?php endif; ?>
                 <li class="nav-item me-4">
                     <a class="nav-link text-dark fs-4" href="about.php">About Us</a>
                 </li>
@@ -91,7 +93,9 @@
     <div class="container-fluid d-flex justify-content-around">
         <a class="nav-link text-white" href="index.php"><i class="fas fa-utensils"></i><br>Menu</a>
         <a class="nav-link text-white" href="cart.php"><i class="fas fa-shopping-cart"></i><br>Cart</a>
-        <a class="nav-link text-white" href="orders.php"><i class="fas fa-box"></i><br>Orders</a>
+        <?php if ($userId): ?>
+            <a class="nav-link text-white" href="orders.php"><i class="fas fa-box"></i><br>Orders</a>
+        <?php endif; ?>
         <div class="dropup">
             <a class="nav-link text-white dropdown-toggle" href="#" id="mobileDropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <i class="fas fa-user"></i><br>More
