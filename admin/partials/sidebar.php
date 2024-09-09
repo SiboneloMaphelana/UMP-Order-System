@@ -1,5 +1,9 @@
-<?php $role = $_SESSION['role'] === 'staff'; ?>
-<div id="sidebar">
+<?php
+session_start();
+
+// Check if the 'role' session variable is set and compare
+$role = isset($_SESSION['role']) ? $_SESSION['role'] === 'staff' : "staff";
+?><div id="sidebar">
     <div>
         <a class="navbar-brand ms-auto text-light" href="#">
             <img src="partials/logo.png" alt="Logo">
@@ -39,6 +43,16 @@
                 <ul class="collapse list-unstyled ps-3" id="categorySubmenu">
                     <li><a class="nav-link text-light" href="add_category.php"><i class="fas fa-plus me-2"></i> Add Category</a></li>
                     <li><a class="nav-link text-light" href="all_categories.php"><i class="fas fa-list me-2"></i> All Categories</a></li>
+                </ul>
+            </li>
+            <!-- Send Message Section -->
+            <li class="nav-item">
+                <a class="nav-link dropdown-toggle text-light" href="#" id="messageDropdown" role="button" data-bs-toggle="collapse" data-bs-target="#messageSubmenu" aria-expanded="false">
+                    <i class="fas fa-envelope me-2"></i> Messages
+                </a>
+                <ul class="collapse list-unstyled ps-3" id="messageSubmenu">
+                    <li><a class="nav-link text-light" href="send_email.php"><i class="fas fa-plus me-2"></i> Send Message</a></li>
+                    <li><a class="nav-link text-light" href="all_email.php"><i class="fas fa-list me-2"></i> All Messages</a></li>
                 </ul>
             </li>
         </ul>

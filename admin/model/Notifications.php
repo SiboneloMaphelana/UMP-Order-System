@@ -249,4 +249,58 @@ class Notifications
 
         return $this->sendEmail($user['email'], $subject, $body, $altBody);
     }
+
+
+    public function sendBulkNotificationEmail($customers, $notificationType)
+{
+    // Define possible notification options
+    $notifications = [
+        'site_down' => [
+            'subject' => 'Important: Website is Currently Down',
+            'body' => "
+            <div style='font-family: Arial, sans-serif; max-width: 600px; margin: auto; padding: 20px; border: 1px solid #dddddd; border-radius: 10px; background-color: #f9f9f9;'>
+                <div style='text-align: center;'>
+                    <h2 style='color: #004080;'>TechCafe Solutions</h2>
+                </div>
+                <p>Dear Customer,</p>
+                <p>We are writing to inform you that our website is currently down due to technical difficulties. We are working hard to resolve the issue and will update you as soon as the site is back up and running.</p>
+                <p>We apologize for any inconvenience this may cause and appreciate your understanding.</p>
+                <p style='text-align: center; color: #004080;'>Best Regards,<br>TechCafe Solutions</p>
+            </div>",
+            'altBody' => "Dear Customer,\n\nWe are writing to inform you that our website is currently down due to technical difficulties. We are working hard to resolve the issue and will update you as soon as the site is back up and running.\n\nBest Regards,\nTechCafe Solutions"
+        ],
+        'closed_stock_taking' => [
+            'subject' => 'Restaurant Closed Due to Stock-Taking',
+            'body' => "
+            <div style='font-family: Arial, sans-serif; max-width: 600px; margin: auto; padding: 20px; border: 1px solid #dddddd; border-radius: 10px; background-color: #f9f9f9;'>
+                <div style='text-align: center;'>
+                    <h2 style='color: #004080;'>TechCafe Solutions</h2>
+                </div>
+                <p>Dear Customer,</p>
+                <p>Please note that our restaurant will be closed on [date] due to stock-taking. We will resume operations the following day and look forward to serving you.</p>
+                <p>Thank you for your understanding.</p>
+                <p style='text-align: center; color: #004080;'>Best Regards,<br>TechCafe Solutions</p>
+            </div>",
+            'altBody' => "Dear Customer,\n\nPlease note that our restaurant will be closed on [date] due to stock-taking. We will resume operations the following day.\n\nBest Regards,\nTechCafe Solutions"
+        ]
+    ];
+
+    // Check if the selected notification type exists
+    if (!isset($notifications[$notificationType])) {
+        return "Invalid notification type selected.";
+    }
+
+    // Get notification subject and body based on the type selected
+    $subject = $notifications[$notificationType]['subject'];
+    $body = $notifications[$notificationType]['body'];
+    $altBody = $notifications[$notificationType]['altBody'];
+
+    // Loop through all customers and send them the email
+    foreach ($customers as $customer) {
+        $this->sendEmail($customer['email'], $subject, $body, $altBody);
+    }
+
+    return true;
+}
+
 }
