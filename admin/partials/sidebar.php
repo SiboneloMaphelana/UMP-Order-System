@@ -2,7 +2,7 @@
 // Start session if not started
 if (session_status() == PHP_SESSION_NONE) {
     session_start();
-  }
+}
 // Check if the 'role' session variable is set and compare
 $role = isset($_SESSION['role']) ? $_SESSION['role'] === 'staff' : "staff";
 ?><div id="sidebar">
@@ -22,6 +22,11 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] === 'staff' : "staff";
             <li class="nav-item">
                 <a class="nav-link text-light" href="orders.php"><i class="fas fa-shopping-cart me-2"></i> Orders</a>
             </li>
+            <li class="nav-item">
+                <a href="notifications.php" class="nav-link text-light"><i class="fas fa-bell"></i> Notifications</a>
+                
+            </li>
+            
             <?php if (!$role) : ?>
                 <li class="nav-item">
                     <a class="nav-link text-light" href="customers.php"><i class="fas fa-users me-2"></i> Customers</a>

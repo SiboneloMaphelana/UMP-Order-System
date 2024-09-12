@@ -27,6 +27,7 @@ $customers = $admin->getAllCustomers();
     <title>Customers</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="css/stocks.css">
     <link rel="stylesheet" href="css/styles.css">
 </head>
 
@@ -34,10 +35,10 @@ $customers = $admin->getAllCustomers();
     <?php include('partials/sidebar.php'); ?>
 
     <div id="content">
-        <button class="btn btn-dark d-md-none" type="button" id="toggleSidebar">
-            <i class="fas fa-bars"></i>
-        </button>
         <div class="container mt-4">
+        <div class="notification-bell" id="bell">
+                <span class="badge" id="badge">0</span>
+            </div>
             <h1>Customer Information</h1>
             <div class="table-container">
                 <table class="table table-bordered table-striped table-hover">
@@ -85,6 +86,7 @@ $customers = $admin->getAllCustomers();
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/updateBell.js"></script>
     <script>
         document.getElementById('toggleSidebar').addEventListener('click', function() {
             document.getElementById('sidebar').classList.toggle('show');

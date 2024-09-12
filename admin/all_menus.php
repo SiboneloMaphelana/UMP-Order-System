@@ -15,6 +15,7 @@ $foodItems = $food->getAllFoodItems();
     <title>Admin Dashboard</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="css/stocks.css">
     <link rel="stylesheet" href="css/styles.css">
     <style>
         .table-responsive {
@@ -76,10 +77,10 @@ $foodItems = $food->getAllFoodItems();
     <?php include('partials/sidebar.php'); ?>
 
     <div id="content">
-        <button class="btn btn-dark d-md-none mb-3" type="button" id="toggleSidebar">
-            <i class="fas fa-bars"></i>
-        </button>
         <div class="container mt-4">
+        <div class="notification-bell" id="bell">
+                <span class="badge" id="badge">0</span>
+            </div>
             <!-- Success and Error Messages -->
             <?php
             if (isset($_SESSION['menu_success'])) {
@@ -142,6 +143,7 @@ $foodItems = $food->getAllFoodItems();
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/updateBell.js"></script>
     <script>
         document.getElementById('toggleSidebar').addEventListener('click', function() {
             document.getElementById('sidebar').classList.toggle('show');

@@ -28,6 +28,7 @@ $inventoryReport = $report->getInventoryReport();
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/stocks.css">
 </head>
 
 <body>
@@ -38,8 +39,11 @@ $inventoryReport = $report->getInventoryReport();
             <i class="fas fa-bars"></i>
         </button>
         <div class="container mt-4">
-
+            <div class="notification-bell" id="bell">
+                <span class="badge" id="badge">0</span>
+            </div>
             <main class="row overflow-auto">
+
                 <h2 class="mb-4">Reports</h2>
 
                 <!-- Nav tabs -->
@@ -204,6 +208,7 @@ $inventoryReport = $report->getInventoryReport();
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
     <script src="js/reports.js"></script>
+    <script src="js/updateBell.js"></script>
     <script>
         document.getElementById('toggleSidebar').addEventListener('click', function() {
             document.getElementById('sidebar').classList.toggle('show');

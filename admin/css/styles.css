@@ -4,34 +4,23 @@ body {
   margin: 0;
   overflow-x: hidden;
 }
-.notification-icon {
-  cursor: pointer; /* Add a pointer cursor on hover */
-}
 
-.notification-icon:hover {
-  color: #333; /* Change the icon color on hover */
-}
-
-.notification-badge {
-  padding: 0.2rem 0.5rem; /* Add some padding to the badge */
-  font-size: 0.8rem; /* Reduce the font size of the badge text */
-}
 #sidebar {
-  background-color: #1d2249 ;
+  background-color: #1d2249;
   color: #fff;
   transition: transform 0.3s ease;
-  transform: translateX(0); 
+  transform: translateX(0);
   position: fixed;
   top: 0;
   bottom: 0;
   left: 0;
-  width: 300px; 
-  height: 100vh; 
+  width: 300px;
+  height: 100vh;
   z-index: 1000;
   overflow-y: auto;
   display: flex;
   flex-direction: column;
-  justify-content: space-between; 
+  justify-content: space-between;
 }
 
 #sidebar .nav-link {
@@ -50,9 +39,9 @@ body {
 
 #content {
   flex: 1;
-  margin-left: 300px; 
+  margin-left: 300px;
   padding: 20px;
-  padding-top: 20px; 
+  padding-top: 20px;
   transition: margin-left 0.3s ease;
 }
 
@@ -60,7 +49,7 @@ body {
 @media (max-width: 992px) {
   #sidebar {
     width: 50%;
-    transform: translateX(-100%); 
+    transform: translateX(-100%);
     position: fixed;
     top: 0;
     bottom: 0;
@@ -73,14 +62,14 @@ body {
 
   #content {
     margin-left: 0;
-    padding-top: 20px; 
+    padding-top: 20px;
   }
 }
 
 #sidebar .navbar-brand img {
   max-width: 100px;
-  height: auto; 
-  padding: 10px; 
+  height: auto;
+  padding: 10px;
   display: block;
   margin: 0 auto; /* Center the image */
 }
@@ -93,3 +82,6 @@ body {
 .profile-dropdown button {
   width: 100%;
 }
+
+
+
