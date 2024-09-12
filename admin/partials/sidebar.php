@@ -1,6 +1,8 @@
 <?php
-session_start();
-
+// Start session if not started
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+  }
 // Check if the 'role' session variable is set and compare
 $role = isset($_SESSION['role']) ? $_SESSION['role'] === 'staff' : "staff";
 ?><div id="sidebar">
