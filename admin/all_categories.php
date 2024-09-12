@@ -31,7 +31,7 @@ $categories = $food->getCategories();
     <?php include("partials/sidebar.php"); ?>
 
     <div id="content" class="container mt-4">
-    <div class="notification-bell" id="bell">
+    <div class="notification-bell" id="bell" title="Low stocks">
                 <span class="badge" id="badge">0</span>
             </div>
 

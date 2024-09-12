@@ -39,7 +39,7 @@ $inventoryReport = $report->getInventoryReport();
             <i class="fas fa-bars"></i>
         </button>
         <div class="container mt-4">
-            <div class="notification-bell" id="bell">
+            <div class="notification-bell" id="bell" title="Low stocks">
                 <span class="badge" id="badge">0</span>
             </div>
             <main class="row overflow-auto">

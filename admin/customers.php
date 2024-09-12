@@ -36,7 +36,7 @@ $customers = $admin->getAllCustomers();
 
     <div id="content">
         <div class="container mt-4">
-        <div class="notification-bell" id="bell">
+        <div class="notification-bell" id="bell" title="Low stocks">
                 <span class="badge" id="badge">0</span>
             </div>
             <h1>Customer Information</h1>

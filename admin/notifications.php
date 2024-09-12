@@ -18,7 +18,7 @@
         <div class="notification-bell mb-4" id="bell">
             <span class="badge" id="badge">0</span>
         </div>
-        <h2 class="text-center">Stock Notifications</h2>
+        <h2 class="text-center">Stock Levels</h2>
         <!-- Manage Inventory Button -->
         <div class="text-center mt-4">
             <a href="all_menus.php" class="btn btn-primary">
@@ -28,7 +28,7 @@
         <div id="products" class="row">
             <!-- Low stock alerts will be inserted here -->
         </div>
-        
+
     </div>
 
     <script src="js/stock.js"></script>
