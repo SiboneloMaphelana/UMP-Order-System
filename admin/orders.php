@@ -32,8 +32,8 @@ $food = new Food($conn);
                     <div class="d-flex justify-content-between align-items-center">
                         <h1>Orders</h1>
                         <div class="notification-icon position-relative">
-                            <i class="bi bi-bell fs-5 text-primary"></i>
-                            <span id="notificationBadge" class="notification-badge bg-danger rounded-circle position-absolute top-0 start-75 translate-middle">
+                            <i class="bi bi-bell fs-1 text-primary bell"></i>
+                            <span id="notificationBadge" class="notification-badge badge bg-danger rounded-circle position-absolute top-0 start-75 translate-middle">
                                 0
                             </span>
                         </div>
@@ -109,13 +109,6 @@ $food = new Food($conn);
                         </div>
                     </div>
                 </main>
-
-                <!-- Footer 
-            <footer class="footer mt-auto py-3 bg-dark text-light">
-                <div class="container text-center">
-                    <span>&copy; 2024 Your Company. All rights reserved.</span>
-                </div>
-            </footer> -->
             </div>
         </div>
     </div>
@@ -124,11 +117,6 @@ $food = new Food($conn);
     <script src="js/admin_dashboard.js" defer></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/js/all.min.js"></script>
-    <script>
-        document.getElementById('toggleSidebar').addEventListener('click', function() {
-            document.getElementById('sidebar').classList.toggle('show');
-        });
-    </script>
 </body>
 
 </html>

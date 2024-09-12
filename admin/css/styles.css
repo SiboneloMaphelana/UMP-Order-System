@@ -84,4 +84,18 @@ body {
 }
 
 
+.bell {
+  font-size: 48px; /* Adjust size as needed */
+}
+
+.badge {
+  font-size: 16px; /* Adjust font size to fit the icon */
+  width: 24px;     /* Adjust width */
+  height: 24px;    /* Adjust height */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  top: -10px;      /* Adjust vertical positioning */
+  right: -10px;    /* Adjust horizontal positioning */
+}
 

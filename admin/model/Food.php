@@ -275,24 +275,31 @@ class Food
     }
 
 
-    public function getAllFoodItems(){
-        $query = "SELECT F.id, F.name, F.description, F.quantity, F.price, F.image, 
+    public function getAllFoodItems($category = '')
+{
+    $query = "SELECT F.id, F.name, F.description, F.quantity, F.price, F.image, 
               IFNULL(C.name, 'Uncategorized') AS Category
               FROM food_items F
               LEFT JOIN category C ON F.category_id = C.id
-              WHERE F.deleted = 0
-              ORDER BY Category ASC";
-        $result = mysqli_query($this->conn, $query);
-        $foodItems = [];
-
-        if ($result) {
-            while ($row = mysqli_fetch_assoc($result)) {
-                $foodItems[] = $row;
-            }
-        }
-
-        return $foodItems;
+              WHERE F.deleted = 0";
+    
+    if (!empty($category)) {
+        $query .= " AND F.category_id = '" . mysqli_real_escape_string($this->conn, $category) . "'";
     }
+
+    $query .= " ORDER BY Category ASC";
+    
+    $result = mysqli_query($this->conn, $query);
+    $foodItems = [];
+
+    if ($result) {
+        while ($row = mysqli_fetch_assoc($result)) {
+            $foodItems[] = $row;
+        }
+    }
+
+    return $foodItems;
+}
 
 
     public function foodItemExists($id)

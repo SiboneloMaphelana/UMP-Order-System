@@ -1,4 +1,5 @@
 // Set to keep track of currently displayed product IDs
+/*
 const displayedProducts = new Set();
 
 setInterval(() => {
@@ -44,7 +45,7 @@ setInterval(() => {
                 }
             });
 
-            // Handle removed products (those that are no longer low in stock)
+            // remove  products that are no longer low in stock
             displayedProducts.forEach(productId => {
                 if (!currentProductIds.has(productId)) {
                     const productElement = productsContainer.querySelector(`.product-alert[data-product-id="${productId}"]`);
@@ -67,3 +68,4 @@ setInterval(() => {
             console.error("Error fetching products:", error);
         });
 }, 2000); // Check every 2 seconds
+*/

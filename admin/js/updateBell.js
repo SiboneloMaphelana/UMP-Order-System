@@ -1,3 +1,4 @@
+/*
 document.addEventListener('DOMContentLoaded', () => {
     const bell = document.getElementById("bell");
     const badge = document.getElementById("badge");
@@ -27,3 +28,4 @@ document.addEventListener('DOMContentLoaded', () => {
     // Update the bell icon count every 2 seconds
     setInterval(updateBell, 2000);
 });
+*/

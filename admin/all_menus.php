@@ -3,7 +3,13 @@ require_once '../connection/connection.php';
 require_once 'model/Food.php';
 
 $food = new Food($conn);
-$foodItems = $food->getAllFoodItems();
+$categories = $food->getCategories();
+
+// Check if a category filter has been applied
+$selectedCategory = isset($_GET['category']) ? $_GET['category'] : '';
+
+// Fetch filtered or all food items
+$foodItems = $food->getAllFoodItems($selectedCategory);
 ?>
 
 <!DOCTYPE html>
@@ -34,31 +40,6 @@ $foodItems = $food->getAllFoodItems();
             object-fit: cover;
         }
 
-        /* Responsive font size */
-        @media (max-width: 576px) {
-
-            .table th,
-            .table td {
-                font-size: 14px;
-            }
-
-            .table thead th {
-                font-size: 16px;
-            }
-        }
-
-        @media (max-width: 768px) {
-
-            .table th,
-            .table td {
-                font-size: 16px;
-            }
-
-            .table thead th {
-                font-size: 18px;
-            }
-        }
-
         @media (max-width: 992px) {
 
             .table th,
@@ -78,9 +59,10 @@ $foodItems = $food->getAllFoodItems();
 
     <div id="content">
         <div class="container mt-4">
-        <div class="notification-bell" id="bell" title="Low stocks">
+            <div class="notification-bell" id="bell" title="Low stocks">
                 <span class="badge" id="badge">0</span>
             </div>
+
             <!-- Success and Error Messages -->
             <?php
             if (isset($_SESSION['menu_success'])) {
@@ -88,10 +70,25 @@ $foodItems = $food->getAllFoodItems();
                 unset($_SESSION['menu_success']);
             }
             ?>
+
             <h2 class="text-center mb-4">Food Items</h2>
+
+            <!-- Category Filter Form and Add Button in the Same Row -->
             <div class="d-flex justify-content-center mb-3">
+                <form method="GET" class="d-flex align-items-center me-3">
+                    <select name="category" class="form-select w-auto" onchange="this.form.submit()">
+                        <option value="">All Categories</option>
+                        <?php foreach ($categories as $category): ?>
+                            <option value="<?= htmlspecialchars($category['id']); ?>" <?= $selectedCategory == $category['id'] ? 'selected' : '' ?>>
+                                <?= htmlspecialchars($category['name']); ?>
+                            </option>
+                        <?php endforeach; ?>
+                    </select>
+                </form>
+
                 <a href="add_menu.php" class="btn btn-success">Add Food Item</a>
             </div>
+
 
             <div class="table-responsive mt-4">
                 <table class="table table-bordered table-striped table-hover">
@@ -132,14 +129,6 @@ $foodItems = $food->getAllFoodItems();
                 </table>
             </div>
         </div>
-
-
-        <!-- Footer 
-            <footer class="footer mt-auto py-3 bg-dark text-light">
-                <div class="container text-center">
-                    <span>&copy; 2024 Your Company. All rights reserved.</span>
-                </div>
-            </footer> -->
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
