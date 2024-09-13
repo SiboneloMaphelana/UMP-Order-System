@@ -2,7 +2,8 @@
 session_start();
 include_once("../connection/connection.php");
 include_once("model/Order.php");
-if ($_SESSION['role'] === 'staff') {
+$role = $_SESSION['role'] ? $_SESSION['role'] : "staff";
+if ($role === 'staff') {
     $_SESSION['error'] = "Access denied. You are not authorized to view the page.";
     header("Location: orders.php");
     exit();
