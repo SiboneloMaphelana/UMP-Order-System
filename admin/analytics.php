@@ -1,4 +1,4 @@
-<?php 
+<?php
 if (session_status() == PHP_SESSION_NONE) {
     session_start();
 }
@@ -24,7 +24,10 @@ if ($role === 'staff') {
     <link rel="stylesheet" href="css/styles.css">
     <style>
         canvas {
-            min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;
+            min-height: 250px;
+            height: 250px;
+            max-height: 250px;
+            max-width: 100%;
         }
 
         .row {
@@ -67,6 +70,7 @@ if ($role === 'staff') {
     <?php include_once("partials/sidebar.php"); ?>
     <div id="content" class="container mt-4">
         <div class="row">
+            <!-- Revenue By Category -->
             <div class="col-lg-6 col-md-6 mb-4">
                 <div class="card">
                     <h4 class="card-header">Revenue By Category</h4>
@@ -75,32 +79,13 @@ if ($role === 'staff') {
                     </div>
                 </div>
             </div>
-            <div class="col-lg-6 col-md-6 mb-4">
-                <div class="card">
-                <h4 class="card-header">Monthly Checkout</h4>
-                    <div class="card-body">
-                        <canvas id="checkoutComparisonChart"></canvas>
-                    </div>
-                </div>
-            </div>
-
 
             <!-- Order Comparison Chart -->
             <div class="col-lg-6 col-md-6 mb-4">
                 <div class="card">
-                <h4 class="card-header">Monthly Orders</h4>
+                    <h4 class="card-header">Monthly Orders</h4>
                     <div class="card-body">
                         <canvas id="orderComparisonChart"></canvas>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Sales Trends Chart -->
-            <div class="col-lg-6 col-md-6 mb-4">
-                <div class="card">
-                <h4 class="card-header">Sales Performance</h4>
-                    <div class="card-body">
-                        <canvas id="salesTrendsChart"></canvas>
                     </div>
                 </div>
             </div>
@@ -108,7 +93,7 @@ if ($role === 'staff') {
             <!-- Order Frequency Chart with Tabs -->
             <div class="col-lg-6 col-md-6 mb-4">
                 <div class="card">
-                <h4 class="card-header">Order Frequency</h4>
+                    <h4 class="card-header">Order Frequency</h4>
                     <div class="card-body">
                         <div class="tab-container">
                             <button class="tab-button active" data-filter="today">Today</button>
@@ -117,21 +102,45 @@ if ($role === 'staff') {
                         </div>
                         <canvas id="orderFrequencyChart"></canvas>
                     </div>
-
                 </div>
             </div>
 
             <!-- Payment Methods Chart -->
             <div class="col-lg-6 col-md-6 mb-4">
                 <div class="card">
-                <h4 class="card-header">Revenue By Payment Method</h4>
+                    <h4 class="card-header">Revenue By Payment Method</h4>
                     <div class="card-body">
                         <canvas id="paymentMethodChart"></canvas>
                     </div>
                 </div>
             </div>
         </div>
+
+        <!-- Monthly Checkout guest vs registered -->
+        <div class="row mb-4">
+            <div class="col-12">
+                <div class="card">
+                    <h4 class="card-header">Monthly Checkout</h4>
+                    <div class="card-body">
+                        <canvas id="checkoutComparisonChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sales Trends Chart -->
+        <div class="row mb-4">
+            <div class="col-12">
+                <div class="card">
+                    <h4 class="card-header">Sales Performance</h4>
+                    <div class="card-body">
+                        <canvas id="salesTrendsChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
+
 
 
     <!-- Bootstrap JS and dependencies -->
@@ -226,7 +235,7 @@ if ($role === 'staff') {
     <script>
         // Function to fetch checkout comparison data
         async function fetchCheckoutComparisonData() {
-            const response = await fetch('model/fetch_checkout_comparison.php'); 
+            const response = await fetch('model/fetch_checkout_comparison.php');
             const data = await response.json();
             return data;
         }

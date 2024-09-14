@@ -42,41 +42,44 @@ $customers = $admin->getAllCustomers();
                 <span class="badge" id="badge">0</span>
             </div>
             <h1>Customer Information</h1>
-            <div class="table-container">
-                <table class="table table-bordered table-striped table-hover">
-                    <thead class="table-dark">
-                        <tr>
-                            <th>NAME</th>
-                            <th>SURNAME</th>
-                            <th>EMAIL</th>
-                            <th>PHONE</th>
-                            <th>ACTIONS</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php foreach ($customers as $customer) : ?>
+            <div class="table-card">
+                <div class="table-card-body">
+                    <table>
+                        <thead>
                             <tr>
-                                <td><?php echo htmlspecialchars($customer['name']); ?></td>
-                                <td><?php echo htmlspecialchars($customer['surname']); ?></td>
-                                <td><?php echo htmlspecialchars($customer['email']); ?></td>
-                                <td><?php echo htmlspecialchars($customer['phone']); ?></td>
-                                <td>
-                                    <!--
-                                    <a href="update_customer.php?id=<?php echo $customer['id']; ?>" class="btn btn-sm btn-primary">
-                                        <i class="fas fa-edit"></i>
-                                    </a> -->
-                                    <form action="model/delete_customer.php" method="POST" style="display: inline-block;">
-                                        <input type="hidden" name="id" value="<?php echo $customer['id']; ?>">
-                                        <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure you want to delete this customer?')">
-                                            <i class="fas fa-trash-alt"></i>
-                                        </button>
-                                    </form>
-                                </td>
+                                <th>NAME</th>
+                                <th>SURNAME</th>
+                                <th>EMAIL</th>
+                                <th>PHONE</th>
+                                <th>ACTIONS</th>
                             </tr>
-                        <?php endforeach; ?>
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>
+                            <?php foreach ($customers as $customer) : ?>
+                                <tr>
+                                    <td><?php echo htmlspecialchars($customer['name']); ?></td>
+                                    <td><?php echo htmlspecialchars($customer['surname']); ?></td>
+                                    <td><?php echo htmlspecialchars($customer['email']); ?></td>
+                                    <td><?php echo htmlspecialchars($customer['phone']); ?></td>
+                                    <td>
+                                        <!--
+                            <a href="update_customer.php?id=<?php echo $customer['id']; ?>" class="btn btn-sm btn-primary">
+                                <i class="fas fa-edit"></i>
+                            </a> -->
+                                        <form action="model/delete_customer.php" method="POST" style="display: inline-block;">
+                                            <input type="hidden" name="id" value="<?php echo $customer['id']; ?>">
+                                            <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure you want to delete this customer?')">
+                                                <i class="fas fa-trash-alt"></i>
+                                            </button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            <?php endforeach; ?>
+                        </tbody>
+                    </table>
+                </div>
             </div>
+
         </div>
     </div>
 
