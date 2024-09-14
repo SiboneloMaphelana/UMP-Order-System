@@ -53,52 +53,52 @@ class Notifications
     }
 
     public function orderPlacementSMS($phone, $orderDetails)
-{
-    // Check if phone and orderDetails are valid
-    if (is_null($phone) || empty($phone)) {
-        error_log("Error: Phone number is missing.");
-        return false;
-    }
-
-    if (is_null($orderDetails) || !isset($orderDetails['id'])) {
-        error_log("Error: Order details are missing.");
-        return false;
-    }
-
-    $messageText = "Thank you for your order. Your order number is " . $orderDetails['id']. ". Your order will be ready in 15 minutes.";
-
-    // Environment configurations
-    $base_url = $_ENV['BASE_URL'];
-    $api_key = $_ENV['API_KEY'];
-
-    try {
-        // SMS API
-        $config = new Configuration(host: $base_url, apiKey: $api_key);
-        $api = new SmsApi($config);
-
-        // destination and message
-        $destination = new SmsDestination(to: $phone);
-        $message = new SmsTextualMessage(
-            destinations: [$destination],
-            text: $messageText
-        );
-
-        // Create and send the request
-        $request = new SmsAdvancedTextualRequest(messages: [$message]);
-        $response = $api->sendSmsMessage($request);
-
-        // Check if the response indicates success
-        if ($response) {
-            return true;
-        } else {
-            error_log("SMS  Response: " . print_r($response, true));
+    {
+        // Check if phone and orderDetails are valid
+        if (is_null($phone) || empty($phone)) {
+            error_log("Error: Phone number is missing.");
             return false;
         }
-    } catch (Exception $e) {
-        error_log("Exception occurred: " . $e->getMessage());
-        return false;
+
+        if (is_null($orderDetails) || !isset($orderDetails['id'])) {
+            error_log("Error: Order details are missing.");
+            return false;
+        }
+
+        $messageText = "Thank you for your order. Your order number is " . $orderDetails['id'] . ". Your order will be ready in 15 minutes.";
+
+        // Environment configurations
+        $base_url = $_ENV['BASE_URL'];
+        $api_key = $_ENV['API_KEY'];
+
+        try {
+            // SMS API
+            $config = new Configuration(host: $base_url, apiKey: $api_key);
+            $api = new SmsApi($config);
+
+            // destination and message
+            $destination = new SmsDestination(to: $phone);
+            $message = new SmsTextualMessage(
+                destinations: [$destination],
+                text: $messageText
+            );
+
+            // Create and send the request
+            $request = new SmsAdvancedTextualRequest(messages: [$message]);
+            $response = $api->sendSmsMessage($request);
+
+            // Check if the response indicates success
+            if ($response) {
+                return true;
+            } else {
+                error_log("SMS  Response: " . print_r($response, true));
+                return false;
+            }
+        } catch (Exception $e) {
+            error_log("Exception occurred: " . $e->getMessage());
+            return false;
+        }
     }
-}
 
 
     public function orderCompletionEmail($orderDetails, $customer, $orderItems)
@@ -252,12 +252,12 @@ class Notifications
 
 
     public function sendBulkNotificationEmail($customers, $notificationType)
-{
-    // Define possible notification options
-    $notifications = [
-        'site_down' => [
-            'subject' => 'Important: Website is Currently Down',
-            'body' => "
+    {
+        // Define possible notification options
+        $notifications = [
+            'site_down' => [
+                'subject' => 'Important: Website is Currently Down',
+                'body' => "
             <div style='font-family: Arial, sans-serif; max-width: 600px; margin: auto; padding: 20px; border: 1px solid #dddddd; border-radius: 10px; background-color: #f9f9f9;'>
                 <div style='text-align: center;'>
                     <h2 style='color: #004080;'>TechCafe Solutions</h2>
@@ -267,11 +267,11 @@ class Notifications
                 <p>We apologize for any inconvenience this may cause and appreciate your understanding.</p>
                 <p style='text-align: center; color: #004080;'>Best Regards,<br>TechCafe Solutions</p>
             </div>",
-            'altBody' => "Dear Customer,\n\nWe are writing to inform you that our website is currently down due to technical difficulties. We are working hard to resolve the issue and will update you as soon as the site is back up and running.\n\nBest Regards,\nTechCafe Solutions"
-        ],
-        'closed_stock_taking' => [
-            'subject' => 'Restaurant Closed Due to Stock-Taking',
-            'body' => "
+                'altBody' => "Dear Customer,\n\nWe are writing to inform you that our website is currently down due to technical difficulties. We are working hard to resolve the issue and will update you as soon as the site is back up and running.\n\nBest Regards,\nTechCafe Solutions"
+            ],
+            'closed_stock_taking' => [
+                'subject' => 'Restaurant Closed Due to Stock-Taking',
+                'body' => "
             <div style='font-family: Arial, sans-serif; max-width: 600px; margin: auto; padding: 20px; border: 1px solid #dddddd; border-radius: 10px; background-color: #f9f9f9;'>
                 <div style='text-align: center;'>
                     <h2 style='color: #004080;'>TechCafe Solutions</h2>
@@ -281,26 +281,25 @@ class Notifications
                 <p>Thank you for your understanding.</p>
                 <p style='text-align: center; color: #004080;'>Best Regards,<br>TechCafe Solutions</p>
             </div>",
-            'altBody' => "Dear Customer,\n\nPlease note that our restaurant will be closed on [date] due to stock-taking. We will resume operations the following day.\n\nBest Regards,\nTechCafe Solutions"
-        ]
-    ];
+                'altBody' => "Dear Customer,\n\nPlease note that our restaurant will be closed on [date] due to stock-taking. We will resume operations the following day.\n\nBest Regards,\nTechCafe Solutions"
+            ]
+        ];
 
-    // Check if the selected notification type exists
-    if (!isset($notifications[$notificationType])) {
-        return "Invalid notification type selected.";
+        // Check if the selected notification type exists
+        if (!isset($notifications[$notificationType])) {
+            return "Invalid notification type selected.";
+        }
+
+        // Get notification subject and body based on the type selected
+        $subject = $notifications[$notificationType]['subject'];
+        $body = $notifications[$notificationType]['body'];
+        $altBody = $notifications[$notificationType]['altBody'];
+
+        // Loop through all customers and send them the email
+        foreach ($customers as $customer) {
+            $this->sendEmail($customer['email'], $subject, $body, $altBody);
+        }
+
+        return true;
     }
-
-    // Get notification subject and body based on the type selected
-    $subject = $notifications[$notificationType]['subject'];
-    $body = $notifications[$notificationType]['body'];
-    $altBody = $notifications[$notificationType]['altBody'];
-
-    // Loop through all customers and send them the email
-    foreach ($customers as $customer) {
-        $this->sendEmail($customer['email'], $subject, $body, $altBody);
-    }
-
-    return true;
-}
-
 }

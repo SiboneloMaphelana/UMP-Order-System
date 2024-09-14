@@ -1,4 +1,8 @@
 <?php
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
+
 include("model/login_check.php");
 include_once("../connection/connection.php");
 include("model/food.php");
@@ -31,9 +35,9 @@ $categories = $food->getCategories();
     <?php include("partials/sidebar.php"); ?>
 
     <div id="content" class="container mt-4">
-    <div class="notification-bell" id="bell" title="Low stocks">
-                <span class="badge" id="badge">0</span>
-            </div>
+        <div class="notification-bell" id="bell" title="Low stocks">
+            <span class="badge" id="badge">0</span>
+        </div>
 
         <?php
         if (isset($_SESSION['add-cat'])) {
@@ -66,11 +70,6 @@ $categories = $food->getCategories();
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/js/all.min.js"></script>
     <script src="js/updateBell.js"></script>
-    <script>
-        document.getElementById('toggleSidebar').addEventListener('click', function() {
-            document.getElementById('sidebar').classList.toggle('show');
-        });
-    </script>
 </body>
 
 </html>

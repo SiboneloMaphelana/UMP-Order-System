@@ -1,5 +1,8 @@
 <?php
-session_start();
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
+
 include_once("../connection/connection.php");
 include_once("User.php");
 
@@ -22,4 +25,3 @@ if ($user->reactivateAccount($userId)) {
     header("Location: ../profile.php");
     exit();
 }
-?>

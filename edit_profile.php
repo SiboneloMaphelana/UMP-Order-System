@@ -1,4 +1,8 @@
-<?php session_start(); ?>
+<?php
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -33,7 +37,8 @@
                             <?php endif; ?>
 
                             <form id="editProfile" action="model/edit_profile_process.php" method="POST" autocomplete="on">
-                            <input type="hidden" name="id" value="<?php echo htmlspecialchars(filter_input(INPUT_GET, 'id', FILTER_SANITIZE_NUMBER_INT)); ?>">                                <div class="mb-3">
+                                <input type="hidden" name="id" value="<?php echo htmlspecialchars(filter_input(INPUT_GET, 'id', FILTER_SANITIZE_NUMBER_INT)); ?>">
+                                <div class="mb-3">
                                     <label for="name" class="form-label">First Name</label>
                                     <input type="text" class="form-control" id="name" name="name">
                                 </div>

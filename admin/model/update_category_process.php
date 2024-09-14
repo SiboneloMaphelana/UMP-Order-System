@@ -1,5 +1,8 @@
 <?php
-session_start();
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
+
 include_once("../../connection/connection.php");
 include("Food.php");
 
@@ -58,4 +61,3 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     header("Location: ../update_category.php");
     exit;
 }
-?>

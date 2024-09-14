@@ -2,43 +2,50 @@ body,
 html {
   height: 100%;
   margin: 0;
-  background-color: #353D55;
+  background-color: #353d55;
 }
+
 .container {
-  min-height: 100vh; 
+  min-height: 100vh;
 }
+
 .logo {
   max-width: 150px;
 }
+
 .card {
   margin-top: 20px;
   border-radius: 0.5rem;
 }
+
 .btn {
   width: 100%;
 }
+
 .text-danger {
   color: red;
-  display: block; /* Ensure the error message is block-level and visible */
+  display: block; /* Ensure the error message is block level */
   margin-top: 0.5rem;
 }
 
 .form-text {
   font-size: 0.875rem;
   color: #6c757d;
-  display: block; /* Ensure the strength meter is also block-level */
+  display: block; /* Ensure the strength meter is block level */
 }
 
 input.error {
-  border-color: red; /* Change the border color to red */
+  border-color: red;
 }
 
 .input-group {
   position: relative;
 }
+
 .input-group .form-control {
   padding-right: 2.5rem;
 }
+
 .input-group .eye-icon {
   position: absolute;
   top: 50%;
@@ -47,9 +54,11 @@ input.error {
   z-index: 1;
   cursor: pointer;
 }
+
 .strength-meter-bar {
   height: 5px;
 }
+
 @media (max-width: 576px) {
   .card {
     margin: 10px;

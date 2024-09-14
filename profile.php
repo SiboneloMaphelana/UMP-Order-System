@@ -1,4 +1,8 @@
 <?php
+if (session_status() == PHP_SESSION_NONE) {
+  session_start();
+}
+
 include_once("connection/connection.php");
 include_once("model/User.php");
 

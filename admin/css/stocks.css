@@ -1,53 +1,54 @@
-
 #products {
-    max-width: 600px;
-    margin: 0 auto;
-    padding: 20px;
-    background-color: #fff;
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
+
 .product-alert {
-    border: 1px solid #ddd;
-    padding: 15px;
-    margin-bottom: 10px;
-    border-radius: 5px;
-    background-color: #f9f9f9;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+  border: 1px solid #ddd;
+  padding: 15px;
+  margin-bottom: 10px;
+  border-radius: 5px;
+  background-color: #f9f9f9;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
+
 .product-alert strong {
-    color: #333;
+  color: #333;
 }
+
 .product-alert span {
-    color: #666;
+  color: #666;
 }
+
 .product-alert.warning {
-    border-color: #ff9800;
-    background-color: #fff3e0;
+  border-color: #ff9800;
+  background-color: #fff3e0;
 }
+
 .notification-bell {
-    position: relative;
-    font-size: 20px; /* Increase the size of the bell icon */
-    cursor: pointer;
+  position: relative;
+  font-size: 20px;
+  cursor: pointer;
 }
 
 .notification-bell .badge {
-    position: absolute;
-    top: -10px; 
-    right: 10px; 
-    background-color: red;
-    color: white;
-    border-radius: 50%;
-    padding: 6px 10px; /* Increase padding for a larger badge */
-    font-size: 16px; /* Increase font size for better readability */
-    display: none;
-    /* Hidden by default */
+  position: absolute;
+  top: -10px;
+  right: 10px;
+  background-color: red;
+  color: white;
+  border-radius: 50%;
+  padding: 6px 10px; /* Padding for Large badge */
+  font-size: 16px;
+  display: none;
 }
 
 .notification-bell.active .badge {
-    display: block;
-    /* Show badge when active */
+  display: block;
 }
-

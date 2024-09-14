@@ -1,6 +1,10 @@
 <?php
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
+
 include_once("../../connection/connection.php");
-include_once("Admin.php"); 
+include_once("Admin.php");
 
 // Check if the form is submitted
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -24,6 +28,5 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 } else {
     header("Location: ../login.php");
-    exit; 
+    exit;
 }
-?>

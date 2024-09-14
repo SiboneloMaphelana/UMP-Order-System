@@ -1,6 +1,10 @@
 <?php
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
+
 include_once("../../connection/connection.php");
-include_once("Notifications.php"); 
+include_once("Notifications.php");
 
 
 // Check if the form is submitted
@@ -22,7 +26,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     }
 
-    // Instantiate the Notifications class and send the email
     $notifications = new Notifications($conn);
     $sendResult = $notifications->sendBulkNotificationEmail($customers, $notificationType);
 

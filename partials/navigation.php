@@ -1,4 +1,9 @@
-<?php $userId = isset($_SESSION['id']) ? $_SESSION['id'] : null; ?>
+<?php
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
+$userId = isset($_SESSION['id']) ? $_SESSION['id'] : null;
+?>
 
 <div class="header text-white" style="background-color: #353D55;">
     <div class="container-fluid">

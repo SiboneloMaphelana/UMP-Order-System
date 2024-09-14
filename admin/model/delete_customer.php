@@ -1,7 +1,9 @@
 <?php
-session_start();
-require_once '../../connection/connection.php'; 
-require_once 'Admin.php'; 
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
+require_once '../../connection/connection.php';
+require_once 'Admin.php';
 
 // Check if user is logged in
 if (!isset($_SESSION['id'])) {
@@ -24,7 +26,6 @@ if ($admin->deleteCustomer($customerId)) {
     header("Location: ../customers.php");
     exit();
 } else {
- 
+
     echo "Failed to delete customer.";
 }
-?>

@@ -1,7 +1,10 @@
 <?php
-session_start();
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
+
 include_once("../connection/connection.php");
-include_once("User.php"); 
+include_once("User.php");
 
 // Check if the form is submitted
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -19,7 +22,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             setcookie('user_email', $email, time() + (86400 * 30), "/"); // 30 days expiration
             setcookie('user_password', $password, time() + (86400 * 30), "/"); // 30 days expiration
         }
-        
+
         $_SESSION['login'] = 'email';
         header("Location: ../index.php");
     } else {
@@ -28,6 +31,5 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 } else {
     header("Location: ../login.php");
-    exit(); 
+    exit();
 }
-?>

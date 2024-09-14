@@ -1,5 +1,8 @@
 <?php
-session_start();
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
+
 include_once("../../connection/connection.php");
 include_once("Food.php");
 
@@ -26,7 +29,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $itemFound = false;
     foreach ($_SESSION['cart'] as &$cartItem) {
         if ($cartItem['food_id'] == $foodItemId) {
-            $cartItem['quantity'] += $quantity; 
+            $cartItem['quantity'] += $quantity;
             $itemFound = true;
             break;
         }
@@ -46,4 +49,3 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 } else {
     echo json_encode(['success' => false, 'message' => 'Unauthorized access.']); //user not logged in
 }
-?>

@@ -1,5 +1,7 @@
 <?php
-session_start();
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
 require_once '../../connection/connection.php';
 require_once 'Food.php';
 
@@ -21,4 +23,3 @@ if (isset($_GET['id'])) {
 
 header("Location: ../all_menus.php");
 exit();
-?>

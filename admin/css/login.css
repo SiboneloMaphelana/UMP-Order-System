@@ -1,13 +1,13 @@
 body {
   background-color: #353d55;
-  margin: 0; /* Remove default margin */
-  overflow: hidden; /* Prevent scrolling */
+  margin: 0;
+  overflow: hidden; /* Prevents scrolling */
 }
 
 .container-fluid {
   height: 100vh;
   display: flex;
-  align-items: center; /* Center vertically */
+  align-items: center;
   justify-content: center; /* Center horizontally */
   padding: 0; /* Remove default padding */
 }
@@ -27,8 +27,8 @@ body {
 
 .card {
   border-radius: 0.5rem;
-  padding: 1.5rem; /* Add padding inside the card */
-  box-shadow: 0 0 15px rgba(0, 0, 0, 0.1); /* Optional: Add a subtle shadow for better visual appeal */
+  padding: 1.5rem; /* Padding inside the card */
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.1); /* Subtle shadow */
 }
 
 .input-group {
@@ -54,7 +54,7 @@ body {
 
 .btn-rounded {
   border-radius: 50px; /* Rounded button */
-  font-size: 1rem; /* Default font size for buttons */
+  font-size: 1rem;
 }
 
 .card-text {
@@ -63,5 +63,5 @@ body {
 
 .logo {
   max-width: 100%; /* Ensure the logo scales with the container */
-  max-height: 100px; 
+  max-height: 100px;
 }

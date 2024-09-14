@@ -1,4 +1,8 @@
 <?php
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
+
 include_once("../connection/connection.php");
 include_once("User.php");
 
@@ -29,5 +33,5 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 } else {
     // If the form is not submitted, redirect back to the signup form
     header("Location: ../signup.php");
-    exit; 
+    exit;
 }

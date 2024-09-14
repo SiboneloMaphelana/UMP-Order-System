@@ -30,10 +30,10 @@ a {
   border-right: 1px none #dee2e6;
   background-color: #353d55;
   height: 100%; /* Make the sidebar take full height */
-  padding-top: 1rem; /* Adjust padding for spacing */
+  padding-top: 1rem;
   position: sticky; /* Keeps the sidebar in view as the user scrolls */
   top: 0; /* Sticky positioning starts at the top */
-  width: 250px; /* Set the width of the sidebar */
+  width: 250px;
 }
 
 .sidebar .logo {
@@ -42,7 +42,7 @@ a {
 
 .main-content {
   height: 100%; /* Ensure main content takes the remaining height */
-  padding: 1rem; /* Adjust padding for spacing */
+  padding: 1rem;
 }
 
 @media (max-width: 767.98px) {
@@ -51,6 +51,6 @@ a {
   }
   .main-content {
     flex: 1; /* Allows the main content to take full width */
-    padding: 1rem; /* Adjust padding for spacing */
+    padding: 1rem;
   }
 }

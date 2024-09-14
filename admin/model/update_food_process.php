@@ -1,10 +1,13 @@
 <?php
-session_start();
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
+
 require_once '../../connection/connection.php';
 require_once 'Food.php';
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    
+
     // Check if the food ID is set and not empty
     if (!isset($_POST["id"]) || empty($_POST["id"])) {
         $_SESSION['error'] = "Invalid food ID.";
@@ -69,4 +72,3 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     header("Location: ../update_food.php");
     exit;
 }
-?>

@@ -1,5 +1,7 @@
 <?php
-session_start();
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
 include_once("../../connection/connection.php");
 include("Admin.php");
 
@@ -13,7 +15,7 @@ $adminModel = new Admin($conn);
 $id = $_POST['id'];
 
 if ($adminModel->deleteAccount($id)) {
-    session_destroy(); 
+    session_destroy();
     header("Location: ../login.php");
     exit;
 } else {
@@ -21,5 +23,3 @@ if ($adminModel->deleteAccount($id)) {
     header("Location: ../profile.php");
     exit;
 }
-?>
-

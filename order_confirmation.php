@@ -1,4 +1,8 @@
 <?php
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
+
 $data = include_once('admin/model/order_confirmation.php');
 
 // Extract order and order items from included data
@@ -8,6 +12,7 @@ $orderItems = $data['orderItems'];
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -20,6 +25,7 @@ $orderItems = $data['orderItems'];
         }
     </style>
 </head>
+
 <body>
     <div class="container-fluid overflow-hidden">
         <div class="row vh-100 overflow-auto">
@@ -80,4 +86,5 @@ $orderItems = $data['orderItems'];
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
+
 </html>

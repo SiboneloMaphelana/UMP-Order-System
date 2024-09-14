@@ -1,5 +1,8 @@
 <?php
-session_start();
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
+
 include_once("connection/connection.php");
 include_once("admin/model/Food.php");
 
@@ -38,7 +41,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['search'])) {
                     <div class="col-12">
                         <div class="container my-4">
                             <div class="row">
-                                 
+
                                 <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-3 g-4 mt-3">
                                     <?php if (!empty($foodItems)) : ?>
                                         <?php foreach ($foodItems as $item) : ?>

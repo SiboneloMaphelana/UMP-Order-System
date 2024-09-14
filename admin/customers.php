@@ -1,5 +1,7 @@
 <?php
-session_start();
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
 
 if (!isset($_SESSION['id'])) {
     header("Location: login.php");
@@ -36,7 +38,7 @@ $customers = $admin->getAllCustomers();
 
     <div id="content">
         <div class="container mt-4">
-        <div class="notification-bell" id="bell" title="Low stocks">
+            <div class="notification-bell" id="bell" title="Low stocks">
                 <span class="badge" id="badge">0</span>
             </div>
             <h1>Customer Information</h1>
@@ -76,22 +78,10 @@ $customers = $admin->getAllCustomers();
                 </table>
             </div>
         </div>
-
-        <!-- Footer 
-            <footer class="footer mt-auto py-3 bg-dark text-light">
-                <div class="container text-center">
-                    <span>&copy; 2024 Your Company. All rights reserved.</span>
-                </div>
-            </footer> -->
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="js/updateBell.js"></script>
-    <script>
-        document.getElementById('toggleSidebar').addEventListener('click', function() {
-            document.getElementById('sidebar').classList.toggle('show');
-        });
-    </script>
 </body>
 
 </html>

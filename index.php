@@ -1,10 +1,14 @@
 <?php
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
+
 include_once("connection/connection.php");
 include_once("admin/model/Food.php");
 $food = new Food($conn);
 
 $categories = $food->getCategories();
-$favorites = $food->getFavorites(); 
+$favorites = $food->getFavorites();
 ?>
 
 
@@ -61,7 +65,7 @@ $favorites = $food->getFavorites();
         </div>
     </div>
 
-    
+
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.7/dist/umd/popper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/js/all.min.js"></script>

@@ -1,5 +1,7 @@
 <?php
-session_start();
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
 include_once("../../connection/connection.php");
 include("../../model/User.php");
 include("Order.php");
@@ -53,7 +55,7 @@ try {
     $itemDescription = implode(', ', $itemDescriptions);
 
     $food = new Order($conn);
-    $notifications = new Notifications($conn); // Create an instance of Notifications
+    $notifications = new Notifications($conn);
 
     // Process the payment
     if ($paymentMethod == 'payfast') {
@@ -105,7 +107,7 @@ try {
 
         // Generate signature for PayFast
         ksort($payfastData); // Ensure data is sorted by keys
-        $signatureString = http_build_query($payfastData); // Properly encoded query string
+        $signatureString = http_build_query($payfastData); //  encoded query string
         $signature = md5($signatureString); // Generate the signature
         $payfastData['signature'] = $signature;
 

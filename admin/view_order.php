@@ -1,5 +1,8 @@
 <?php
-session_start();
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
+
 include_once("../connection/connection.php");
 include_once("model/Order.php"); 
 
@@ -48,9 +51,6 @@ $customer = $food->getCustomerById($orderDetails['user_id']);
     <?php include("partials/sidebar.php"); ?>
 
     <div id="content" class="container-fluid overflow-hidden">
-        <button class="btn btn-dark d-md-none" type="button" id="toggleSidebar">
-            <i class="fas fa-bars"></i>
-        </button>
 
         <div class="container-fluid overflow-hidden">
             <div class="row vh-100 overflow-auto">
@@ -114,11 +114,6 @@ $customer = $food->getCustomerById($orderDetails['user_id']);
         </div>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/js/all.min.js"></script>
-        <script>
-        document.getElementById('toggleSidebar').addEventListener('click', function() {
-            document.getElementById('sidebar').classList.toggle('show');
-        });
-    </script>
 </body>
 
 </html>

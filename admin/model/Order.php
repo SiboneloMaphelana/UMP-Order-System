@@ -1,17 +1,21 @@
 <?php
 
-class Order{
+class Order
+{
     private $conn;
 
-    public function __construct($conn) {
+    public function __construct($conn)
+    {
         $this->conn = $conn;
     }
 
-    public function sanitizeInput($data) {
+    public function sanitizeInput($data)
+    {
         return htmlspecialchars(stripslashes(trim($data)));
     }
 
-    public function addOrder($userId, $totalAmount, $paymentMethod) {
+    public function addOrder($userId, $totalAmount, $paymentMethod)
+    {
         // Check if userId is null for guest checkout
         if (is_null($userId)) {
             // Use NULL for user_id when inserting a guest order
@@ -21,16 +25,17 @@ class Order{
             $stmt = $this->conn->prepare("INSERT INTO orders (user_id, total_amount, payment_method) VALUES (?, ?, ?)");
             $stmt->bind_param("ids", $userId, $totalAmount, $paymentMethod);
         }
-    
+
         if ($stmt->execute()) {
-            return $stmt->insert_id; 
+            return $stmt->insert_id;
         } else {
-            return false; 
+            return false;
         }
     }
-    
+
     // Function to check quantity
-    public function checkQuantity($foodId, $quantity) {
+    public function checkQuantity($foodId, $quantity)
+    {
         $stmt = $this->conn->prepare("SELECT quantity FROM food_items WHERE id = ?");
         $stmt->bind_param("i", $foodId);
         $stmt->execute();
@@ -40,42 +45,45 @@ class Order{
     }
 
     // Function to update quantity
-    public function updateItemQuantity($foodId, $quantityPurchased) {
+    public function updateItemQuantity($foodId, $quantityPurchased)
+    {
         // Prepare SQL statement
         $sql = "UPDATE food_items SET quantity = quantity - ? WHERE id = ?";
         $stmt = $this->conn->prepare($sql);
-    
+
         // Check if preparation was successful
         if (!$stmt) {
             throw new Exception("Error preparing the SQL statement: " . $this->conn->error);
         }
-    
+
         // Bind parameters
         $stmt->bind_param("ii", $quantityPurchased, $foodId);
-    
+
         // Execute statement
         $result = $stmt->execute();
-    
+
         // Check if execution was successful
         if (!$result) {
             throw new Exception("Error executing the SQL statement: " . $stmt->error);
         }
-    
+
         // Close statement
         $stmt->close();
-    
+
         return $result;
     }
-    
-    
 
-    public function addOrderItem($orderId, $foodId, $quantity, $price) {
+
+
+    public function addOrderItem($orderId, $foodId, $quantity, $price)
+    {
         $stmt = $this->conn->prepare("INSERT INTO order_items (order_id, food_id, quantity, price) VALUES (?, ?, ?, ?)");
         $stmt->bind_param("iiid", $orderId, $foodId, $quantity, $price);
-        return $stmt->execute(); 
+        return $stmt->execute();
     }
 
-    public function getOrderById($order_id) {
+    public function getOrderById($order_id)
+    {
         $stmt = $this->conn->prepare('SELECT * FROM orders WHERE id = ?');
         $stmt->bind_param('i', $order_id);
         $stmt->execute();
@@ -83,7 +91,8 @@ class Order{
         return $result->fetch_assoc();
     }
 
-    public function getOrderItems($orderId) {
+    public function getOrderItems($orderId)
+    {
         $stmt = $this->conn->prepare('SELECT oi.*, fi.name, fi.price FROM order_items oi JOIN food_items fi ON oi.food_id = fi.id WHERE oi.order_id = ?');
         $stmt->bind_param('i', $orderId);
         $stmt->execute();
@@ -91,29 +100,31 @@ class Order{
         return $result->fetch_all(MYSQLI_ASSOC);
     }
 
-    public function getCustomerById(string $id): ?array {
+    public function getCustomerById(string $id): ?array
+    {
         $stmt = $this->conn->prepare('SELECT name, email, phone FROM users WHERE id = ?');
         $stmt->bind_param('s', $id);
         $stmt->execute();
         $result = $stmt->get_result();
         $customer = $result->fetch_assoc();
-    
+
         // Ensure the phone number has a '+' prefix if it does not have it
         if ($customer && $customer['phone'] && $customer['phone'][0] !== '+') {
             $customer['phone'] = '+' . $customer['phone'];
         }
-    
+
         return $customer;
     }
 
-    public function updateOrderStatus(string $order_id, string $new_status): bool {
+    public function updateOrderStatus(string $order_id, string $new_status): bool
+    {
         $stmt = $this->conn->prepare('UPDATE orders SET status = ?, completed_at = IF(? = "completed", NOW(), completed_at) WHERE id = ?');
         $stmt->bind_param('ssi', $new_status, $new_status, $order_id);
         return $stmt->execute();
     }
 
-    public function getOrdersByUserId($user_id) {
-        // Prepare the SQL statement without pagination
+    public function getOrdersByUserId($user_id)
+    {
         $stmt = $this->conn->prepare("
             SELECT o.*, GROUP_CONCAT(fi.name SEPARATOR ', ') AS food_items
             FROM orders o
@@ -122,38 +133,37 @@ class Order{
             WHERE o.user_id = ? AND o.is_deleted = FALSE
             GROUP BY o.id desc
         ");
-    
+
         if (!$stmt) {
-            // Handle the error, e.g., log it
             error_log("Error preparing statement: " . $this->conn->error);
             return false;
         }
-    
+
         // Bind the user_id parameter
         $stmt->bind_param("i", $user_id);
-    
+
         if (!$stmt->execute()) {
-            // Handle the error, e.g., log it
             error_log("Error executing statement: " . $stmt->error);
             return false;
         }
-    
+
         // Get the result
         $result = $stmt->get_result();
         $orders = [];
-    
+
         while ($row = $result->fetch_assoc()) {
             $orders[] = $row;
         }
-    
+
         // Close the statement
         $stmt->close();
-    
+
         return $orders;
     }
-    
 
-    public function countOrdersByUserId($user_id) {
+
+    public function countOrdersByUserId($user_id)
+    {
         $stmt = $this->conn->prepare("
             SELECT COUNT(*) AS total_orders
             FROM orders
@@ -166,7 +176,8 @@ class Order{
         return $row['total_orders'];
     }
 
-    public function cancelOrder($orderId) {
+    public function cancelOrder($orderId)
+    {
         $orderId = intval($this->sanitizeInput($orderId));
         $update_sql = "UPDATE orders SET status = 'cancelled' WHERE id = ?";
         $stmt = mysqli_prepare($this->conn, $update_sql);
@@ -187,7 +198,8 @@ class Order{
         }
     }
 
-    public function getUserEmailById($userId) {
+    public function getUserEmailById($userId)
+    {
         $stmt = $this->conn->prepare("SELECT email FROM users WHERE id = ?");
         $stmt->bind_param('i', $userId);
         $stmt->execute();
@@ -196,7 +208,8 @@ class Order{
         return $user['email'] ?? null;
     }
 
-    public function getAllOrdersPaginated($page, $itemsPerPage) {
+    public function getAllOrdersPaginated($page, $itemsPerPage)
+    {
         $offset = ($page - 1) * $itemsPerPage;
         $stmt = $this->conn->prepare("SELECT * FROM orders WHERE is_deleted = FALSE ORDER BY order_date DESC LIMIT ?, ?");
         $stmt->bind_param("ii", $offset, $itemsPerPage);
@@ -204,9 +217,10 @@ class Order{
         $result = $stmt->get_result();
         return $result->fetch_all(MYSQLI_ASSOC);
     }
-    
 
-    public function countOrders() {
+
+    public function countOrders()
+    {
         $stmt = $this->conn->prepare("SELECT COUNT(*) AS total FROM orders WHERE is_deleted = FALSE");
         $stmt->execute();
         $result = $stmt->get_result();
@@ -214,30 +228,33 @@ class Order{
         return $row['total'];
     }
 
-     // Fetch all existing orders
-     public function getExistingOrders($page = 1, $limit = 10) {
+    // Fetch all existing orders
+    public function getExistingOrders($page = 1, $limit = 10)
+    {
         $offset = ($page - 1) * $limit;
         $sql = "SELECT * FROM orders ORDER BY id DESC LIMIT $limit OFFSET $offset";
         $result = $this->conn->query($sql);
         $orders = [];
-    
+
         while ($row = $result->fetch_assoc()) {
             $orders[] = $row;
         }
-    
+
         return $orders;
     }
-    
-    public function getTotalOrderCount() {
+
+    public function getTotalOrderCount()
+    {
         $sql = "SELECT COUNT(*) as total FROM orders";
         $result = $this->conn->query($sql);
         $row = $result->fetch_assoc();
         return $row['total'];
     }
-    
+
 
     // Fetch new orders based on the latest order ID
-    public function getNewOrders($latestOrderId) {
+    public function getNewOrders($latestOrderId)
+    {
         $sql = "SELECT * FROM orders WHERE id > ? ORDER BY id ASC";
         $stmt = $this->conn->prepare($sql);
         $stmt->bind_param('i', $latestOrderId);
@@ -252,7 +269,8 @@ class Order{
         return $orders;
     }
 
-    public function getAllOrders() {
+    public function getAllOrders()
+    {
         $sql = "SELECT * FROM orders ORDER BY id DESC";
         $stmt = $this->conn->prepare($sql);
         $stmt->execute();
@@ -267,7 +285,8 @@ class Order{
     }
 
     // Fetch new orders by status based on the latest order ID
-    public function getNewOrdersByStatus($latestOrderId, array $statuses) {
+    public function getNewOrdersByStatus($latestOrderId, array $statuses)
+    {
         $placeholders = implode(',', array_fill(0, count($statuses), '?'));
         $sql = "SELECT * FROM orders WHERE id > ? AND status IN ($placeholders) ORDER BY id ASC";
         $stmt = $this->conn->prepare($sql);
@@ -283,27 +302,58 @@ class Order{
 
         return $orders;
     }
-    public function getTotalOrders($period) {
-        $query = '';
-        switch($period) {
+    // Function to get current and previous period total orders
+    public function getTotalOrders($period)
+    {
+        $currentQuery = '';
+        $previousQuery = '';
+
+        switch ($period) {
             case 'today':
-                $query = "SELECT COUNT(*) AS total FROM orders WHERE DATE(order_date) = CURDATE()";
+                // Only include completed orders
+                $currentQuery = "SELECT COUNT(*) AS total FROM orders WHERE DATE(order_date) = CURDATE()";
+                $previousQuery = "SELECT COUNT(*) AS total FROM orders WHERE DATE(order_date) = CURDATE() - INTERVAL 1 DAY";
                 break;
             case 'week':
-                $query = "SELECT COUNT(*) AS total FROM orders WHERE WEEK(order_date) = WEEK(CURDATE())";
+                // Only include completed orders
+                $currentQuery = "SELECT COUNT(*) AS total FROM orders WHERE WEEK(order_date) = WEEK(CURDATE()) ";
+                $previousQuery = "SELECT COUNT(*) AS total FROM orders WHERE WEEK(order_date) = WEEK(CURDATE()) - 1";
                 break;
             case 'month':
-                $query = "SELECT COUNT(*) AS total FROM orders WHERE MONTH(order_date) = MONTH(CURDATE())";
+                // Only include completed orders
+                $currentQuery = "SELECT COUNT(*) AS total FROM orders WHERE MONTH(order_date) = MONTH(CURDATE())";
+                $previousQuery = "SELECT COUNT(*) AS total FROM orders WHERE MONTH(order_date) = MONTH(CURDATE()) - 1";
                 break;
         }
-        $stmt = $this->conn->query($query);
-        $result = $stmt->fetch_assoc();
-        return $result['total'];
+
+
+        $currentResult = $this->conn->query($currentQuery)->fetch_assoc();
+        $previousResult = $this->conn->query($previousQuery)->fetch_assoc();
+
+        return [
+            'current' => $currentResult['total'],
+            'previous' => $previousResult['total']
+        ];
     }
-    
-    public function getTotalRevenue($period) {
+
+    // Function to get data for today, this week, and this month
+    public function getOrdersData()
+    {
+        $todayOrders = $this->getTotalOrders('today');
+        $weekOrders = $this->getTotalOrders('week');
+        $monthOrders = $this->getTotalOrders('month');
+
+        echo json_encode([
+            'today' => $todayOrders,
+            'week' => $weekOrders,
+            'month' => $monthOrders
+        ]);
+    }
+
+    public function getTotalRevenue($period)
+    {
         $query = '';
-        switch($period) {
+        switch ($period) {
             case 'today':
                 $query = "SELECT SUM(total_amount) AS revenue FROM orders WHERE DATE(order_date) = CURDATE() AND status = 'completed'";
                 break;
@@ -318,18 +368,78 @@ class Order{
         $result = $stmt->fetch_assoc();
         return $result['revenue'];
     }
-    
-    
-    public function getAverageOrderValue() {
-        $query = "SELECT AVG(total_amount) AS average FROM orders WHERE DATE(order_date) = CURDATE()";
+
+    // Method to get revenue for a given period
+    public function getRevenue($period)
+    {
+        $query = '';
+        switch ($period) {
+            case 'today':
+                $query = "SELECT SUM(total_amount) AS revenue FROM orders WHERE DATE(order_date) = CURDATE() AND status = 'completed'";
+                $previousQuery = "SELECT SUM(total_amount) AS revenue FROM orders WHERE DATE(order_date) = CURDATE() - INTERVAL 1 DAY AND status = 'completed'";
+                break;
+            case 'week':
+                $query = "SELECT SUM(total_amount) AS revenue FROM orders WHERE WEEK(order_date) = WEEK(CURDATE()) AND status = 'completed'";
+                $previousQuery = "SELECT SUM(total_amount) AS revenue FROM orders WHERE WEEK(order_date) = WEEK(CURDATE()) - 1 AND status = 'completed'";
+                break;
+            case 'month':
+                $query = "SELECT SUM(total_amount) AS revenue FROM orders WHERE MONTH(order_date) = MONTH(CURDATE()) AND status = 'completed'";
+                $previousQuery = "SELECT SUM(total_amount) AS revenue FROM orders WHERE MONTH(order_date) = MONTH(CURDATE()) - 1 AND status = 'completed'";
+                break;
+        }
+
+        // Fetch current period revenue
         $stmt = $this->conn->query($query);
-        $result = $stmt->fetch_assoc();
-        return $result['average'];
+        $current = $stmt->fetch_assoc();
+        $currentRevenue = $current['revenue'] ? floatval($current['revenue']) : 0;
+
+        // Fetch previous period revenue
+        $stmt = $this->conn->query($previousQuery);
+        $previous = $stmt->fetch_assoc();
+        $previousRevenue = $previous['revenue'] ? floatval($previous['revenue']) : 0;
+
+        return [
+            'current' => $currentRevenue,
+            'previous' => $previousRevenue
+        ];
     }
-    
-    
+
+
+    public function getAverageOrderValue()
+    {
+        // Query to get the current month's average order value
+        $currentMonthQuery = "
+        SELECT AVG(total_amount) AS average 
+        FROM orders 
+        WHERE MONTH(order_date) = MONTH(CURDATE()) 
+        AND YEAR(order_date) = YEAR(CURDATE())";
+
+        $stmtCurrent = $this->conn->query($currentMonthQuery);
+        $currentMonthResult = $stmtCurrent->fetch_assoc();
+        $currentMonthAverage = $currentMonthResult['average'] ? (float)$currentMonthResult['average'] : 0; // Cast to float
+
+        // Query to get the previous month's average order value
+        $previousMonthQuery = "
+        SELECT AVG(total_amount) AS average 
+        FROM orders 
+        WHERE MONTH(order_date) = MONTH(CURDATE() - INTERVAL 1 MONTH) 
+        AND YEAR(order_date) = YEAR(CURDATE() - INTERVAL 1 MONTH)";
+
+        $stmtPrevious = $this->conn->query($previousMonthQuery);
+        $previousMonthResult = $stmtPrevious->fetch_assoc();
+        $previousMonthAverage = $previousMonthResult['average'] ? (float)$previousMonthResult['average'] : 0; // Cast to float
+
+        // Calculate the percentage difference between the current and previous months
+        if ($previousMonthAverage == 0) {
+            $percentageChange = $currentMonthAverage > 0 ? 100 : 0;
+        } else {
+            $percentageChange = (($currentMonthAverage - $previousMonthAverage) / $previousMonthAverage) * 100;
+        }
+
+        // Return an array containing the current month's average and the percentage change
+        return [
+            'currentMonthAverage' => $currentMonthAverage,
+            'percentageChange' => round($percentageChange, 2)
+        ];
+    }
 }
-
-
-
-?>

@@ -1,5 +1,8 @@
 <?php
-session_start();
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
+
 include_once("../../connection/connection.php");
 include("../../model/User.php");
 include("Order.php");
@@ -8,6 +11,7 @@ include("Notifications.php");
 require '../../vendor/autoload.php';
 $dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
 $dotenv->load();
+
 // Define global variables for the base URL
 $baseUrl = "http://localhost";
 $payfastNotifyUrl = $baseUrl . "/UMP-Order-System/admin/model/notify.php";
@@ -53,7 +57,7 @@ try {
     $itemDescription = implode(', ', $itemDescriptions);
 
     $food = new Order($conn);
-    $notifications = new Notifications($conn); // Create an instance of Notifications
+    $notifications = new Notifications($conn);
 
     // Process the payment
     if ($paymentMethod == 'payfast') {

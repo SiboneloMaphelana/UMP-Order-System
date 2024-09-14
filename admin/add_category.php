@@ -1,4 +1,7 @@
-<?php session_start(); ?>
+<?php
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+} ?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -15,9 +18,6 @@
     <?php include_once('partials/sidebar.php'); ?>
 
     <div id="content">
-        <button class="btn btn-dark d-md-none" type="button" id="toggleSidebar">
-            <i class="fas fa-bars"></i>
-        </button>
         <div class="container mt-4">
             <?php
             if (isset($_SESSION['fail-cat'])) {
@@ -39,21 +39,9 @@
                 <button type="submit" class="btn btn-success">Add Category</button>
             </form>
         </div>
-
-        <!-- Footer 
-            <footer class="footer mt-auto py-3 bg-dark text-light">
-                <div class="container text-center">
-                    <span>&copy; 2024 Your Company. All rights reserved.</span>
-                </div>
-            </footer> -->
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script>
-        document.getElementById('toggleSidebar').addEventListener('click', function() {
-            document.getElementById('sidebar').classList.toggle('show');
-        });
-    </script>
 </body>
 
 </html>

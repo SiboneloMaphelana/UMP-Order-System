@@ -62,6 +62,12 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] === 'staff' : "staff";
                     <li><a class="nav-link text-light" href="all_email.php"><i class="fas fa-list me-2"></i> All Messages</a></li>
                 </ul>
             </li>
+            <!-- Analytics Section -->
+             <?php if (!$role): ?>
+             <li class="nav-item">
+                <a href="analytics.php" class="nav-link text-light"><i class="fas fa-chart-line"></i> Analytics</a>
+             </li>
+             <?php endif; ?>
         </ul>
     </div>
 

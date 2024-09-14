@@ -1,4 +1,7 @@
 <?php
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
 include_once("../../connection/connection.php");
 
 $sql = "SELECT * FROM food_items WHERE quantity < 10";

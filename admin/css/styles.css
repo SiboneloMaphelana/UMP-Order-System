@@ -83,19 +83,17 @@ body {
   width: 100%;
 }
 
-
 .bell {
-  font-size: 48px; /* Adjust size as needed */
+  font-size: 48px;
 }
 
 .badge {
-  font-size: 16px; /* Adjust font size to fit the icon */
-  width: 24px;     /* Adjust width */
-  height: 24px;    /* Adjust height */
+  font-size: 16px;
+  width: 24px;
+  height: 24px;
   display: flex;
   align-items: center;
   justify-content: center;
-  top: -10px;      /* Adjust vertical positioning */
-  right: -10px;    /* Adjust horizontal positioning */
+  top: -10px; /* vertical positioning */
+  right: -10px; /* horizontal positioning */
 }
-

@@ -1,5 +1,8 @@
 <?php
-session_start();
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
+
 include_once("../connection/connection.php");
 include("User.php");
 
@@ -10,7 +13,7 @@ if (!isset($_SESSION['id'])) {
 }
 
 $user = new User($conn);
-$userId = intval($_SESSION['id']); 
+$userId = intval($_SESSION['id']);
 
 if ($user->deleteUserAccount($userId)) {
     // Account deleted successfully, destroy session and redirect to login
@@ -23,4 +26,3 @@ if ($user->deleteUserAccount($userId)) {
     header("Location: ../profile.php");
     exit();
 }
-?>

@@ -1,4 +1,8 @@
 <?php
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
+
 include_once("connection/connection.php");
 include_once("admin/model/Order.php");
 include_once("functions/orders_functions.php");
@@ -52,17 +56,17 @@ $groupedCanceledOrders = groupOrdersByDate($canceledOrders);
                 <main class="p-4">
                     <h1 class="mt-5 mb-2 text-center">My Orders</h1>
                     <div class="toast" id="toastMessage" role="alert" aria-live="assertive" aria-atomic="true">
-                            <div class="toast-body text-center text-danger">
-                                <!-- Toast message content will be dynamically inserted here -->
-                            </div>
+                        <div class="toast-body text-center text-danger">
+                            <!-- Toast message content will be dynamically inserted here -->
                         </div>
+                    </div>
                     <div class="d-flex justify-content-center mb-4">
                         <div class="btn-group mt-5" role="group" aria-label="Order Toggle">
                             <button type="button" class="btn btn-success" id="upcomingOrdersBtn">Pending Orders</button>
                             <button type="button" class="btn btn-secondary" id="pastOrdersBtn">Completed Orders</button>
                             <button type="button" class="btn btn-danger" id="canceledOrdersBtn">Canceled Orders</button>
                         </div>
-                        
+
                     </div>
 
                     <div class="orders-container">
@@ -175,7 +179,7 @@ $groupedCanceledOrders = groupOrdersByDate($canceledOrders);
     </div>
     <!-- Footer -->
     <?php include_once("partials/footer.php"); ?>
-    
+
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.7/dist/umd/popper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/js/all.min.js"></script>

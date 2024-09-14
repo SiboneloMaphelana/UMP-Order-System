@@ -1,6 +1,12 @@
 <?php
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
+
 include("../../connection/connection.php");
 include("Notifications.php");
+
+
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $token = $_POST['token'];
     $newPassword = password_hash($_POST['password'], PASSWORD_BCRYPT);

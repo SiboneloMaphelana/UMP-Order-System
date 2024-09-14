@@ -1,4 +1,8 @@
 <?php
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
+
 include("model/login_check.php");
 require_once '../connection/connection.php';
 require_once 'model/Report.php';
@@ -197,23 +201,12 @@ $inventoryReport = $report->getInventoryReport();
 
             </main>
 
-            <!-- Footer 
-            <footer class="footer mt-auto py-3 bg-dark text-light">
-                <div class="container text-center">
-                    <span>&copy; 2024 Your Company. All rights reserved.</span>
-                </div>
-            </footer> -->
         </div>
     </div>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
     <script src="js/reports.js"></script>
     <script src="js/updateBell.js"></script>
-    <script>
-        document.getElementById('toggleSidebar').addEventListener('click', function() {
-            document.getElementById('sidebar').classList.toggle('show');
-        });
-    </script>
 </body>
 
 </html>

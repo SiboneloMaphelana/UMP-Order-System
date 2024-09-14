@@ -1,5 +1,7 @@
 <?php
-session_start();
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
 
 // Validate session cart
 if (!isset($_SESSION['cart']) || empty($_SESSION['cart'])) {
@@ -53,13 +55,13 @@ $totalItems = calculateTotalItems($_SESSION['cart']);
                                     <div>
                                         <h6>Select Payment Method:</h6>
                                         <div class="form-check">
-                                            <input class="form-check-input" type="radio" name="payment_method" id="payment_payfast" value="payfast" >
+                                            <input class="form-check-input" type="radio" name="payment_method" id="payment_payfast" value="payfast">
                                             <label class="form-check-label" for="payment_payfast">
                                                 <i class="fas fa-credit-card"></i> PayFast
                                             </label>
                                         </div>
                                         <div class="form-check mt-2">
-                                            <input class="form-check-input" type="radio" name="payment_method" id="cash_on_collection" value="cash on collection" >
+                                            <input class="form-check-input" type="radio" name="payment_method" id="cash_on_collection" value="cash on collection">
                                             <label class="form-check-label" for="cash_on_collection">
                                                 <i class="fas fa-money-bill-wave"></i> Cash on Collection
                                             </label>

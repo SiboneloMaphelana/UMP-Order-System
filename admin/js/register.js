@@ -1,4 +1,3 @@
-// Define element IDs as variables
 const togglePassword = document.getElementById("togglePassword");
 const password = document.getElementById("password");
 const toggleConfirmPassword = document.getElementById("toggleConfirmPassword");
@@ -18,14 +17,16 @@ const roleError = document.getElementById("roleError");
 
 // Password visibility toggle
 togglePassword.addEventListener("click", function () {
-  const type = password.getAttribute("type") === "password" ? "text" : "password";
+  const type =
+    password.getAttribute("type") === "password" ? "text" : "password";
   password.setAttribute("type", type);
   this.classList.toggle("fa-eye");
   this.classList.toggle("fa-eye-slash");
 });
 
 toggleConfirmPassword.addEventListener("click", function () {
-  const type = confirmPassword.getAttribute("type") === "password" ? "text" : "password";
+  const type =
+    confirmPassword.getAttribute("type") === "password" ? "text" : "password";
   confirmPassword.setAttribute("type", type);
   this.classList.toggle("fa-eye");
   this.classList.toggle("fa-eye-slash");
@@ -62,7 +63,6 @@ password.addEventListener("input", function () {
   passwordStrength.textContent = `Password Strength: ${strengthText}`;
   passwordStrength.style.color = strengthColor;
 });
-
 
 confirmPassword.addEventListener("input", function () {
   const confirmPasswordValue = confirmPassword.value;
@@ -115,7 +115,8 @@ registrationForm.addEventListener("submit", function (event) {
   const passwordValue = password.value;
   const passwordResult = zxcvbn(passwordValue);
   if (passwordResult.score < 3) {
-    passwordError.textContent = "Password is too weak. Try using a mix of letters, numbers, and special characters.";
+    passwordError.textContent =
+      "Password is too weak. Try using a mix of letters, numbers, and special characters.";
     valid = false;
   } else {
     passwordError.textContent = "";
@@ -144,4 +145,3 @@ registrationForm.addEventListener("submit", function (event) {
     event.preventDefault(); // Prevent form submission if validation fails
   }
 });
-

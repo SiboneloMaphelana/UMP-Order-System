@@ -1,3 +1,15 @@
+<?php 
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
+
+$role = $_SESSION['role'] ? $_SESSION['role'] : "staff";
+if ($role === 'staff') {
+    $_SESSION['error'] = "Access denied. You are not authorized to view the page.";
+    header("Location: orders.php");
+    exit();
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -5,21 +17,27 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/5.3.3/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css">
     <style>
-        .chart-container {
-            width: 80%;
-            max-width: 600px;
-            height: 60%;
-            background: #fff;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            padding: 20px;
+        canvas {
+            min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;
         }
 
-        canvas {
-            width: 100% !important;
-            height: 100% !important;
+        .row {
+            display: flex;
+            flex-wrap: wrap;
+        }
+
+        .col-lg-6 {
+            flex-basis: 50%;
+        }
+
+        .chart-container {
+            margin: 20px;
         }
 
         .tab-container {
@@ -27,6 +45,7 @@
             justify-content: flex-end;
             margin-bottom: 20px;
         }
+
         .tab-button {
             padding: 10px 15px;
             cursor: pointer;
@@ -35,6 +54,7 @@
             border-radius: 4px;
             margin-left: 10px;
         }
+
         .tab-button.active {
             background-color: #007bff;
             color: #fff;
@@ -43,61 +63,80 @@
 </head>
 
 <body>
-    <div class="container-fluid">
+
+    <?php include_once("partials/sidebar.php"); ?>
+    <div id="content" class="container mt-4">
         <div class="row">
-        <div class="col-lg-4 col-md-6 mb-4">
-            <!-- Revenue by Category Chart -->
-            <div class="col-12 col-md-6">
-                <div class="chart-container">
-                    <h2 class="h6">Revenue by Category</h2>
-                    <canvas id="revenueByCategoryChart"></canvas>
+            <div class="col-lg-6 col-md-6 mb-4">
+                <div class="card">
+                    <h4 class="card-header">Revenue By Category</h4>
+                    <div class="card-body">
+                        <canvas id="revenueByCategoryChart"></canvas>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6 col-md-6 mb-4">
+                <div class="card">
+                <h4 class="card-header">Monthly Checkout</h4>
+                    <div class="card-body">
+                        <canvas id="checkoutComparisonChart"></canvas>
+                    </div>
                 </div>
             </div>
 
-            <!-- Checkout Comparison Chart -->
-            <div class="col-12 col-md-6">
-                <div class="chart-container">
-                    <h2 class="h6">Checkout Comparison</h2>
-                    <canvas id="checkoutComparisonChart"></canvas>
-                </div>
-            </div>
 
             <!-- Order Comparison Chart -->
-            <div class="chart-container">
-                <canvas id="orderComparisonChart"></canvas>
+            <div class="col-lg-6 col-md-6 mb-4">
+                <div class="card">
+                <h4 class="card-header">Monthly Orders</h4>
+                    <div class="card-body">
+                        <canvas id="orderComparisonChart"></canvas>
+                    </div>
+                </div>
             </div>
 
             <!-- Sales Trends Chart -->
-            <div class="col-12 col-md-6">
-                <div class="chart-container">
-                    <h2 class="h6">Sales Trends</h2>
-                    <canvas id="salesTrendsChart"></canvas>
+            <div class="col-lg-6 col-md-6 mb-4">
+                <div class="card">
+                <h4 class="card-header">Sales Performance</h4>
+                    <div class="card-body">
+                        <canvas id="salesTrendsChart"></canvas>
+                    </div>
                 </div>
             </div>
 
-            <div class="chart-container">
-                <div class="tab-container">
-                    <button class="tab-button active" data-filter="today">Today</button>
-                    <button class="tab-button" data-filter="week">This Week</button>
-                    <button class="tab-button" data-filter="month">This Month</button>
-                </div>
-                <canvas id="orderFrequencyChart"></canvas>
-            </div>
+            <!-- Order Frequency Chart with Tabs -->
+            <div class="col-lg-6 col-md-6 mb-4">
+                <div class="card">
+                <h4 class="card-header">Order Frequency</h4>
+                    <div class="card-body">
+                        <div class="tab-container">
+                            <button class="tab-button active" data-filter="today">Today</button>
+                            <button class="tab-button" data-filter="week">This Week</button>
+                            <button class="tab-button" data-filter="month">This Month</button>
+                        </div>
+                        <canvas id="orderFrequencyChart"></canvas>
+                    </div>
 
+                </div>
+            </div>
 
             <!-- Payment Methods Chart -->
-            <div class="col-12 col-md-6">
-                <div class="chart-container">
-                    <h2 class="h6">Revenue by Payment Method</h2>
-                    <canvas id="paymentMethodChart"></canvas>
+            <div class="col-lg-6 col-md-6 mb-4">
+                <div class="card">
+                <h4 class="card-header">Revenue By Payment Method</h4>
+                    <div class="card-body">
+                        <canvas id="paymentMethodChart"></canvas>
+                    </div>
                 </div>
             </div>
         </div>
-        </div>
-        
     </div>
 
+
     <!-- Bootstrap JS and dependencies -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/js/all.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.3.3/js/bootstrap.min.js"></script>
 
@@ -115,7 +154,7 @@
         // Function to render the chart
         async function renderChart() {
             const revenueData = await fetchRevenueData();
-            
+
             // Extract categories and revenue from the data
             const categories = revenueData.map(item => item.category);
             const revenues = revenueData.map(item => item.revenue);
@@ -127,7 +166,6 @@
                 data: {
                     labels: categories, // Categories as labels
                     datasets: [{
-                        label: 'Revenue by Category',
                         data: revenues, // Revenue as data
                         backgroundColor: [
                             'rgba(255, 99, 132, 0.6)',
@@ -152,7 +190,7 @@
                     responsive: true,
                     plugins: {
                         legend: {
-                            position: 'top',
+                            position: 'right',
                         },
                         tooltip: {
                             callbacks: {
@@ -188,7 +226,7 @@
     <script>
         // Function to fetch checkout comparison data
         async function fetchCheckoutComparisonData() {
-            const response = await fetch('model/fetch_checkout_comparison.php'); // URL to the PHP endpoint
+            const response = await fetch('model/fetch_checkout_comparison.php'); 
             const data = await response.json();
             return data;
         }
@@ -242,8 +280,8 @@
                             position: 'top'
                         },
                         title: {
-                            display: true,
-                            text: 'Monthly Checkout Comparison (Completed Orders Only)'
+                            display: false,
+                            text: 'Monthly Checkout Comparison (Completed Orders)'
                         }
                     },
                     scales: {
@@ -273,7 +311,7 @@
     <script>
         // Function to fetch order comparison data
         async function fetchOrderComparisonData() {
-            const response = await fetch('model/fetch_order_comparison.php'); // URL to the PHP endpoint
+            const response = await fetch('model/fetch_order_comparison.php');
             const data = await response.json();
             return data;
         }
@@ -316,7 +354,7 @@
                             position: 'top'
                         },
                         title: {
-                            display: true,
+                            display: false,
                             text: 'Monthly Order Comparison'
                         }
                     },
@@ -486,7 +524,7 @@
     <script>
         // Function to fetch revenue data for payment methods
         async function fetchPaymentMethodRevenueData() {
-            const response = await fetch('model/fetch_popular_products.php'); 
+            const response = await fetch('model/fetch_popular_products.php');
             const data = await response.json();
             return data;
         }
@@ -494,7 +532,7 @@
         // Function to render the chart
         async function renderPaymentMethodChart() {
             const paymentMethodData = await fetchPaymentMethodRevenueData();
-            
+
             // Extract payment methods and revenue from the data
             const paymentMethods = paymentMethodData.map(item => item.payment_method);
             const revenues = paymentMethodData.map(item => parseFloat(item.revenue));
@@ -513,7 +551,6 @@
                 data: {
                     labels: paymentMethods, // Payment methods as labels
                     datasets: [{
-                        label: 'Revenue by Payment Method',
                         data: revenues, // Revenue as data
                         backgroundColor: colors,
                         borderColor: borderColors,
@@ -527,7 +564,7 @@
                             position: 'right'
                         },
                         title: {
-                            display: true,
+                            display: false,
                             text: 'Revenue by Payment Method'
                         },
                         tooltip: {

@@ -1,4 +1,8 @@
 <?php
+if (session_status() == PHP_SESSION_NONE) {
+  session_start();
+}
+
 include_once("../connection/connection.php");
 include("model/Food.php");
 
@@ -30,38 +34,30 @@ if (isset($_GET['id']) && !empty($_GET['id'])) {
 
       <?php include("partials/sidebar.php"); ?>
       <div id="content" class="container-fluid overflow-hidden">
-        <button class="btn btn-dark d-md-none" type="button" id="toggleSidebar">
-          <i class="fas fa-bars"></i>
-        </button>
         <div class="container-fluid overflow-hidden">
           <div class="row vh-100 overflow-auto">
             <div class="col d-flex flex-column h-sm-100">
-            <main class="row overflow-auto">
-              <h2>Update Category</h2>
-              <form action="model/update_category_process.php" method="POST" enctype="multipart/form-data">
-                <input type="hidden" name="categoryId" value="<?php echo $category['id']; ?>">
-                <div class="mb-3">
-                  <label for="name" class="form-label">Category Name</label>
-                  <input type="text" class="form-control" id="name" name="name" value="<?php echo htmlspecialchars($category['name']); ?>">
-                </div>
-                <div class="mb-3">
-                  <label for="image" class="form-label">New Image</label>
-                  <input type="file" class="form-control" id="image" name="image">
-                </div>
-                <button type="submit" class="btn btn-primary">Update</button>
-                <a href="all_categories.php" class="btn btn-secondary">Cancel</a>
-              </form>
-            </main>
-            <footer class="row bg-light py-4 mt-auto">
-      </div>
-      <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-      <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/js/all.min.js"></script>
-      <script>
-        document.getElementById('toggleSidebar').addEventListener('click', function() {
-            document.getElementById('sidebar').classList.toggle('show');
-        });
-    </script>
-      <script src="js/admin.js"></script>
+              <main class="row overflow-auto">
+                <h2>Update Category</h2>
+                <form action="model/update_category_process.php" method="POST" enctype="multipart/form-data">
+                  <input type="hidden" name="categoryId" value="<?php echo $category['id']; ?>">
+                  <div class="mb-3">
+                    <label for="name" class="form-label">Category Name</label>
+                    <input type="text" class="form-control" id="name" name="name" value="<?php echo htmlspecialchars($category['name']); ?>">
+                  </div>
+                  <div class="mb-3">
+                    <label for="image" class="form-label">New Image</label>
+                    <input type="file" class="form-control" id="image" name="image">
+                  </div>
+                  <button type="submit" class="btn btn-primary">Update</button>
+                  <a href="all_categories.php" class="btn btn-secondary">Cancel</a>
+                </form>
+              </main>
+              <footer class="row bg-light py-4 mt-auto">
+            </div>
+            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/js/all.min.js"></script>
+            <script src="js/admin.js"></script>
     </body>
 
     </html>

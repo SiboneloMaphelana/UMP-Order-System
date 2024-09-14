@@ -1,5 +1,7 @@
 <?php
-session_start();
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
 require_once '../../connection/connection.php';
 require_once 'Food.php';
 
@@ -30,5 +32,3 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     header('Location: ../add_menu.php');
     exit();
 }
-
-?>

@@ -118,8 +118,9 @@ class Report
         return $revenueReport; // Return array with category names and revenue
     }
 
-     // Function to get order frequency based on a filter (today, week, month)
-     public function getOrderFrequency($filter) {
+    // Function to get order frequency based on a filter (today, week, month)
+    public function getOrderFrequency($filter)
+    {
         // Set the date condition based on the filter
         switch ($filter) {
             case 'today':
@@ -155,7 +156,8 @@ class Report
     }
 
     // Function to get revenue by payment method
-    public function getPaymentMethodRevenue() {
+    public function getPaymentMethodRevenue()
+    {
         $sql = "SELECT payment_method, SUM(total_amount) AS revenue
                 FROM orders
                 WHERE status = 'completed'
@@ -174,16 +176,17 @@ class Report
         return $paymentMethodRevenue;
     }
 
-    public function getOrderComparison() {
+    public function getOrderComparison()
+    {
         $sql = "SELECT DATE_FORMAT(order_date, '%Y-%m') AS month_year,
                        SUM(CASE WHEN status = 'completed' THEN 1 ELSE 0 END) AS completed_orders,
                        SUM(CASE WHEN status = 'cancelled' THEN 1 ELSE 0 END) AS cancelled_orders
                 FROM orders
                 GROUP BY DATE_FORMAT(order_date, '%Y-%m')
                 ORDER BY month_year";
-    
+
         $result = $this->conn->query($sql);
-        
+
         $orderComparison = array();
         while ($row = $result->fetch_assoc()) {
             $orderComparison[] = array(
@@ -192,11 +195,12 @@ class Report
                 'cancelled_orders' => $row['cancelled_orders']
             );
         }
-        
+
         return $orderComparison; // Return array with month, completed orders, and cancelled orders
     }
 
-    public function getCheckoutComparison() {
+    public function getCheckoutComparison()
+    {
         $sql = "SELECT DATE_FORMAT(order_date, '%Y-%m') AS month_year,
                        SUM(CASE WHEN user_id = 0 AND status = 'completed' THEN 1 ELSE 0 END) AS guest_checkouts,
                        SUM(CASE WHEN user_id > 0 AND status = 'completed' THEN 1 ELSE 0 END) AS registered_user_checkouts,
@@ -205,9 +209,9 @@ class Report
                 WHERE status = 'completed'
                 GROUP BY DATE_FORMAT(order_date, '%Y-%m')
                 ORDER BY month_year";
-    
+
         $result = $this->conn->query($sql);
-    
+
         $checkoutComparison = array();
         while ($row = $result->fetch_assoc()) {
             $checkoutComparison[] = array(
@@ -217,11 +221,7 @@ class Report
                 'total_orders' => $row['total_orders']
             );
         }
-    
+
         return $checkoutComparison; // Return array with month, guest checkouts, registered user checkouts, and total orders
     }
-    
-    
-    
-    
 }
