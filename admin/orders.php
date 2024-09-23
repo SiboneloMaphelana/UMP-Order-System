@@ -26,10 +26,6 @@ $food = new Food($conn);
     <?php include_once('partials/sidebar.php'); ?>
 
     <div id="content" class="container-fluid overflow-hidden">
-        <button class="btn btn-dark d-md-none" type="button" id="toggleSidebar">
-            <i class="fas fa-bars"></i>
-        </button>
-
         <div class="row vh-100 overflow-auto">
             <div class="col d-flex flex-column h-sm-100">
                 <main class="row overflow-auto mt-4">
@@ -37,7 +33,7 @@ $food = new Food($conn);
                         <h1>Orders</h1>
                         <div class="notification-icon position-relative">
                             <i class="bi bi-bell fs-1 text-primary bell"></i>
-                            <span id="notificationBadge" class="notification-badge badge bg-danger rounded-circle position-absolute top-0 start-75 translate-middle">
+                            <span id="notificationBadge" class="notification-badge badge bg-success rounded-circle position-absolute top-0 start-75 translate-middle">
                                 0
                             </span>
                         </div>

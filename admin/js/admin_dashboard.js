@@ -177,7 +177,7 @@ document.addEventListener("DOMContentLoaded", function () {
         .catch((error) => console.error("Error updating order status:", error));
     });
 
-  eventSource.onerror = function (event) {
+  /*eventSource.onerror = function (event) {
     console.error("Error:", event);
-  };
+  };*/
 });

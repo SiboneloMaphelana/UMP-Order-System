@@ -63,6 +63,7 @@ $foodItems = $food->getAllFoodItems($selectedCategory);
 
     <div id="content">
         <div class="container mt-4">
+        <div id="notification-container" class="text-center" style="display: none;"></div>
             <div class="notification-bell" id="bell" title="Low stocks">
                 <span class="badge" id="badge">0</span>
             </div>

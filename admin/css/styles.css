@@ -140,3 +140,12 @@ body {
 .table-card .btn {
   margin-left: 0.5rem;
 }
+
+#notification-container {
+  /* Set text color to red */
+  color: #FF0000;
+  padding: 10px;
+  font-size: 20px;
+  z-index: 1000;
+  transition: opacity 0.3s ease-in-out;
+}

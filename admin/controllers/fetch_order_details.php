@@ -16,6 +16,8 @@ if ($order_id <= 0) {
 }
 
 try {
+    sleep(3);
+
     $stmt = $conn->prepare('SELECT id, total_amount, status, order_date FROM orders WHERE id = ?');
     $stmt->bind_param('i', $order_id);
     $stmt->execute();

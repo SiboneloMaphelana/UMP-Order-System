@@ -46,6 +46,7 @@ $inventoryReport = $report->getInventoryReport();
             <div class="notification-bell" id="bell" title="Low stocks">
                 <span class="badge" id="badge">0</span>
             </div>
+            <div id="notification-container" class="text-center" style="display: none;"></div>
             <main class="row overflow-auto">
 
                 <h2 class="mb-4">Reports</h2>

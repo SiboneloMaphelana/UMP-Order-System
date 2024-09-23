@@ -25,14 +25,15 @@ $order = new Order($conn);
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="css/stocks.css">
     <link rel="stylesheet" href="css/styles.css">
-    
+
     <style>
         /* Card with gradient background */
         .card {
             background: linear-gradient(135deg, darkslateblue, mediumslateblue);
             color: white;
             border: none;
-            border-radius: 10px; /* Rounded corners */
+            border-radius: 10px;
+            /* Rounded corners */
         }
 
         /* Card Title Text */
@@ -52,14 +53,17 @@ $order = new Order($conn);
             font-size: 1.5rem;
             color: white;
             /* White icon to blend with the card */
-            background: lightskyblue; /* Soft blue background */
+            background: lightskyblue;
+            /* Soft blue background */
             width: 40px;
             height: 40px;
-            border-radius: 50%; /* Rounded shape */
+            border-radius: 50%;
+            /* Rounded shape */
             display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Slight shadow for elevation */
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            /* Slight shadow for elevation */
         }
 
         /* Percentage Change with */
@@ -77,6 +81,15 @@ $order = new Order($conn);
         .percentage-negative {
             color: #F44336;
         }
+
+        #notification-container {
+            /* Set text color to red */
+            color: #FF0000;
+            padding: 10px;
+            font-size: 20px;
+            z-index: 1000;
+            transition: opacity 0.3s ease-in-out;
+        }
     </style>
 </head>
 
@@ -86,8 +99,11 @@ $order = new Order($conn);
     <div id="content">
         <div class="container mt-2">
             <div class="notification-bell" id="bell" title="Low stocks">
+                <i class="bi bi-bell fs-1 text-primary bell"></i>
                 <span class="badge" id="badge">0</span>
             </div>
+            <div id="notification-container" class="text-center" style="display: none;"></div>
+
             <h1>Welcome to the Admin Dashboard</h1>
             <p>Your central hub for managing the application.</p>
 
@@ -196,7 +212,7 @@ $order = new Order($conn);
                 </div>
 
 
-                
+
 
             </div>
         </div>
@@ -234,6 +250,20 @@ $order = new Order($conn);
             // Display the current amount
             amountElement.innerText = `${current}`;
 
+            // Handle Infinity case
+            if (!isFinite(percentageChange)) {
+                percentageElement.innerHTML = `<span class="percentage-na">No change</span>`;
+                return;
+            }
+
+            // Handle NaN case (invalid percentage change)
+            if (isNaN(percentageChange)) {
+                percentageElement.innerHTML = `<span class="percentage-na">No orders were made yesterday</span>`;
+                return;
+            }
+
+
+
             // Display the percentage change with trend indicator
             if (percentageChange > 0) {
                 percentageElement.innerHTML = `<span class="percentage-positive"><i class="fas fa-angle-double-up"></i> ${percentageChange}%</span>`;
@@ -268,10 +298,10 @@ $order = new Order($conn);
                     throw new Error('Network response was not ok');
                 }
                 const data = await response.json();
-                console.log('Fetched revenue data:', data);
+                //console.log('Fetched revenue data:', data);
                 return data;
             } catch (error) {
-                console.error('Error fetching revenue data:', error);
+                //console.error('Error fetching revenue data:', error);
                 return null; // Handle fetch failure
             }
         }
@@ -287,11 +317,11 @@ $order = new Order($conn);
         // Update percentage display with trend indicator
         function updatePercentageDisplay(elementId, current, previous) {
             const percentageChange = calculatePercentageChange(current, previous);
-            console.log(`Updating ${elementId} with percentage change: ${percentageChange}`);
+            //console.log(`Updating ${elementId} with percentage change: ${percentageChange}`);
 
             const element = document.getElementById(elementId);
             if (!element) {
-                console.error(`Element with ID ${elementId} not found.`);
+                //console.error(`Element with ID ${elementId} not found.`);
                 return;
             }
 
@@ -307,7 +337,7 @@ $order = new Order($conn);
         // Render the revenue data 
         function renderRevenueData() {
             fetchRevenueData().then(revenueData => {
-                console.log('Revenue data:', revenueData);
+                //console.log('Revenue data:', revenueData);
 
                 if (!revenueData) {
                     console.error('Failed to load revenue data.');
@@ -320,10 +350,10 @@ $order = new Order($conn);
                     if (revenueData.today.previous !== undefined) {
                         updatePercentageDisplay('revenueChange1', revenueData.today.current, revenueData.today.previous);
                     } else {
-                        console.error('Previous data for today is missing.');
+                        //console.error('Previous data for today is missing.');
                     }
                 } else {
-                    console.error('Today’s revenue data is missing.');
+                    //console.error('Today’s revenue data is missing.');
                 }
 
                 // Update this week's revenue
@@ -332,10 +362,10 @@ $order = new Order($conn);
                     if (revenueData.week.previous !== undefined) {
                         updatePercentageDisplay('revenueChange2', revenueData.week.current, revenueData.week.previous);
                     } else {
-                        console.error('Previous data for this week is missing.');
+                        //console.error('Previous data for this week is missing.');
                     }
                 } else {
-                    console.error('This week’s revenue data is missing.');
+                    //console.error('This week’s revenue data is missing.');
                 }
 
                 // Update this month's revenue
@@ -344,10 +374,10 @@ $order = new Order($conn);
                     if (revenueData.month.previous !== undefined) {
                         updatePercentageDisplay('revenueChange3', revenueData.month.current, revenueData.month.previous);
                     } else {
-                        console.error('Previous data for this month is missing.');
+                       // console.error('Previous data for this month is missing.');
                     }
                 } else {
-                    console.error('This month’s revenue data is missing.');
+                    //console.error('This month’s revenue data is missing.');
                 }
             });
         }
@@ -382,7 +412,7 @@ $order = new Order($conn);
                     changeElement.innerHTML = `<span>${percentageChange}%</span>`;
                 }
             } catch (error) {
-                console.error('Error fetching average order value:', error);
+                //console.error('Error fetching average order value:', error);
             }
         }
 
