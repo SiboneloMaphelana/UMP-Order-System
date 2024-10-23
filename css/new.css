@@ -1,3 +1,11 @@
+/* Ensure the body and HTML take full height */
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+
 /* Fixed Header */
 .header {
   position: fixed; /* Fix the header at the top */

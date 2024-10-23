@@ -16,7 +16,6 @@ if ($_SESSION['role'] === 'staff') {
 }
 
 // Fetch report data
-$salesReport = $report->getSalesReport();
 $ordersReport = $report->getOrdersReport();
 $customerReport = $report->getCustomerReport();
 $inventoryReport = $report->getInventoryReport();
@@ -53,11 +52,9 @@ $inventoryReport = $report->getInventoryReport();
 
                 <!-- Nav tabs -->
                 <ul class="nav nav-tabs" id="reportTabs" role="tablist">
+
                     <li class="nav-item" role="presentation">
-                        <button class="nav-link active" id="sales-tab" data-bs-toggle="tab" data-bs-target="#sales" type="button" role="tab" aria-controls="sales" aria-selected="true">Sales Report</button>
-                    </li>
-                    <li class="nav-item" role="presentation">
-                        <button class="nav-link" id="orders-tab" data-bs-toggle="tab" data-bs-target="#orders" type="button" role="tab" aria-controls="orders" aria-selected="false">Orders Report</button>
+                        <button class="nav-link active" id="orders-tab" data-bs-toggle="tab" data-bs-target="#orders" type="button" role="tab" aria-controls="orders" aria-selected="true">Orders Report</button>
                     </li>
                     <li class="nav-item" role="presentation">
                         <button class="nav-link" id="customers-tab" data-bs-toggle="tab" data-bs-target="#customers" type="button" role="tab" aria-controls="customers" aria-selected="false">Customer Report</button>
@@ -72,30 +69,9 @@ $inventoryReport = $report->getInventoryReport();
 
                 <!-- Tab panes -->
                 <div class="tab-content" id="reportTabsContent">
-                    <!-- Sales Report Tab -->
-                    <div class="tab-pane fade show active" id="sales" role="tabpanel" aria-labelledby="sales-tab">
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="card mb-4">
-                                    <div class="card-body">
-                                        <h5 class="card-title">Monthly Sales</h5>
-                                        <ul class="list-group list-group-flush">
-                                            <?php foreach ($salesReport as $sales) : ?>
-                                                <li class="list-group-item">
-                                                    <span class="fw-bold"><?php echo date('F Y', strtotime($sales['date'])); ?>:</span>
-                                                    <span class="float-end">R<?php echo number_format($sales['total_sales'], 2); ?></span>
-                                                </li>
-                                            <?php endforeach; ?>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
 
                     <!-- Orders Report Tab -->
-                    <div class="tab-pane fade" id="orders" role="tabpanel" aria-labelledby="orders-tab">
+                    <div class="tab-pane fade show active" id="orders" role="tabpanel" aria-labelledby="orders-tab">
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="card mb-4">
@@ -109,6 +85,23 @@ $inventoryReport = $report->getInventoryReport();
                                                 </li>
                                             <?php endforeach; ?>
                                         </ul>
+                                        <!-- Form to download Excel report -->
+                                        <form method="GET" action="model/download_orders.php" class="mt-3">
+
+                                            <!-- Input to select a specific month -->
+                                            <label for="month">Select Month:</label>
+                                            <input type="month" id="month" name="month">
+
+                                            <!-- Checkbox to download all months' aggregated data -->
+                                            <div>
+                                                <input type="checkbox" id="all_months" name="all_months" value="1">
+                                                <label for="all_months">Download Aggregated Data for All Months</label>
+                                            </div>
+
+                                            <!-- Button to submit the form -->
+                                            <button type="submit" class="btn btn-primary">Download Report</button>
+                                        </form>
+
                                     </div>
                                 </div>
                             </div>
@@ -124,6 +117,11 @@ $inventoryReport = $report->getInventoryReport();
                                         <h5 class="card-title">Total Customers</h5>
                                         <p class="card-text"><?php echo $customerReport['total_customers']; ?></p>
                                     </div>
+
+                                    <!-- Form to download Excel report -->
+                                    <form method="GET" action="model/download_customers.php" class="mt-3">
+                                        <button type="submit" class="btn btn-primary">Download Report</button>
+                                    </form>
                                 </div>
                             </div>
                         </div>
@@ -131,6 +129,9 @@ $inventoryReport = $report->getInventoryReport();
 
                     <!-- Inventory Report Tab -->
                     <div class="tab-pane fade" id="inventory" role="tabpanel" aria-labelledby="inventory-tab">
+                        <form method="GET" action="model/download_inventory.php" class="mt-3">
+                            <button type="submit" class="btn btn-primary">Download Report</button>
+                        </form>
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="card mb-4">
@@ -198,6 +199,12 @@ $inventoryReport = $report->getInventoryReport();
                                 </div>
                             </div>
                         </div>
+                        <!--
+                        <form method="GET" action="model/download_sales.php" class="mt-3">
+                            <button type="submit" class="btn btn-primary">Download Report</button>
+                        </form>
+                        -->
+
                     </div>
 
             </main>

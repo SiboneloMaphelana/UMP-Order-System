@@ -1,4 +1,11 @@
 <?php
+
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+
+require __DIR__ . '/../../vendor/autoload.php';
+
+
 class Report
 {
     private $conn;
@@ -47,6 +54,17 @@ class Report
         $sql = "SELECT COUNT(id) AS total_customers FROM users";
         $result = $this->conn->query($sql);
         return $result->fetch_assoc();
+    }
+
+    public function getCustomers()
+    {
+        $sql = "SELECT * FROM users";
+        $result = $this->conn->query($sql);
+        $customers = [];
+        while ($row = $result->fetch_assoc()) {
+            $customers[] = $row;
+        }
+        return $customers;
     }
 
 
@@ -223,5 +241,39 @@ class Report
         }
 
         return $checkoutComparison; // Return array with month, guest checkouts, registered user checkouts, and total orders
+    }
+
+    public function downloadOrdersReport()
+    {
+        // Fetch orders data
+        $orders = $this->getOrdersReport();
+
+        // Create new Spreadsheet object
+        $spreadsheet = new Spreadsheet();
+        $spreadsheet->setActiveSheetIndex(0);
+        $sheet = $spreadsheet->getActiveSheet();
+
+        // Set Excel sheet headers
+        $sheet->setCellValue('A1', 'Status');
+        $sheet->setCellValue('B1', 'Count');
+
+        // Populate data from the database
+        $rowCount = 2; // Start from row 2 (1 is for headers)
+        foreach ($orders as $order) {
+            $sheet->setCellValue('A' . $rowCount, ucfirst($order['status']));
+            $sheet->setCellValue('B' . $rowCount, $order['count']);
+            $rowCount++;
+        }
+
+        // Set headers for download
+        $filename = "orders.xlsx";
+
+        header('Content-Type: application/vnd.ms-excel');
+        header('Content-Disposition: attachment;filename=' . $filename);
+        header('Cache-Control: max-age=0');
+
+        $writer = new Xlsx($spreadsheet);
+        $writer->save('php://output'); // Save to PHP output
+        exit(); // Always exit after outputting the file
     }
 }

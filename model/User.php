@@ -4,7 +4,7 @@ use libphonenumber\PhoneNumberUtil;
 use libphonenumber\PhoneNumberFormat;
 use libphonenumber\NumberParseException;
 
-//include_once("../vendor/autoload.php");
+include_once("../vendor/autoload.php");
 class User
 {
     private $conn;
@@ -62,7 +62,7 @@ class User
             return false;
         }
         $stmt = $this->conn->prepare('INSERT INTO users (name, surname, phone, email, password) VALUES (?, ?, ?, ?, ?)');
-        $stmt->bind_param('sssis', $sanitizedData['name'], $sanitizedData['surname'],  $sanitizedData['phone'], $sanitizedData['email'], $sanitizedData['password']);
+        $stmt->bind_param('sssss', $sanitizedData['name'], $sanitizedData['surname'],  $sanitizedData['phone'], $sanitizedData['email'], $sanitizedData['password']);
         return $stmt->execute();
     }
 

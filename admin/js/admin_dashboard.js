@@ -156,9 +156,7 @@ document.addEventListener("DOMContentLoaded", function () {
     updateStatusModal.show();
   };
 
-  document
-    .getElementById("updateStatusForm")
-    .addEventListener("submit", function (event) {
+  document.getElementById("updateStatusForm").addEventListener("submit", function (event) {
       event.preventDefault();
       const formData = new FormData(this);
       fetch("controllers/update_order_status.php", {
@@ -168,14 +166,46 @@ document.addEventListener("DOMContentLoaded", function () {
         .then((response) => response.json())
         .then((result) => {
           if (result.success) {
-            alert("Order status updated successfully!");
+            showSuccessAlert("Order status updated successfully!", closeModal);
             fetchOrders(currentPage);
           } else {
-            alert("Error updating order status.");
+            showErrorAlert("Error updating order status.");
           }
         })
         .catch((error) => console.error("Error updating order status:", error));
     });
+
+  // Function to show success alert
+  function showSuccessAlert(message, callback) {
+    Swal.fire({
+      icon: "success",
+      title: "Success!",
+      text: message,
+      showConfirmButton: false,
+      timer: 2000, // Auto dismiss after 3 seconds
+    }).then(() => {
+      if (callback) callback(); // Call the callback to close the modal
+    });
+  }
+
+  // Function to show error alert
+  function showErrorAlert(message) {
+    Swal.fire({
+      icon: "error",
+      title: "Oops!",
+      text: message,
+      showConfirmButton: false,
+      timer: 3000, // Auto dismiss after 3 seconds
+    });
+  }
+
+  // Function to close the modal
+  function closeModal() {
+    const updateStatusModal = bootstrap.Modal.getInstance(
+      document.getElementById("updateStatusModal")
+    );
+    updateStatusModal.hide(); // Hide the modal
+  }
 
   /*eventSource.onerror = function (event) {
     console.error("Error:", event);
