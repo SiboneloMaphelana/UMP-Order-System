@@ -38,7 +38,32 @@ $isLoggedIn = isset($_SESSION['id']);
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
     <link rel="stylesheet" href="css/new.css">
+    <style>
+        /* Style for the empty cart page */
+        .empty-cart-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 80vh;
+            text-align: center;
+        }
 
+        .empty-cart-icon {
+            font-size: 6rem;
+            color: #ccc;
+        }
+
+        .empty-cart-text {
+            font-size: 1.5rem;
+            margin-top: 1rem;
+        }
+
+        .empty-cart-button {
+            margin-top: 1.5rem;
+            font-size: 1.2rem;
+            padding: 1rem 2rem;
+        }
+    </style>
 </head>
 
 <body>
@@ -91,20 +116,28 @@ $isLoggedIn = isset($_SESSION['id']);
                                                 </div>
                                             </div>
                                         </div>
-
                                     <?php endforeach; ?>
                                     <span class="text-muted"><a href="admin/model/clear_cart.php" class="card-link text-decoration-none text-danger"> <i class="bi bi-trash fs-4"></i> Clear Cart</a> </span>
 
                                 <?php else : ?>
-                                    <p>Your cart is empty! <a href="index.php" class="btn btn-success rounded-pill text-decoration-none">Start Order <i class="bi bi-cart"></i> </a></p>
+                                    <!-- Empty cart content, full-screen -->
+                                    <div class="empty-cart-container">
+                                        <div>
+                                            <i class="fas fa-shopping-cart empty-cart-icon"></i><i class="fas fa-times"></i><i class="fas fa-french-fries"></i>
+
+                                            <p class="empty-cart-text">Your cart is currently empty!</p>
+                                            <a href="index.php" class="btn btn-success rounded-pill empty-cart-button">Start Shopping <i class="bi bi-cart"></i></a>
+                                        </div>
+                                    </div>
                                 <?php endif; ?>
                             </div>
                         </div>
-                        <div class="col-md-4">
-                            <div class="card">
-                                <div class="card-body">
-                                    <h5 class="card-title">Cart Summary</h5>
-                                    <?php if (!empty($cartItems)) : ?>
+                        <!-- Cart Summary -->
+                        <?php if (!empty($cartItems)) : ?>
+                            <div class="col-md-4">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <h5 class="card-title">Cart Summary</h5>
                                         <ul class="list-group list-group-flush">
                                             <li class="list-group-item d-flex justify-content-between align-items-center">
                                                 Total Items:
@@ -117,8 +150,7 @@ $isLoggedIn = isset($_SESSION['id']);
                                         </ul>
                                         <?php if ($isLoggedIn) : ?>
                                             <a href="checkout.php" class="btn btn-outline-secondary w-100 mt-3">Proceed to Checkout</a>
-                                        <?php endif; ?>
-                                        <?php if (!$isLoggedIn) : ?>
+                                        <?php else : ?>
                                             <form action="admin/model/guest_checkout.php" method="post" class="mt-3">
                                                 <div class="mb-3">
                                                     <label for="guest_phone" class="form-label">Enter Phone Number to receive order confirmation</label>
@@ -127,17 +159,12 @@ $isLoggedIn = isset($_SESSION['id']);
                                                 <button type="submit" name="guest_checkout" class="btn btn-outline-secondary w-100">Guest Checkout</button>
                                             </form>
                                         <?php endif; ?>
-                                    <?php else : ?>
-                                        <p>Your cart is empty.</p>
-                                    <?php endif; ?>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-
+                        <?php endif; ?>
                     </div>
                 </main>
-                <!-- Footer -->
-                <?php include_once("partials/footer.php"); ?>
             </div>
         </div>
     </div>

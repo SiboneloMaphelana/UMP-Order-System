@@ -11,7 +11,7 @@ require '../../vendor/autoload.php';
 $dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
 $dotenv->load();
 // Define global variables for the base URL
-$baseUrl = "http://localhost";
+$baseUrl = "https://2108-196-21-175-1.ngrok-free.app";
 $payfastNotifyUrl = $baseUrl . "/UMP-Order-System/admin/model/notify.php";
 $payfastReturnUrl = $baseUrl . "/UMP-Order-System/order_confirmation.php";
 $payfastCancelUrl = $baseUrl . "/UMP-Order-System/index.php";
@@ -39,8 +39,11 @@ try {
     $totalAmount = $_SESSION['subtotal'] > 0.0 ? $_SESSION['subtotal'] : 0.0;
     $cartItems = $_SESSION['cart'];
 
-    // Retrieve phone number from session
-    $guestPhone = isset($_SESSION['guest_phone']) ? $_SESSION['guest_phone'] : null;
+    // Retrieve phone number from form
+    $guestPhone = isset($_POST['guest_phone']) ? $_POST['guest_phone'] : $_POST['guest_phone'];
+
+    // Store guest phone number in session
+    $_SESSION['guest_phone'] = $guestPhone;
 
     // Validate total amount
     if ($totalAmount <= 0.0) {
@@ -98,6 +101,7 @@ try {
             'item_description' => $itemDescription,
             'custom_str1' => $itemDescription,
             'custom_str2' => $userId,
+            'custom_str3' => $guestPhone,
         );
 
         // Include guest phone number only if it's a guest user

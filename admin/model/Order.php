@@ -123,6 +123,33 @@ class Order
         return $stmt->execute();
     }
 
+    public function updatePaymentStatus($orderId, $paymentStatus)
+    {
+        // Prepare the SQL statement
+        $sql = "UPDATE orders SET payment_status = ? WHERE id = ?";
+        $stmt = $this->conn->prepare($sql);
+
+        // Check if the statement was prepared successfully
+        if (!$stmt) {
+            throw new Exception("Error preparing the SQL statement: " . $this->conn->error);
+        }
+
+        // Bind parameters
+        $stmt->bind_param("si", $paymentStatus, $orderId);
+
+        // Execute the statement and check for success
+        if ($stmt->execute()) {
+            // Close the statement
+            $stmt->close();
+            return true;
+        } else {
+            // Close the statement
+            $stmt->close();
+            return false;
+        }
+    }
+
+
     public function getOrdersByUserId($user_id)
     {
         $stmt = $this->conn->prepare("

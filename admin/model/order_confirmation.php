@@ -6,9 +6,8 @@ if (session_status() == PHP_SESSION_NONE) {
 include_once("Food.php");
 include_once("../UMP-Order-System/connection/connection.php");
 
-//global variable for the base URL
-$baseUrl = "";
-
+// Global variable for the base URL
+$baseUrl = "https://2108-196-21-175-1.ngrok-free.app";
 
 try {
     // Initialize variables to store order details
@@ -28,7 +27,7 @@ try {
         $userId = $_SESSION['id'];
 
         $orderQuery = $conn->prepare("
-            SELECT id, order_date, total_amount, status
+            SELECT id, order_date, total_amount, status, payment_status
             FROM orders
             WHERE id = ? AND user_id = ?
         ");
@@ -36,7 +35,7 @@ try {
     } else {
         // Guest user
         $orderQuery = $conn->prepare("
-            SELECT id, order_date, total_amount, status
+            SELECT id, order_date, total_amount, status, payment_status
             FROM orders
             WHERE id = ?
             AND user_id = 0
@@ -53,6 +52,40 @@ try {
     if (!$order) {
         throw new Exception("Order not found.");
     }
+
+    // Determine the payment status
+    $paymentStatus = $order['payment_status'];
+
+    // Update order status based on payment status
+    $newOrderStatus = '';
+    if ($paymentStatus === 'complete') {
+        $newOrderStatus = 'pending';
+    } elseif ($paymentStatus === 'cancelled') {
+        $newOrderStatus = 'cancelled';
+    } else {
+        $newOrderStatus = 'pending';
+    }
+
+    // Update the status in the orders table
+    $updateOrderStatusQuery = $conn->prepare("
+        UPDATE orders
+        SET status = ?
+        WHERE id = ?
+    ");
+    $updateOrderStatusQuery->bind_param('si', $newOrderStatus, $orderId);
+    $updateOrderStatusQuery->execute();
+
+    // Update order items status based on payment status
+    $newItemStatus = ($paymentStatus === 'complete') ? 'pending' : (($paymentStatus === 'cancelled') ? 'cancelled' : 'pending');
+
+    // Update order items' status
+    $updateItemsStatusQuery = $conn->prepare("
+        UPDATE order_items 
+        SET status = ? 
+        WHERE order_id = ?
+    ");
+    $updateItemsStatusQuery->bind_param('si', $newItemStatus, $orderId);
+    $updateItemsStatusQuery->execute();
 
     // Fetch order items
     $orderItemsQuery = $conn->prepare("
@@ -86,5 +119,12 @@ try {
     if (isset($orderItemsQuery)) {
         $orderItemsQuery->close();
     }
+    if (isset($updateItemsStatusQuery)) {
+        $updateItemsStatusQuery->close();
+    }
+    if (isset($updateOrderStatusQuery)) {
+        $updateOrderStatusQuery->close();
+    }
     mysqli_close($conn);
 }
+?>

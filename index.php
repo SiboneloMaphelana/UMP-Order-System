@@ -30,7 +30,8 @@ $favorites = $food->getFavorites();
         <div class="row vh-100 overflow-auto">
             <div class="col d-flex flex-column h-sm-100">
                 <main class="row overflow-auto main-content">
-                    <h2 class="text-center text-muted">Here Is A Collection Of Our Delicious Meals </h2>
+                    <h2 class="text-center text-muted">Here Is A Collection Of Our Delicious Meals</h2>
+
                     <!-- Category Cards -->
                     <div class="col-12">
                         <div class="container my-3">
@@ -42,9 +43,7 @@ $favorites = $food->getFavorites();
                                             <a href="category_details.php?id=<?php echo htmlspecialchars($category['id']); ?>" class="text-decoration-none text-muted">
                                                 <img src="admin/uploads/<?php echo htmlspecialchars($category['imageName']); ?>" class="index-img lazyload" alt="<?php echo htmlspecialchars($category['name']); ?>">
                                                 <div class="card-body text-center">
-                                                    <h5 class="card-title">
-                                                        <?php echo htmlspecialchars($category['name']); ?>
-                                                    </h5>
+                                                    <h5 class="card-title"><?php echo htmlspecialchars($category['name']); ?></h5>
                                                 </div>
                                             </a>
                                         </div>
@@ -55,13 +54,45 @@ $favorites = $food->getFavorites();
                     </div>
                 </main>
 
-                
+                <!-- Operating Hours Section -->
+                <section class="operating-hours text-center py-5">
+                    <div class="container">
+                        <h2 class="mb-4">Operating Hours</h2>
+                        <div class="row">
+                            <!-- Monday to Friday -->
+                            <div class="col-md-6">
+                                <h3>Monday - Friday</h3>
+                                <i class="fas fa-coffee fa-2x mb-2"></i>
+                                <p><strong>Breakfast:</strong> 07:30 AM - 11:30 AM</p>
+                                <i class="fas fa-utensils fa-2x mb-2"></i>
+                                <p><strong>Lunch:</strong> 12:00 PM - 2:30 PM</p>
+                                <i class="fas fa-wine-glass-alt fa-2x mb-2"></i>
+                                <p><strong>Dinner:</strong> 5:00 PM - 7:30 PM</p>
+                            </div>
+
+                            <!-- Saturday and Sunday -->
+                            <div class="col-md-6">
+                                <h3>Saturday - Sunday</h3>
+                                <i class="fas fa-coffee fa-2x mb-2"></i>
+                                <p><strong>Breakfast:</strong> 07:30 AM - 11:30 AM</p>
+                                <i class="fas fa-utensils fa-2x mb-2"></i>
+                                <p><strong>Lunch & Dinner:</strong> 12:00 PM - 5:00 PM</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Footer -->
+                <?php include("partials/footer.php"); ?>
+
+
+
+
 
             </div>
 
 
-            <!-- Footer -->
-            <?php include("partials/footer.php"); ?>
+
         </div>
     </div>
     </div>

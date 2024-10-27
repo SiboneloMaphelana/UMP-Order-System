@@ -100,6 +100,54 @@ class Notifications
         }
     }
 
+    public function orderCancellationSMS($phone, $orderDetails)
+    {
+        // Check if phone and orderDetails are valid
+        if (is_null($phone) || empty($phone)) {
+            error_log("Error: Phone number is missing.");
+            return false;
+        }
+
+        if (is_null($orderDetails) || !isset($orderDetails['id'])) {
+            error_log("Error: Order details are missing.");
+            return false;
+        }
+
+        $messageText = "Order #" . $orderDetails['id'] . " has been cancelled. Please order again.";
+
+        // Environment configurations
+        $base_url = $_ENV['BASE_URL'];
+        $api_key = $_ENV['API_KEY'];
+
+        try {
+            // SMS API
+            $config = new Configuration(host: $base_url, apiKey: $api_key);
+            $api = new SmsApi($config);
+
+            // Destination and message
+            $destination = new SmsDestination(to: $phone);
+            $message = new SmsTextualMessage(
+                destinations: [$destination],
+                text: $messageText
+            );
+
+            // Create and send the request
+            $request = new SmsAdvancedTextualRequest(messages: [$message]);
+            $response = $api->sendSmsMessage($request);
+
+            // Check if the response indicates success
+            if ($response) {
+                return true;
+            } else {
+                error_log("SMS Response: " . print_r($response, true));
+                return false;
+            }
+        } catch (Exception $e) {
+            error_log("Exception occurred: " . $e->getMessage());
+            return false;
+        }
+    }
+
 
     public function orderCompletionEmail($orderDetails, $customer, $orderItems)
     {

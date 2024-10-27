@@ -13,10 +13,10 @@ $dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
 $dotenv->load();
 
 // Define global variables for the base URL
-$baseUrl = "http://localhost";
+$baseUrl = "https://2108-196-21-175-1.ngrok-free.app";
 $payfastNotifyUrl = $baseUrl . "/UMP-Order-System/admin/model/notify.php";
 $payfastReturnUrl = $baseUrl . "/UMP-Order-System/order_confirmation.php";
-$payfastCancelUrl = $baseUrl . "/UMP-Order-System/index.php";
+$payfastCancelUrl = $baseUrl . "/UMP-Order-System/admin/model/cancel_transaction.php?orderId=" . $orderId;
 
 // Function to handle errors
 function handleError($message, $baseUrl)
@@ -171,14 +171,14 @@ try {
         $orderItems = $food->getOrderItems($orderId);
 
         // Send order completion email and SMS
-        /*
+        
         if (!$isGuest) {
             // For logged-in users
             $customer = $food->getCustomerById($userId);
             $emailSent = $notifications->orderPlacementEmail($orderDetails, $customer, $orderItems);
 
             // Send SMS notification if phone number is available
-            if ($customer['phone']) {
+            if ($customer) {
                 $smsSent = $notifications->orderPlacementSMS($customer['phone'], $orderDetails);
                 if (!$smsSent) {
                     throw new Exception("Failed to send SMS notification.");
@@ -198,7 +198,7 @@ try {
                 }
             }
         }
-        */
+        
         // Clear the cart
         unset($_SESSION['cart']);
 

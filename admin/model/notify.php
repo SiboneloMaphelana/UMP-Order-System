@@ -7,6 +7,7 @@ include_once("../../connection/connection.php");
 include("../../model/User.php");
 include("Order.php");
 include("Notifications.php");
+
 header('HTTP/1.0 200 OK');
 flush();
 
@@ -33,6 +34,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // m_payment_id is the transaction ID from PayFast
     $m_payment_id = $payfastData['m_payment_id'];
 
+    // custom_str3 is the phone number from PayFast
+    $custom_str3 = $payfastData['custom_str3'];
+
     // Validate PayFast's request and the payment status
     $signature = $payfastData['signature'];
     unset($payfastData['signature']);
@@ -47,13 +51,26 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if ($payfastData['payment_status'] == 'COMPLETE') {
         // The payment was successful
-
         $orderId = $payfastData['m_payment_id'];
         $userId = isset($payfastData['custom_str2']) ? $payfastData['custom_str2'] : '';
         $totalAmount = $payfastData['amount_gross'];
 
         $food = new Order($conn);
         $notifications = new Notifications($conn);
+
+        // Update payment status to complete
+        try {
+            if (!$food->updatePaymentStatus($orderId, 'complete')) {
+                throw new Exception("Failed to update payment status for order ID: $orderId");
+            }
+            $logMessage = "Payment status updated to 'complete' for order ID: $orderId\n";
+            file_put_contents($logFile, $logMessage, FILE_APPEND);
+        } catch (Exception $e) {
+            error_log("Exception: " . $e->getMessage());
+            file_put_contents($logFile, "Error: " . $e->getMessage() . "\n", FILE_APPEND);
+            echo 'Failed to update payment status.';
+            exit;
+        }
 
         // Retrieve order details
         $orderDetails = $food->getOrderById($orderId);
@@ -79,14 +96,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         } else {
             // For guests
             // Send SMS notification if phone number is available
-            if (!empty($guestPhone)) {
-                $smsSent = $notifications->orderPlacementSMS($guestPhone, $orderDetails);
+            if (!empty($custom_str3)) {
+                $smsSent = $notifications->orderPlacementSMS($custom_str3, $orderDetails);
                 if (!$smsSent) {
-                    $logMessage = "Failed to send SMS notification to guest phone number: " . $guestPhone . " for order ID: $orderId\n";
+                    $logMessage = "Failed to send SMS notification to guest phone number: " . $custom_str3 . " for order ID: $orderId\n";
                     file_put_contents($logFile, $logMessage, FILE_APPEND);
                     throw new Exception("Failed to send SMS notification.");
                 } else {
-                    $logMessage = "SMS notification sent successfully to guest phone number: " . $guestPhone . " for order ID: $orderId\n";
+                    $logMessage = "SMS notification sent successfully to guest phone number: " . $custom_str3 . " for order ID: $orderId\n";
                     file_put_contents($logFile, $logMessage, FILE_APPEND);
                 }
             }
