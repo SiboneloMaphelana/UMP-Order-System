@@ -13,7 +13,7 @@ $dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
 $dotenv->load();
 
 // Define global variables for the base URL
-$baseUrl = "https://2108-196-21-175-1.ngrok-free.app";
+$baseUrl = "https://4db1-196-21-175-1.ngrok-free.app";
 $payfastNotifyUrl = $baseUrl . "/UMP-Order-System/admin/model/notify.php";
 $payfastReturnUrl = $baseUrl . "/UMP-Order-System/order_confirmation.php";
 $payfastCancelUrl = $baseUrl . "/UMP-Order-System/admin/model/cancel_transaction.php?orderId=" . $orderId;
@@ -68,12 +68,13 @@ try {
 
         // Check quantity before processing payment
         foreach ($cartItems as $item) {
-            if (!$food->checkQuantity($item['food_id'], $item['quantity'])) {
+            if (!$food->checkQuantity($item['food_id'], $item['quantity'], $item['type'])) {
                 header("Location: " . $baseUrl . "/UMP-Order-System/cart.php");
-                error_log("We don't have enough " . $item['name'] . " in stock. Please add more items to your cart.");
-                throw new Exception("We don't have enough " . $item['name'] . " in stock. Please reduce items to your cart.");
+                error_log("We don't have enough " . $item['name'] . " in stock. Please reduce items from your cart.");
+                throw new Exception("We don't have enough " . $item['name'] . " in stock. Please reduce items from your cart.");
                 exit;
             }
+            error_log("The type for " . $item['name'] . " is: " . $item['type']);
         }
 
         // Store order in database and retrieve the orderId
@@ -84,11 +85,35 @@ try {
             throw new Exception("Error adding order.");
         }
 
-        // Insert order items into database
         foreach ($cartItems as $item) {
-            $result = $food->addOrderItem($orderId, $item['food_id'], $item['quantity'], $item['price']);
+            // Initialize foodId and specialId to null
+            $foodId = null;
+            $specialId = null;
+        
+            // Set the correct ID based on the type
+            if ($item['type'] === "food_items") {
+                $foodId = $item['food_id']; // Set food_id for food_items
+            } elseif ($item['type'] === "specials") {
+                $specialId = $item['food_id']; // Set special_id for specials
+            }
+        
+            // Insert the order item with the correct IDs
+            $result = $food->addOrderItem($orderId, $foodId, $specialId, $item['quantity'], $item['price']);
             if (!$result) {
                 throw new Exception("Error adding order items.");
+            }
+        
+            // Update item quantity based on type
+            if ($item['type'] === "food_items") {
+                $updateResult = $food->updateItemQuantity($item['food_id'], $item['quantity']);
+                if (!$updateResult) {
+                    throw new Exception("Error updating quantity for item ID " . $item['food_id']);
+                }
+            } elseif ($item['type'] === "specials") {
+                $updateResult = $food->updateSpecialItemQuantity($item['food_id'], $item['quantity']);
+                if (!$updateResult) {
+                    throw new Exception("Error updating quantity for item ID " . $item['food_id']);
+                }
             }
         }
 
@@ -135,12 +160,13 @@ try {
     } elseif ($paymentMethod == 'cash on collection') {
         // Check quantity before processing payment
         foreach ($cartItems as $item) {
-            if (!$food->checkQuantity($item['food_id'], $item['quantity'])) {
+            if (!$food->checkQuantity($item['food_id'], $item['quantity'], $item['type'])) {
                 header("Location: " . $baseUrl . "/UMP-Order-System/cart.php");
-                error_log("We don't have enough " . $item['name'] . " in stock. Please add more items to your cart.");
-                throw new Exception("We don't have enough " . $item['name'] . " in stock. Please reduce items to your cart.");
+                error_log("We don't have enough " . $item['name'] . " in stock. Please reduce items from your cart.");
+                throw new Exception("We don't have enough " . $item['name'] . " in stock. Please reduce items from your cart.");
                 exit;
             }
+            error_log("The type for " . $item['name'] . " is: " . $item['type']);
         }
 
 
@@ -154,17 +180,38 @@ try {
 
         // Insert order items into database
         foreach ($cartItems as $item) {
-            $result = $food->addOrderItem($orderId, $item['food_id'], $item['quantity'], $item['price']);
+            // Initialize foodId and specialId to null
+            $foodId = null;
+            $specialId = null;
+        
+            // Set the correct ID based on the type
+            if ($item['type'] === "food_items") {
+                $foodId = $item['food_id']; // Set food_id for food_items
+            } elseif ($item['type'] === "specials") {
+                $specialId = $item['food_id']; // Set special_id for specials
+            }
+        
+            // Insert the order item with the correct IDs
+            $result = $food->addOrderItem($orderId, $foodId, $specialId, $item['quantity'], $item['price']);
             if (!$result) {
                 throw new Exception("Error adding order items.");
             }
-
-            // Update item quantity
-            $updateResult = $food->updateItemQuantity($item['food_id'], $item['quantity']);
-            if (!$updateResult) {
-                throw new Exception("Error updating quantity for item ID " . $item['food_id']);
+        
+            // Update item quantity based on type
+            if ($item['type'] === "food_items") {
+                $updateResult = $food->updateItemQuantity($item['food_id'], $item['quantity']);
+                if (!$updateResult) {
+                    throw new Exception("Error updating quantity for item ID " . $item['food_id']);
+                }
+            } elseif ($item['type'] === "specials") {
+                $updateResult = $food->updateSpecialItemQuantity($item['food_id'], $item['quantity']);
+                if (!$updateResult) {
+                    throw new Exception("Error updating quantity for item ID " . $item['food_id']);
+                }
             }
         }
+        
+        
 
         // Retrieve order details
         $orderDetails = $food->getOrderById($orderId);
@@ -175,15 +222,17 @@ try {
         if (!$isGuest) {
             // For logged-in users
             $customer = $food->getCustomerById($userId);
+            
             $emailSent = $notifications->orderPlacementEmail($orderDetails, $customer, $orderItems);
 
-            // Send SMS notification if phone number is available
+            /* Send SMS notification if phone number is available
             if ($customer) {
                 $smsSent = $notifications->orderPlacementSMS($customer['phone'], $orderDetails);
+                
                 if (!$smsSent) {
                     throw new Exception("Failed to send SMS notification.");
                 }
-            }
+            }*/
 
             if (!$emailSent) {
                 throw new Exception("Failed to send order completion email.");

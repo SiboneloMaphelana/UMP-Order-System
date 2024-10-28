@@ -67,7 +67,7 @@ $foodItems = $food->getFoodItemsByCategoryId($category_id);
                                                                         <input type="text" class="form-control text-center quantity-input" value="1" style="width: 50px;" readonly>
                                                                         <button class="btn btn-outline-secondary btn-sm ms-2" onclick="changeQuantity(this, 1)">+</button>
                                                                     </div>
-                                                                    <button class="btn btn-outline-secondary w-100" onclick="addToCart(<?php echo $item['id']; ?>, '<?php echo htmlspecialchars($item['name']); ?>')">Add to Cart</button>
+                                                                    <button class="btn btn-outline-secondary w-100" onclick="addToCart(<?php echo $item['id']; ?>, '<?php echo htmlspecialchars($item['name']); ?>', 'food_items')">Add to Cart</button>
                                                                 </div>
                                                             </div>
                                                         </div>

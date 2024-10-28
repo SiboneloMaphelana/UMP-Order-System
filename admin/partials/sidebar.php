@@ -40,6 +40,8 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] === 'staff' : "staff";
                 <ul class="collapse list-unstyled ps-3" id="menuSubmenu">
                     <li><a class="nav-link text-light" href="add_menu.php"><i class="fas fa-plus me-2"></i> Add Menu</a></li>
                     <li><a class="nav-link text-light" href="all_menus.php"><i class="fas fa-list me-2"></i> All Menu</a></li>
+                    <li><a href="add_special.php" class="nav-link text-light">New Special</a></li>
+                    <li><a href="all_specials.php" class="nav-link text-light">All Specials</a></li>
                 </ul>
             </li>
             <!-- Category Section -->

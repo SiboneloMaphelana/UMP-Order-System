@@ -18,6 +18,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $quantity = isset($_POST['quantity']) ? intval($_POST['quantity']) : 1;
     $price = isset($_POST['price']) ? floatval($_POST['price']) : 0.0;
     $name = isset($_POST['name']) ? $_POST['name'] : null;
+    $type = isset($_POST['type']) ? $_POST['type'] : null;
 
     // Validate input
     if ($foodItemId <= 0 || $quantity <= 0 || $price <= 0.0 || !$name) {
@@ -41,7 +42,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             'food_id' => $foodItemId,
             'quantity' => $quantity,
             'price' => $price,
-            'name' => $name
+            'name' => $name,
+            'type' => $type
         ];
     }
 

@@ -34,9 +34,19 @@ class Order
     }
 
     // Function to check quantity
-    public function checkQuantity($foodId, $quantity)
+    public function checkQuantity($foodId, $quantity, $type)
     {
-        $stmt = $this->conn->prepare("SELECT quantity FROM food_items WHERE id = ?");
+        $stmt = $this->conn->prepare("SELECT quantity FROM " . $type . " WHERE id = ?");
+        $stmt->bind_param("i", $foodId);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $row = $result->fetch_assoc();
+        return $row['quantity'] >= $quantity;
+    }
+
+    public function checkSpecialQuantity($foodId, $quantity)
+    {
+        $stmt = $this->conn->prepare("SELECT quantity FROM specials WHERE id = ?");
         $stmt->bind_param("i", $foodId);
         $stmt->execute();
         $result = $stmt->get_result();
@@ -73,14 +83,44 @@ class Order
         return $result;
     }
 
-
-
-    public function addOrderItem($orderId, $foodId, $quantity, $price)
+    public function updateSpecialItemQuantity($foodId, $quantityPurchased)
     {
-        $stmt = $this->conn->prepare("INSERT INTO order_items (order_id, food_id, quantity, price) VALUES (?, ?, ?, ?)");
-        $stmt->bind_param("iiid", $orderId, $foodId, $quantity, $price);
+        // Prepare SQL statement
+        $sql = "UPDATE specials SET quantity = quantity - ? WHERE id = ?";
+        $stmt = $this->conn->prepare($sql);
+
+        // Check if preparation was successful
+        if (!$stmt) {
+            throw new Exception("Error preparing the SQL statement: " . $this->conn->error);
+        }
+
+        // Bind parameters
+        $stmt->bind_param("ii", $quantityPurchased, $foodId);
+
+        // Execute statement
+        $result = $stmt->execute();
+
+        // Check if execution was successful
+        if (!$result) {
+            throw new Exception("Error executing the SQL statement: " . $stmt->error);
+        }
+
+        // Close statement
+        $stmt->close();
+
+        return $result;
+    }
+
+
+
+    public function addOrderItem($orderId, $foodId, $specialId, $quantity, $price)
+    {
+        $stmt = $this->conn->prepare("INSERT INTO order_items (order_id, food_id, special_id, quantity, price) VALUES (?, ?, ?, ?, ?)");
+        $stmt->bind_param("iiidi", $orderId, $foodId, $specialId, $quantity, $price);
         return $stmt->execute();
     }
+
+
 
     public function getOrderById($order_id)
     {

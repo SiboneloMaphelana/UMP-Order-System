@@ -64,13 +64,25 @@ $orderItems = $data['orderItems'];
                                         <tbody>
                                             <?php foreach ($orderItems as $item): ?>
                                                 <tr>
-                                                    <td><?php echo htmlspecialchars($item['name']); ?></td>
+                                                    <td>
+                                                        <?php
+                                                        // Check if it's a food item or a special and print the corresponding name
+                                                        if (!empty($item['food_name'])) {
+                                                            echo htmlspecialchars($item['food_name']); 
+                                                        } elseif (!empty($item['special_name'])) {
+                                                            echo htmlspecialchars($item['special_name']); 
+                                                        } else {
+                                                            echo "Unknown Item"; // Fallback if neither name is available
+                                                        }
+                                                        ?>
+                                                    </td>
                                                     <td><?php echo htmlspecialchars($item['quantity']); ?></td>
                                                     <td>R<?php echo number_format($item['price'], 2); ?></td>
                                                     <td>R<?php echo number_format($item['price'] * $item['quantity'], 2); ?></td>
                                                     <td><?php echo ucfirst(htmlspecialchars($item['status'])); ?></td>
                                                 </tr>
                                             <?php endforeach; ?>
+
                                         </tbody>
                                     </table>
                                 </div>

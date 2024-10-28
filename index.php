@@ -8,7 +8,6 @@ include_once("admin/model/Food.php");
 $food = new Food($conn);
 
 $categories = $food->getCategories();
-$favorites = $food->getFavorites();
 ?>
 
 <!DOCTYPE html>
@@ -85,16 +84,8 @@ $favorites = $food->getFavorites();
                 <!-- Footer -->
                 <?php include("partials/footer.php"); ?>
 
-
-
-
-
             </div>
-
-
-
         </div>
-    </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.7/dist/umd/popper.min.js"></script>

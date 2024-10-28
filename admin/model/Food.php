@@ -457,28 +457,6 @@ class Food
         }
     }
 
-    public function getFavorites()
-    {
-        $query = "SELECT f.id, f.name, f.description, f.image, COUNT(oi.food_id) AS order_count
-                  FROM food_items f
-                  JOIN order_items oi ON f.id = oi.food_id
-                  GROUP BY f.id, f.name, f.description, f.image
-                  ORDER BY order_count DESC
-                  LIMIT 3";
-
-        $stmt = $this->conn->prepare($query);
-        $stmt->execute();
-
-        $result = $stmt->get_result();
-        $favorites = [];
-
-        while ($row = $result->fetch_assoc()) {
-            $favorites[] = $row;
-        }
-
-        return $favorites;
-    }
-
     public function searchFoodItems($searchTerm)
     {
         // Sanitize the search term
@@ -507,4 +485,67 @@ class Food
             return [];
         }
     }
+
+    public function addSpecial($name, $description, $quantity, $price, $image, $startDate, $endDate)
+    {
+        try {
+            // Sanitize input data
+            $name = $this->sanitizeInput($name);
+            $description = $this->sanitizeInput($description);
+            $quantity = intval($this->sanitizeInput($quantity));
+            $price = floatval($this->sanitizeInput($price));
+            $startDate = $this->sanitizeInput($startDate);
+            $endDate = $this->sanitizeInput($endDate);
+            $imageName = '';
+
+            // Handle image upload
+            if (isset($image['name']) && !empty($image['name'])) {
+                $targetDir = '../specials/'; // Target directory for file upload
+                $imageName = basename($image['name']);
+                $targetPath = $targetDir . $imageName;
+
+                // Move uploaded file to target directory
+                if (!move_uploaded_file($image['tmp_name'], $targetPath)) {
+                    return "Failed to upload image.";
+                }
+            }
+
+            // Insert special item into the database with dates
+            $sql = "INSERT INTO specials (name, description, quantity, price, image, start_date, end_date) VALUES (?, ?, ?, ?, ?, ?, ?)";
+            $stmt = mysqli_prepare($this->conn, $sql);
+            mysqli_stmt_bind_param($stmt, "ssiisss", $name, $description, $quantity, $price, $imageName, $startDate, $endDate);
+
+
+            // Execute the SQL statement
+            if (mysqli_stmt_execute($stmt)) {
+                return true; // Return true if success
+            } else {
+                throw new Exception("Error adding special item: " . mysqli_error($this->conn)); // Throw exception if failure
+            }
+        } catch (Exception $e) {
+            error_log("Exception caught: " . $e->getMessage());
+            return $e->getMessage(); // Return error message
+        }
+    }
+
+    public function getSpecials()
+    {
+        try {
+            // Query to fetch active specials
+            $sql = "SELECT * FROM specials WHERE CURDATE() BETWEEN start_date AND end_date";
+            $result = mysqli_query($this->conn, $sql);
+
+            $specials = [];
+            if ($result && mysqli_num_rows($result) > 0) {
+                while ($row = mysqli_fetch_assoc($result)) {
+                    $specials[] = $row;
+                }
+            }
+            return $specials; // Return array of specials
+        } catch (Exception $e) {
+            error_log("Exception caught: " . $e->getMessage());
+            return []; // Return empty array if an error occurs
+        }
+    }
+
 }

@@ -1,4 +1,4 @@
-function addToCart(foodItemId, foodName) {
+function addToCart(foodItemId, foodName, type) {
   let quantity = parseInt(
     $("#foodModal" + foodItemId)
       .find(".quantity-input")
@@ -23,10 +23,12 @@ function addToCart(foodItemId, foodName) {
       quantity: quantity,
       price: price,
       name: name,
+      type: type,
     },
     dataType: "json", // Expect JSON response
     success: function (response) {
       if (response.success) {
+        console.log("Item added to cart:", response.message);
         // Show SweetAlert and hide the modal after 2 seconds
         Swal.fire({
           icon: "success",
@@ -39,6 +41,7 @@ function addToCart(foodItemId, foodName) {
             $("#foodModal" + foodItemId).modal("hide");
           },
         });
+        
       } else {
         // Handle error
         console.error("Failed to add item to cart:", response.message);

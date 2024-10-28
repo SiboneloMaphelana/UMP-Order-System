@@ -72,6 +72,9 @@ $userId = isset($_SESSION['id']) ? $_SESSION['id'] : null;
                 <li class="nav-item me-4">
                     <a class="nav-link text-dark fs-4" href="index.php">Menu</a>
                 </li>
+                <li class="nav-item me-4">
+                    <a class="nav-link text-dark fs-4" href="specials.php">Specials</a>
+                </li>
                 <?php if ($userId): ?>
                     <li class="nav-item me-4">
                         <a class="nav-link text-dark fs-4" href="orders.php">Track Orders</a>
@@ -97,6 +100,7 @@ $userId = isset($_SESSION['id']) ? $_SESSION['id'] : null;
 <nav class="navbar navbar-dark d-md-none fixed-bottom">
     <div class="container-fluid d-flex justify-content-around">
         <a class="nav-link text-white" href="index.php"><i class="fas fa-utensils"></i><br>Menu</a>
+        <a class="nav-link text-white" href="specials.php"><i class="fas fa-gift"></i><br>Specials</a>
         <a class="nav-link text-white" href="cart.php"><i class="fas fa-shopping-cart"></i><br>Cart</a>
         <?php if ($userId): ?>
             <a class="nav-link text-white" href="orders.php"><i class="fas fa-box"></i><br>Orders</a>

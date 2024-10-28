@@ -11,7 +11,7 @@ require '../../vendor/autoload.php';
 $dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
 $dotenv->load();
 // Define global variables for the base URL
-$baseUrl = "https://2108-196-21-175-1.ngrok-free.app";
+$baseUrl = "https://4db1-196-21-175-1.ngrok-free.app";
 $payfastNotifyUrl = $baseUrl . "/UMP-Order-System/admin/model/notify.php";
 $payfastReturnUrl = $baseUrl . "/UMP-Order-System/order_confirmation.php";
 $payfastCancelUrl = $baseUrl . "/UMP-Order-System/index.php";
@@ -74,11 +74,45 @@ try {
             throw new Exception("Error adding order.");
         }
 
+
+        // Handle Cash on Collection payment method
+        $orderId = $food->addOrder($userId, $totalAmount, $paymentMethod);
+        error_log("Items added to order. Order ID: " . $orderId);
+
+        if (!$orderId) {
+            throw new Exception("Error adding order.");
+        }
+
         // Insert order items into database
         foreach ($cartItems as $item) {
-            $result = $food->addOrderItem($orderId, $item['food_id'], $item['quantity'], $item['price']);
+            // Initialize foodId and specialId to null
+            $foodId = null;
+            $specialId = null;
+        
+            // Set the correct ID based on the type
+            if ($item['type'] === "food_items") {
+                $foodId = $item['food_id']; // Set food_id for food_items
+            } elseif ($item['type'] === "specials") {
+                $specialId = $item['food_id']; // Set special_id for specials
+            }
+        
+            // Insert the order item with the correct IDs
+            $result = $food->addOrderItem($orderId, $foodId, $specialId, $item['quantity'], $item['price']);
             if (!$result) {
                 throw new Exception("Error adding order items.");
+            }
+        
+            // Update item quantity based on type
+            if ($item['type'] === "food_items") {
+                $updateResult = $food->updateItemQuantity($item['food_id'], $item['quantity']);
+                if (!$updateResult) {
+                    throw new Exception("Error updating quantity for item ID " . $item['food_id']);
+                }
+            } elseif ($item['type'] === "specials") {
+                $updateResult = $food->updateSpecialItemQuantity($item['food_id'], $item['quantity']);
+                if (!$updateResult) {
+                    throw new Exception("Error updating quantity for item ID " . $item['food_id']);
+                }
             }
         }
 
@@ -127,11 +161,44 @@ try {
             throw new Exception("Error adding order.");
         }
 
+        // Handle Cash on Collection payment method
+        $orderId = $food->addOrder($userId, $totalAmount, $paymentMethod);
+        error_log("Items added to order. Order ID: " . $orderId);
+
+        if (!$orderId) {
+            throw new Exception("Error adding order.");
+        }
+
         // Insert order items into database
         foreach ($cartItems as $item) {
-            $result = $food->addOrderItem($orderId, $item['food_id'], $item['quantity'], $item['price']);
+            // Initialize foodId and specialId to null
+            $foodId = null;
+            $specialId = null;
+        
+            // Set the correct ID based on the type
+            if ($item['type'] === "food_items") {
+                $foodId = $item['food_id']; // Set food_id for food_items
+            } elseif ($item['type'] === "specials") {
+                $specialId = $item['food_id']; // Set special_id for specials
+            }
+        
+            // Insert the order item with the correct IDs
+            $result = $food->addOrderItem($orderId, $foodId, $specialId, $item['quantity'], $item['price']);
             if (!$result) {
                 throw new Exception("Error adding order items.");
+            }
+        
+            // Update item quantity based on type
+            if ($item['type'] === "food_items") {
+                $updateResult = $food->updateItemQuantity($item['food_id'], $item['quantity']);
+                if (!$updateResult) {
+                    throw new Exception("Error updating quantity for item ID " . $item['food_id']);
+                }
+            } elseif ($item['type'] === "specials") {
+                $updateResult = $food->updateSpecialItemQuantity($item['food_id'], $item['quantity']);
+                if (!$updateResult) {
+                    throw new Exception("Error updating quantity for item ID " . $item['food_id']);
+                }
             }
         }
 
