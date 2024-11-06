@@ -53,33 +53,7 @@ $categories = $food->getCategories();
                     </div>
                 </main>
 
-                <!-- Operating Hours Section -->
-                <section class="operating-hours text-center py-5">
-                    <div class="container">
-                        <h2 class="mb-4">Operating Hours</h2>
-                        <div class="row">
-                            <!-- Monday to Friday -->
-                            <div class="col-md-6">
-                                <h3>Monday - Friday</h3>
-                                <i class="fas fa-coffee fa-2x mb-2"></i>
-                                <p><strong>Breakfast:</strong> 07:30 AM - 11:30 AM</p>
-                                <i class="fas fa-utensils fa-2x mb-2"></i>
-                                <p><strong>Lunch:</strong> 12:00 PM - 2:30 PM</p>
-                                <i class="fas fa-wine-glass-alt fa-2x mb-2"></i>
-                                <p><strong>Dinner:</strong> 5:00 PM - 7:30 PM</p>
-                            </div>
-
-                            <!-- Saturday and Sunday -->
-                            <div class="col-md-6">
-                                <h3>Saturday - Sunday</h3>
-                                <i class="fas fa-coffee fa-2x mb-2"></i>
-                                <p><strong>Breakfast:</strong> 07:30 AM - 11:30 AM</p>
-                                <i class="fas fa-utensils fa-2x mb-2"></i>
-                                <p><strong>Lunch & Dinner:</strong> 12:00 PM - 5:00 PM</p>
-                            </div>
-                        </div>
-                    </div>
-                </section>
+                
 
                 <!-- Footer -->
                 <?php include("partials/footer.php"); ?>

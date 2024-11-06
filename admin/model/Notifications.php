@@ -350,4 +350,6 @@ class Notifications
 
         return true;
     }
+
+    
 }

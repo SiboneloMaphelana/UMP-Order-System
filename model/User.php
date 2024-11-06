@@ -4,7 +4,7 @@ use libphonenumber\PhoneNumberUtil;
 use libphonenumber\PhoneNumberFormat;
 use libphonenumber\NumberParseException;
 
-include_once("../vendor/autoload.php");
+require_once __DIR__ . '/../vendor/autoload.php';
 class User
 {
     private $conn;
