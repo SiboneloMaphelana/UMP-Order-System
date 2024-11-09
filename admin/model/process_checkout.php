@@ -13,7 +13,7 @@ $dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
 $dotenv->load();
 
 // Define global variables for the base URL
-$baseUrl = "https://4919-196-21-175-1.ngrok-free.app";
+$baseUrl = "https://bfaf-196-21-175-1.ngrok-free.app";
 $payfastNotifyUrl = $baseUrl . "/UMP-Order-System/admin/model/notify.php";
 $payfastReturnUrl = $baseUrl . "/UMP-Order-System/order_confirmation.php";
 $payfastCancelUrl = $baseUrl . "/UMP-Order-System/admin/model/cancel_transaction.php?orderId=" . $orderId;
