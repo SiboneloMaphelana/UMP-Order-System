@@ -42,7 +42,7 @@ if (isset($_SESSION['orderId'])) {
                 }
             }
 
-            header("Location: https://bfaf-196-21-175-1.ngrok-free.app/UMP-Order-System/order_confirmation.php");
+            header("Location: https://8b10-196-21-175-1.ngrok-free.app/UMP-Order-System/order_confirmation.php");
             exit(); // Ensure no further code is executed after the redirect
         } else {
             echo "Failed to update order status for Order $orderId.";

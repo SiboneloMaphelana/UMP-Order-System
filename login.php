@@ -39,6 +39,15 @@ if (session_status() == PHP_SESSION_NONE) {
                                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                                 </div>
                             <?php endif; ?>
+                            <?php if (isset($_SESSION["signup_success"])): ?>
+                                <div class="alert alert-success">
+                                    <?php
+                                    echo $_SESSION["signup_success"];
+                                    unset($_SESSION["signup_success"]);
+                                    ?>
+                                </div>
+                            <?php endif; ?>
+
                             <form id="loginForm" action="model/login_process.php" method="post">
                                 <div class="mb-3">
                                     <label for="email" class="form-label">Email</label>

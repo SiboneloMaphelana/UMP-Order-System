@@ -11,7 +11,7 @@ require '../../vendor/autoload.php';
 $dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
 $dotenv->load();
 // Define global variables for the base URL
-$baseUrl = "https://bfaf-196-21-175-1.ngrok-free.app";
+$baseUrl = "https://8b10-196-21-175-1.ngrok-free.app";
 $payfastNotifyUrl = $baseUrl . "/UMP-Order-System/admin/model/notify.php";
 $payfastReturnUrl = $baseUrl . "/UMP-Order-System/order_confirmation.php";
 $payfastCancelUrl = $baseUrl . "/UMP-Order-System/index.php";
@@ -40,7 +40,13 @@ try {
     $cartItems = $_SESSION['cart'];
 
     // Retrieve phone number from form
-    $guestPhone = isset($_POST['guest_phone']) ? $_POST['guest_phone'] : $_POST['guest_phone'];
+    $guestPhone = isset($_POST['guest_phone']) ? $_POST['guest_phone'] : '';
+
+    // Check if the phone number does not start with +27 and is in the local format
+    if (preg_match('/^0[6-8][0-9]{8}$/', $guestPhone)) {
+        // Remove the leading '0' and prepend '+27' to the phone number
+        $guestPhone = '+27' . substr($guestPhone, 1);
+    }
 
     // Store guest phone number in session
     $_SESSION['guest_phone'] = $guestPhone;
@@ -241,7 +247,7 @@ try {
         $_SESSION['orderId'] = $orderId;
 
         // Redirect to order confirmation page
-        header($baseUrl . "/UMP-Order-System/order_confirmation.php");
+        header("Location: $baseUrl/UMP-Order-System/order_confirmation.php");
         exit();
     } else {
         throw new Exception("Invalid payment method.");

@@ -23,6 +23,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             header("Location: ../signup.php");
         } else {
             if ($user->signup($_POST)) {
+                $_SESSION['signup_success'] = "Signup successful!, Login to continue";
                 header("Location: ../login.php");
             } else {
                 $_SESSION['signup_user_errors'] = "Signup failed!";

@@ -154,7 +154,7 @@ $isLoggedIn = isset($_SESSION['id']);
                                             <form action="admin/model/guest_checkout.php" method="post" class="mt-3">
                                                 <div class="mb-3">
                                                     <label for="guest_phone" class="form-label">Enter Phone Number to receive order confirmation</label>
-                                                    <input type="tel" name="guest_phone" class="form-control" id="guest_phone" placeholder="+27XXXXXXXXX" pattern="^\+27[0-9]{9}$" required>
+                                                    <input type="tel" name="guest_phone" class="form-control" id="guest_phone" placeholder="+27XXXXXXXXX"  required>
                                                 </div>
                                                 <button type="submit" name="guest_checkout" class="btn btn-outline-secondary w-100">Guest Checkout</button>
                                             </form>
