@@ -12,9 +12,9 @@ html, body {
   top: 0;
   left: 0;
   width: 100%; /* Full width of the viewport */
-  background-color: #353d55; /* Your header background color */
+  background-color: #353d55;
   z-index: 1000; /* Ensure it stays on top of other content */
-  padding: 0.5rem; /* Padding for spacing */
+  padding: 0.5rem;
   height: 60px;
 }
 
@@ -24,9 +24,9 @@ html, body {
   top: 60px; /* Set top offset equal to the height of the header */
   left: 0;
   width: 100%;
-  background-color: #f5f5f5; /* Background color of the navbar */
-  z-index: 999; /* Slightly lower than the header but still on top of content */
-  padding: 0.5rem; /* Padding for spacing */
+  background-color: #f5f5f5; 
+  z-index: 999; /* lower than the header but still on top of content */
+  padding: 0.5rem; 
   height: 60px; /* navigation height ) */
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Subtle shadow for separation */
 }
@@ -44,7 +44,7 @@ html, body {
   display: none;
 }
 
-/* Custom Styles for Mobile Bottom Navigation */
+/* Styles for Mobile Bottom Navigation */
 .fixed-bottom {
   background-color: #353d55;
 }
@@ -103,16 +103,16 @@ html, body {
   background-color: #353d55;
 }
 
-/* Mobile Adjustments */
+/* Mobile Styles */
 @media (max-width: 576px) {
   .category-nav {
     position: fixed; /* Fix the category navigation below the desktop nav */
-    top: 120px; /* Align it just below the desktop navigation */
+    top: 120px; /* Align below the desktop navigation */
     left: 0;
-    width: 100%; /* Full width of the viewport */
+    width: 100%;
     background-color: #f5f5f5;
     z-index: 998; /* Ensure it is below the header and desktop navigation but still on top of content */
-    padding: 0.5rem; /* padding for spacing */
+    padding: 0.5rem; 
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Subtle shadow for separation */
   }
 
@@ -122,18 +122,18 @@ html, body {
   }
 
   .index-card {
-    flex-direction: row; /* Arrange content side by side */
+    flex-direction: row; /* Arrange content horizontally */
     align-items: center; /* Center align items vertically */
-    margin-bottom: 0.75rem; /* Reduce space between cards on small screens */
+    margin-bottom: 0.75rem; /* Reduce margin */
   }
 
   .card-img-top {
-    height: 120px; /* image height for smaller screens */
+    height: 120px; 
     flex-shrink: 0; /* Prevent image from shrinking */
   }
 
   .index-img {
-    width: 250px; /* Larger image height for larger screens */
+    width: 250px; 
   }
 
   .index-card-body {
@@ -156,19 +156,19 @@ html, body {
   }
 
   .operating-hours p {
-    font-size: 1rem; /* Adjust font size for smaller screens */
+    font-size: 1rem; 
   }
 
   .operating-hours i {
-    font-size: 2.5rem; /* Adjust icon size for smaller screens */
+    font-size: 2.5rem; 
   }
 }
 
-/* Larger Devices Adjustments */
+/* Larger Screens Styles */
 @media (min-width: 577px) {
   .category-nav {
     position: static; /*  static on larger screens */
-    box-shadow: none; /* Remove shadow on larger screens */
+    box-shadow: none;
   }
 
   .main-content {
@@ -176,7 +176,7 @@ html, body {
   }
 
   .card {
-    flex-direction: column; /* Keep column layout for larger screens */
+    flex-direction: column; 
   }
 
   .index-img {

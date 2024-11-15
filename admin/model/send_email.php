@@ -6,7 +6,6 @@ if (session_status() == PHP_SESSION_NONE) {
 include_once("../../connection/connection.php");
 include_once("Notifications.php");
 
-
 // Check if the form is submitted
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Retrieve the selected notification type
@@ -31,10 +30,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     // Check the result of the email sending process
     if ($sendResult === true) {
-        echo "Emails have been successfully sent to all customers.";
+        $_SESSION['send_email_success'] = "Emails have been successfully sent to all customers.";
     } else {
-        echo "There was an error sending the emails: " . $sendResult;
+        $_SESSION['send_email_error'] = "There was an error sending the emails.";
     }
 }
 
+// Close the database connection
 $conn->close();
+
+// Redirect to send_email page
+header("Location: ../send_email.php");
+exit;

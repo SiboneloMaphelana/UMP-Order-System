@@ -48,7 +48,7 @@ function handleItemRemovalRequest()
             unset($_SESSION['cart'][$index]);
         }
     }
-    // Recalculate subtotal after removing item(s)
+    // Recalculate subtotal after removing item
     if (isset($_SESSION['cart']) && is_array($_SESSION['cart'])) {
         $_SESSION['subtotal'] = calculateSubtotal($_SESSION['cart']);
     }
@@ -61,7 +61,7 @@ function handleItemQuantityUpdateRequest()
         $itemId = $_POST['item_id'];
         $quantity = $_POST['quantity'];
         updateCartItemQuantity($itemId, $quantity);
-        header("Location: cart.php"); // Redirect to refresh the page after update
+        header("Location: cart.php"); 
         exit();
     }
 }

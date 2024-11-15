@@ -13,7 +13,7 @@ $dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
 $dotenv->load();
 
 // Define global variables for the base URL
-$baseUrl = "https://8b10-196-21-175-1.ngrok-free.app";
+$baseUrl = "https://3439-196-21-175-1.ngrok-free.app";
 $payfastNotifyUrl = $baseUrl . "/UMP-Order-System/admin/model/notify.php";
 $payfastReturnUrl = $baseUrl . "/UMP-Order-System/order_confirmation.php";
 $payfastCancelUrl = $baseUrl . "/UMP-Order-System/admin/model/cancel_transaction.php?orderId=" . $orderId;
@@ -89,20 +89,20 @@ try {
             // Initialize foodId and specialId to null
             $foodId = null;
             $specialId = null;
-        
+
             // Set the correct ID based on the type
             if ($item['type'] === "food_items") {
                 $foodId = $item['food_id']; // Set food_id for food_items
             } elseif ($item['type'] === "specials") {
                 $specialId = $item['food_id']; // Set special_id for specials
             }
-        
+
             // Insert the order item with the correct IDs
             $result = $food->addOrderItem($orderId, $foodId, $specialId, $item['quantity'], $item['price']);
             if (!$result) {
                 throw new Exception("Error adding order items.");
             }
-        
+
             // Update item quantity based on type
             if ($item['type'] === "food_items") {
                 $updateResult = $food->updateItemQuantity($item['food_id'], $item['quantity']);
@@ -183,20 +183,20 @@ try {
             // Initialize foodId and specialId to null
             $foodId = null;
             $specialId = null;
-        
+
             // Set the correct ID based on the type
             if ($item['type'] === "food_items") {
                 $foodId = $item['food_id']; // Set food_id for food_items
             } elseif ($item['type'] === "specials") {
                 $specialId = $item['food_id']; // Set special_id for specials
             }
-        
+
             // Insert the order item with the correct IDs
             $result = $food->addOrderItem($orderId, $foodId, $specialId, $item['quantity'], $item['price']);
             if (!$result) {
                 throw new Exception("Error adding order items.");
             }
-        
+
             // Update item quantity based on type
             if ($item['type'] === "food_items") {
                 $updateResult = $food->updateItemQuantity($item['food_id'], $item['quantity']);
@@ -210,29 +210,28 @@ try {
                 }
             }
         }
-        
-        
+
+
 
         // Retrieve order details
         $orderDetails = $food->getOrderById($orderId);
         $orderItems = $food->getOrderItems($orderId);
 
         // Send order completion email and SMS
-        
+
         if (!$isGuest) {
             // For logged-in users
             $customer = $food->getCustomerById($userId);
-            
+
             $emailSent = $notifications->orderPlacementEmail($orderDetails, $customer, $orderItems);
 
-            /* Send SMS notification if phone number is available
             if ($customer) {
                 $smsSent = $notifications->orderPlacementSMS($customer['phone'], $orderDetails);
-                
+
                 if (!$smsSent) {
                     throw new Exception("Failed to send SMS notification.");
                 }
-            }*/
+            }
 
             if (!$emailSent) {
                 throw new Exception("Failed to send order completion email.");
@@ -247,7 +246,7 @@ try {
                 }
             }
         }
-        
+
         // Clear the cart
         unset($_SESSION['cart']);
 

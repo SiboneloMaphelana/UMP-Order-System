@@ -1,5 +1,5 @@
 // Set to keep track of currently displayed product IDs
-/*
+
 const displayedProducts = new Set();
 
 setInterval(() => {
@@ -67,5 +67,5 @@ setInterval(() => {
         .catch(error => {
             console.error("Error fetching products:", error);
         });
-}, 2000); // Check every 2 seconds
-*/
+}, 3000); // Check every 3 seconds
+

@@ -99,8 +99,8 @@ $foodItems = $food->getFoodItemsByCategoryId($category_id);
         $(window).on('load', function() {
             $('.card-img-top').each(function() {
                 var img = $(this);
-                img.css('height', '200px'); // Set initial height
-                img.css('object-fit', 'cover'); // Maintain aspect ratio
+                img.css('height', '200px');
+                img.css('object-fit', 'cover');
             });
         });
     </script>

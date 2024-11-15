@@ -182,7 +182,7 @@ document.addEventListener("DOMContentLoaded", function () {
       title: "Success!",
       text: message,
       showConfirmButton: false,
-      timer: 2000, // Auto dismiss after 3 seconds
+      timer: 2000, // Auto dismiss after 2 seconds
     }).then(() => {
       if (callback) callback(); // Call the callback to close the modal
     });

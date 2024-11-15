@@ -61,7 +61,6 @@ class Food
         $categories = [];
 
         try {
-            // Check database connection
             $this->checkDbConnection();
 
             // Prepare the query
@@ -357,7 +356,7 @@ class Food
         // Sanitize the input
         $categoryId = intval($this->sanitizeInput($categoryId));
 
-        // SQL query with additional WHERE clause for quantity > 10
+        // SQL query with  WHERE clause for quantity > 10
         $select_sql = "SELECT * FROM food_items WHERE category_id=? AND quantity > 10";
         $select_stmt = mysqli_prepare($this->conn, $select_sql);
         mysqli_stmt_bind_param($select_stmt, "i", $categoryId);
@@ -547,5 +546,4 @@ class Food
             return []; // Return empty array if an error occurs
         }
     }
-
 }

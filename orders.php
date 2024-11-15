@@ -57,7 +57,7 @@ $groupedCanceledOrders = groupOrdersByDate($canceledOrders);
                     <h1 class="mt-5 mb-2 text-center">My Orders</h1>
                     <div class="toast" id="toastMessage" role="alert" aria-live="assertive" aria-atomic="true">
                         <div class="toast-body text-center text-danger">
-                            <!-- Toast message content will be dynamically inserted here -->
+                            <!-- Toast message will be dynamically inserted here -->
                         </div>
                     </div>
                     <div class="d-flex justify-content-center mb-4">
@@ -174,7 +174,7 @@ $groupedCanceledOrders = groupOrdersByDate($canceledOrders);
 
     <div class="toast" id="toastMessage" role="alert" aria-live="assertive" aria-atomic="true">
         <div class="toast-body text-center text-danger">
-            <!-- Toast message content will be dynamically inserted here -->
+            <!-- Toast message  will be dynamically inserted here -->
         </div>
     </div>
     <!-- Footer -->

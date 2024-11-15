@@ -47,6 +47,24 @@ if (session_status() == PHP_SESSION_NONE) {
                                     ?>
                                 </div>
                             <?php endif; ?>
+                            <?php if (isset($_SESSION["reactivate_success"])): ?>
+                                <div class="alert alert-success">
+                                    <?php
+                                    echo $_SESSION["reactivate_success"];
+                                    unset($_SESSION["reactivate_success"]);
+                                    ?>
+                                </div>
+                            <?php endif; ?>
+
+                            <?php if (isset($_SESSION["reactivate_failure"])): ?>
+                                <div class="alert alert-danger">
+                                    <?php
+                                    echo $_SESSION["reactivate_failure"];
+                                    unset($_SESSION["reactivate_failure"]);
+                                    ?>
+                                </div>
+                            <?php endif; ?>
+
 
                             <form id="loginForm" action="model/login_process.php" method="post">
                                 <div class="mb-3">
@@ -76,9 +94,19 @@ if (session_status() == PHP_SESSION_NONE) {
                                     </p>
                                 </div>
                                 <div class="mb-3 text-center">
-                                    <button type="submit" class="btn rounded-pill px-5">Login</button><br>
-                                    <span class="text-muted">Don't have an account? <a href="signup.php" class="text-decoration-none">Sign up here</a></span>
+                                    <button type="submit" class="btn rounded-pill px-5">Login</button>
+                                    <br>
+                                    <span class="text-muted">
+                                        Don't have an account?
+                                        <a href="signup.php" class="text-decoration-none">Sign up here</a>
+                                    </span>
+                                    <br>
+                                    <span class="text-muted">
+                                        Deleted account?
+                                        <a href="reactivate.php" class="text-decoration-none">Recover here</a>
+                                    </span>
                                 </div>
+
                             </form>
                         </div>
                     </main>

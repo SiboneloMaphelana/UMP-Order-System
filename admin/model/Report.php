@@ -274,6 +274,6 @@ class Report
 
         $writer = new Xlsx($spreadsheet);
         $writer->save('php://output'); // Save to PHP output
-        exit(); // Always exit after outputting the file
+        exit(); 
     }
 }

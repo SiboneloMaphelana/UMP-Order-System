@@ -66,7 +66,7 @@ $order = new Order($conn);
             /* Slight shadow for elevation */
         }
 
-        /* Percentage Change with */
+        /* Percentage Change Text */
         .percentage-change {
             font-size: 0.9rem;
             font-weight: bold;
@@ -83,7 +83,7 @@ $order = new Order($conn);
         }
 
         #notification-container {
-            /* Set text color to red */
+            /*  text color to red */
             color: #FF0000;
             padding: 10px;
             font-size: 20px;
@@ -281,7 +281,7 @@ $order = new Order($conn);
             // Update today's orders
             updateDisplay('todayOrders', 'todayChange', ordersData.today.current, ordersData.today.previous);
 
-            // Update this week's and month's orders similarly
+            // Update this week's and month's orders 
             updateDisplay('weekOrders', 'weekChange', ordersData.week.current, ordersData.week.previous);
             updateDisplay('monthOrders', 'monthChange', ordersData.month.current, ordersData.month.previous);
         }

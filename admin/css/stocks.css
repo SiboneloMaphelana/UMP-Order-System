@@ -44,7 +44,7 @@
   background-color: red;
   color: white;
   border-radius: 50%;
-  padding: 6px 10px; /* Padding for Large badge */
+  padding: 6px 10px; 
   font-size: 16px;
   display: none;
 }

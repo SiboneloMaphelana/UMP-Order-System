@@ -1,3 +1,7 @@
+<?php if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -17,8 +21,26 @@
         <button class="btn btn-dark d-md-none" type="button" id="toggleSidebar">
             <i class="fas fa-bars"></i>
         </button>
+
         <div class="container mt-4">
             <h2 class="text-center">Send Notifications to Customers</h2>
+
+            <!-- Session messages -->
+            <?php
+            if (isset($_SESSION['send_email_success'])): ?>
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    <?php echo $_SESSION['send_email_success'];
+                    unset($_SESSION['send_email_success']); ?>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            <?php elseif (isset($_SESSION['send_email_error'])): ?>
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <?php echo $_SESSION['send_email_error'];
+                    unset($_SESSION['send_email_error']); ?>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            <?php endif; ?>
+
             <form action="model/send_email.php" method="POST">
                 <div class="mb-3">
                     <label for="notificationType" class="form-label">Select Notification Type</label>

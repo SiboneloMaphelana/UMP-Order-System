@@ -100,8 +100,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['search'])) {
         $(window).on('load', function() {
             $('.card-img-top').each(function() {
                 var img = $(this);
-                img.css('height', '200px'); // Set initial height
-                img.css('object-fit', 'cover'); // Maintain aspect ratio
+                img.css('height', '200px'); 
+                img.css('object-fit', 'cover'); 
             });
         });
     </script>

@@ -27,7 +27,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Update the user details
     $updateResult = $user->updateUser($id, $name, $surname, $email);
 
-    // Check the result of the update operation
+    // Check the result of the update
     if ($updateResult === true) {
         $_SESSION['update_user_success'] = "Details updated successfully.";
         header("Location: ../profile.php");

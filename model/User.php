@@ -29,7 +29,6 @@ class User
     {
         $phoneUtil = PhoneNumberUtil::getInstance();
         try {
-            // Use the country code from the phone input data if available
             $defaultCountryCode = 'ZA'; // Default to South Africa
             $countryCode = isset($phoneInput['countryCode']) ? $phoneInput['countryCode'] : $defaultCountryCode;
             $parsedPhone = $phoneUtil->parse($phone, $countryCode);
@@ -150,16 +149,45 @@ class User
         }
     }
 
-    public function reactivateAccount($userId): bool
-    {
-        $stmt = $this->conn->prepare("UPDATE users SET is_active = TRUE WHERE id = ?");
-        $stmt->bind_param('i', $userId);
-        if (!$stmt->execute()) {
-            error_log("Error reactivating user account: " . $stmt->error);
+    public function reactivateAccount($email): bool
+{
+    $stmt = $this->conn->prepare('SELECT id, is_deleted FROM users WHERE email = ?');
+    $stmt->bind_param('s', $email);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $row = $result->fetch_assoc();
+
+    // Check if the account exists and is deleted
+    if ($row && $row['is_deleted'] == 1) {
+        // Begin transaction
+        $this->conn->begin_transaction();
+
+        try {
+            // Reactivate the user account
+            $stmt = $this->conn->prepare('UPDATE users SET is_deleted = 0, is_active = 1 WHERE email = ?');
+            $stmt->bind_param('s', $email);
+            $stmt->execute();
+
+            // Set is_deleted to false for orders related to this user
+            $userId = $row['id'];
+            $stmtOrders = $this->conn->prepare('UPDATE orders SET is_deleted = 0 WHERE user_id = ?');
+            $stmtOrders->bind_param('i', $userId);
+            $stmtOrders->execute();
+
+            // Commit transaction
+            $this->conn->commit();
+            return true;
+        } catch (mysqli_sql_exception $e) {
+            // Rollback transaction on error
+            $this->conn->rollback();
+            error_log("Error reactivating account and updating orders: " . $e->getMessage());
             return false;
         }
-        return true;
     }
+    return false; // Account not found or already active
+}
+
+
 
     public function updateUser($id, $name = null, $surname = null, $email = null)
     {
@@ -173,7 +201,7 @@ class User
         // Fetch existing user details
         $existingDetails = $this->getUserById($id);
 
-        // Retain existing details if not updated
+        // Details remain unchanged if not updated
         $name = $name ?: $existingDetails['name'];
         $surname = $surname ?: $existingDetails['surname'];
         $email = $email ?: $existingDetails['email'];

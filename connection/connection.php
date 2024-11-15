@@ -4,7 +4,7 @@ if (session_status() == PHP_SESSION_NONE) {
   session_start();
 }
 
-// Define database connection details
+//  database connection details
 $localhost = 'localhost';
 $username = 'root';
 $password = ''; 
@@ -23,7 +23,7 @@ try {
 
   echo "We are experiencing technical difficulties. Please try again later.";
   
-  // Exit the script to prevent further execution
+  // Exit the file to prevent further execution
   exit();
 }
 ?>

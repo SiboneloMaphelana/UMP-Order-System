@@ -67,7 +67,7 @@ foreach ($activeSheet->getColumnDimensions() as $columnDimension) {
 // Set the header for the products
 $activeSheet->setCellValue('A1', 'Product');
 
-// Add dynamic headers for each period (month)
+// Add dynamic headers for each month
 $colIndex = 2; // Start at column B
 foreach ($periods as $period) {
     $activeSheet->setCellValue(getExcelColumnLetter($colIndex) . '1', $period);

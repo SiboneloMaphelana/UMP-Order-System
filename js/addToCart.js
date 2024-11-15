@@ -25,7 +25,7 @@ function addToCart(foodItemId, foodName, type) {
       name: name,
       type: type,
     },
-    dataType: "json", // Expect JSON response
+    dataType: "json", // JSON response
     success: function (response) {
       if (response.success) {
         console.log("Item added to cart:", response.message);
@@ -43,7 +43,6 @@ function addToCart(foodItemId, foodName, type) {
         });
         
       } else {
-        // Handle error
         console.error("Failed to add item to cart:", response.message);
       }
     },

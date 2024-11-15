@@ -16,13 +16,11 @@ $user = new User($conn);
 $userId = intval($_SESSION['id']);
 
 if ($user->deleteUserAccount($userId)) {
-    // Account deleted successfully, destroy session and redirect to login
+    // destroy session and redirect to login
     session_destroy();
     header("Location: ../login.php");
     exit();
 } else {
-    // Error occurred while deleting the account
-    $_SESSION['error'] = "Error deleting account. Please try again.";
     header("Location: ../profile.php");
     exit();
 }

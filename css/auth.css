@@ -29,7 +29,7 @@ a {
 .sidebar {
   border-right: 1px none #dee2e6;
   background-color: #353d55;
-  height: 100%; /* Make the sidebar take full height */
+  height: 100%; /* sidebar take full height */
   padding-top: 1rem;
   position: sticky; /* Keeps the sidebar in view as the user scrolls */
   top: 0; /* Sticky positioning starts at the top */

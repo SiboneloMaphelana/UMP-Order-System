@@ -4,7 +4,6 @@ require_once '../connection/connection.php';
 require_once 'model/Food.php';
 $food = new Food($conn);
 
-// Fetch active specials
 $specials = $food->getSpecials();
 ?>
 

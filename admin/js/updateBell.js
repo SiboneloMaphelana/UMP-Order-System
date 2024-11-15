@@ -44,6 +44,6 @@ document.addEventListener('DOMContentLoaded', () => {
     // Initial update
     updateBell();
 
-    // Update the bell icon count every 2 seconds
-    setInterval(updateBell, 2000);
+    // Update the bell icon count every 3 seconds
+    setInterval(updateBell, 3000);
 });

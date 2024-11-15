@@ -119,7 +119,7 @@ body {
 .table-card table {
   width: 100%;
   border-collapse: separate; /* Keep separate for spacing control */
-  border-spacing: 0 0.5rem; /* Adds spacing between rows */
+  border-spacing: 0 0.5rem; /*  spacing between rows */
 }
 
 .table-card th,

@@ -17,12 +17,12 @@ body {
   max-width: 500px; /* Max width for smaller devices */
   margin: 0 auto; /* Center horizontally */
   padding: 1.5rem; /* Padding around the content */
-  box-sizing: border-box; /* Include padding in width/height calculations */
+  box-sizing: border-box; 
 }
 
 .text-center {
   margin-top: 2rem; /* Add margin-top to create space above the logo */
-  margin-bottom: 1.5rem; /* Adjust margin as needed */
+  margin-bottom: 1.5rem; 
 }
 
 .card {

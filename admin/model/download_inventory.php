@@ -1,11 +1,10 @@
 <?php
 
-$databaseName = 'test';  // Change to your database name
-$localhost = 'localhost'; // Change if your localhost is different
-$username = 'root';       // Change if your username is different
-$password = '';           // Change if your password is different
+$databaseName = 'test';  
+$localhost = 'localhost'; 
+$username = 'root';       
+$password = '';           
 
-// Create a connection to the database
 $db = new mysqli($localhost, $username, $password, $databaseName);
 
 if ($db->connect_error) {
@@ -70,7 +69,6 @@ header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetm
 header('Content-Disposition: attachment;filename="inventory_report.xlsx"');
 header('Cache-Control: max-age=0');
 
-// Write the file and output it to the browser
 $writer = new Xlsx($spreadsheet);
 $writer->save('php://output');
 

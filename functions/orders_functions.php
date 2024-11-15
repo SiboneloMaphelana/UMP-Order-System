@@ -6,7 +6,7 @@ function groupOrdersByDate($orders)
     foreach ($orders as $order) {
         $date = $order['order_date'];
         // Format date to include day of the week
-        $day = date('l', strtotime($date)); // Get full textual representation of the day
+        $day = date('l', strtotime($date)); // Get textual representation of the day
         $formattedDate = $day . ', ' . date('F j, Y', strtotime($date));
 
         if (!isset($groupedOrders[$formattedDate])) {
@@ -15,7 +15,7 @@ function groupOrdersByDate($orders)
         $groupedOrders[$formattedDate][] = $order;
     }
 
-    // Sort dates in descending order based on actual date values
+    // Sort dates in descending order
     uksort($groupedOrders, function ($a, $b) {
         $dateA = strtotime(explode(',', $a)[1]);
         $dateB = strtotime(explode(',', $b)[1]);

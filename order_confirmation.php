@@ -66,13 +66,13 @@ $orderItems = $data['orderItems'];
                                                 <tr>
                                                     <td>
                                                         <?php
-                                                        // Check if it's a food item or a special and print the corresponding name
+                                                        // Check if it's a food item or a special
                                                         if (!empty($item['food_name'])) {
                                                             echo htmlspecialchars($item['food_name']); 
                                                         } elseif (!empty($item['special_name'])) {
                                                             echo htmlspecialchars($item['special_name']); 
                                                         } else {
-                                                            echo "Unknown Item"; // Fallback if neither name is available
+                                                            echo "Unknown Item";
                                                         }
                                                         ?>
                                                     </td>

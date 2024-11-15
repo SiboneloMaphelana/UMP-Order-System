@@ -377,17 +377,14 @@ class Order
 
         switch ($period) {
             case 'today':
-                // Only include completed orders
                 $currentQuery = "SELECT COUNT(*) AS total FROM orders WHERE DATE(order_date) = CURDATE()";
                 $previousQuery = "SELECT COUNT(*) AS total FROM orders WHERE DATE(order_date) = CURDATE() - INTERVAL 1 DAY";
                 break;
             case 'week':
-                // Only include completed orders
                 $currentQuery = "SELECT COUNT(*) AS total FROM orders WHERE WEEK(order_date) = WEEK(CURDATE()) ";
                 $previousQuery = "SELECT COUNT(*) AS total FROM orders WHERE WEEK(order_date) = WEEK(CURDATE()) - 1";
                 break;
             case 'month':
-                // Only include completed orders
                 $currentQuery = "SELECT COUNT(*) AS total FROM orders WHERE MONTH(order_date) = MONTH(CURDATE())";
                 $previousQuery = "SELECT COUNT(*) AS total FROM orders WHERE MONTH(order_date) = MONTH(CURDATE()) - 1";
                 break;

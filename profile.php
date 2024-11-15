@@ -31,7 +31,7 @@ if (!$userDetails) {
   <!-- Bootstrap Icons CSS -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
   <style>
-    /* Ensures the main content is pushed down below the navigation */
+    /* Push main content below navigation */
     .main-content {
       margin-top: 100px;
     }

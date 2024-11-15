@@ -9,7 +9,7 @@ include_once("admin/model/Food.php");
 $food = new Food($conn);
 
 // Fetch all specials
-$specials = $food->getSpecials(); // Assume this function retrieves all specials
+$specials = $food->getSpecials();
 
 ?>
 <!DOCTYPE html>
@@ -91,8 +91,8 @@ $specials = $food->getSpecials(); // Assume this function retrieves all specials
         $(window).on('load', function() {
             $('.card-img-top').each(function() {
                 var img = $(this);
-                img.css('height', '200px'); // Set initial height
-                img.css('object-fit', 'cover'); // Maintain aspect ratio
+                img.css('height', '200px'); 
+                img.css('object-fit', 'cover'); 
             });
         });
     </script>

@@ -3,7 +3,7 @@ include_once("connection/connection.php");
 include_once("admin/model/Food.php");
 include_once("functions/cart_functions.php");
 
-// Start session if not already started
+// Start session if not started
 if (session_status() == PHP_SESSION_NONE) {
     session_start();
 }
@@ -17,10 +17,10 @@ $subtotal = calculateSubtotal($cartItems);
 // Store subtotal in session
 $_SESSION['subtotal'] = $subtotal;
 
-// Handle item removal request
+// remove item
 handleItemRemovalRequest();
 
-// Handle item quantity update request
+// update item quantity
 handleItemQuantityUpdateRequest();
 
 // Check if the user is logged in
@@ -120,7 +120,7 @@ $isLoggedIn = isset($_SESSION['id']);
                                     <span class="text-muted"><a href="admin/model/clear_cart.php" class="card-link text-decoration-none text-danger"> <i class="bi bi-trash fs-4"></i> Clear Cart</a> </span>
 
                                 <?php else : ?>
-                                    <!-- Empty cart content, full-screen -->
+                                    <!-- Empty cart content -->
                                     <div class="empty-cart-container">
                                         <div>
                                             <i class="fas fa-shopping-cart empty-cart-icon"></i><i class="fas fa-times"></i><i class="fas fa-french-fries"></i>

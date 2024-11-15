@@ -2,7 +2,6 @@
 include_once("../../connection/connection.php");
 include_once("Order.php");
 
-// Instantiate the RevenueData class
 $revenueData = new Order($conn);
 
 // Get data for each period

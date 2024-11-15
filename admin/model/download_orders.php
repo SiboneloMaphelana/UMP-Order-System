@@ -5,7 +5,6 @@ $localhost = 'localhost';
 $username = 'root';
 $password = '';
 
-// Create a connection to the database
 $db = new mysqli($localhost, $username, $password, $databaseName);
 
 if ($db->connect_error) {
@@ -29,9 +28,8 @@ $all_months = isset($_GET['all_months']) ? $_GET['all_months'] : null;
 $spreadsheet = new Spreadsheet();
 $sheet = $spreadsheet->getActiveSheet();
 
-// Logic for specific month or all months
 if ($all_months) {
-    // SQL query to fetch aggregated data for all months, including favorite food
+    // SQL query to fetch aggregated data for all months
     $sql = "SELECT 
                 DATE_FORMAT(orders.order_date, '%M %Y') AS month, 
                 COUNT(orders.id) AS total_orders, 
@@ -142,7 +140,6 @@ header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetm
 header('Content-Disposition: attachment;filename="orders_report.xlsx"');
 header('Cache-Control: max-age=0');
 
-// Write the file and output it to the browser
 $writer = new Xlsx($spreadsheet);
 $writer->save('php://output');
 

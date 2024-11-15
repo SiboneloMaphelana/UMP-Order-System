@@ -61,7 +61,6 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] === 'staff' : "staff";
                 </a>
                 <ul class="collapse list-unstyled ps-3" id="messageSubmenu">
                     <li><a class="nav-link text-light" href="send_email.php"><i class="fas fa-plus me-2"></i> Send Message</a></li>
-                    <li><a class="nav-link text-light" href="all_email.php"><i class="fas fa-list me-2"></i> All Messages</a></li>
                 </ul>
             </li>
             <!-- Analytics Section -->
