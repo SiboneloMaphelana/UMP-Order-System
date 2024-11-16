@@ -33,7 +33,7 @@
                 <h5 class="card-title text-center">Privacy Policy</h5>
               </div>
               <div class="card-body">
-                <p><strong>Effective Date: 16 November 2024</strong></p>
+                <p><strong>Effective Date: 12 September 2024</strong></p>
                 <p>Welcome to the Cafeteria Management System (CMS) of the University of Mpumalanga. This Privacy Policy outlines the rules, terms, and conditions governing the use of CMS and provides guidance on acceptable practices and user responsibilities.</p>
                 
                 <h3>1. Purpose</h3>
@@ -59,7 +59,6 @@
                 <ul>
                   <li>Orders are binding upon submission.</li>
                   <li>Payment methods: [list accepted methods, e.g. Payfast, Cash].</li>
-                  <li>Refunds/returns: [outline refund policy].</li>
                 </ul>
 
                 <h4>5. Intellectual Property</h4>
