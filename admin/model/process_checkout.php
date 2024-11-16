@@ -13,10 +13,9 @@ $dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
 $dotenv->load();
 
 // Define global variables for the base URL
-$baseUrl = "https://3439-196-21-175-1.ngrok-free.app";
-$payfastNotifyUrl = $baseUrl . "/UMP-Order-System/admin/model/notify.php";
-$payfastReturnUrl = $baseUrl . "/UMP-Order-System/order_confirmation.php";
-$payfastCancelUrl = $baseUrl . "/UMP-Order-System/admin/model/cancel_transaction.php?orderId=" . $orderId;
+$payfastNotifyUrl = $_ENV["WEBSITE_LINK"] . "/UMP-Order-System/admin/model/notify.php";
+$payfastReturnUrl = $_ENV["WEBSITE_LINK"] . "/UMP-Order-System/order_confirmation.php";
+$payfastCancelUrl = $_ENV["WEBSITE_LINK"] . "/UMP-Order-System/admin/model/cancel_transaction.php?orderId=" . $orderId;
 
 // Function to handle errors
 function handleError($message, $baseUrl)
@@ -71,6 +70,7 @@ try {
             if (!$food->checkQuantity($item['food_id'], $item['quantity'], $item['type'])) {
                 header("Location: " . $baseUrl . "/UMP-Order-System/cart.php");
                 error_log("We don't have enough " . $item['name'] . " in stock. Please reduce items from your cart.");
+                $_SESSION['order_error'] = "We don't have enough " . $item['name'] . " in stock. Please reduce items from your cart.";
                 throw new Exception("We don't have enough " . $item['name'] . " in stock. Please reduce items from your cart.");
                 exit;
             }
@@ -163,6 +163,7 @@ try {
             if (!$food->checkQuantity($item['food_id'], $item['quantity'], $item['type'])) {
                 header("Location: " . $baseUrl . "/UMP-Order-System/cart.php");
                 error_log("We don't have enough " . $item['name'] . " in stock. Please reduce items from your cart.");
+                $_SESSION['order_error'] = "We don't have enough " . $item['name'] . " in stock. Please reduce items from your cart.";
                 throw new Exception("We don't have enough " . $item['name'] . " in stock. Please reduce items from your cart.");
                 exit;
             }
@@ -254,12 +255,12 @@ try {
         $_SESSION['orderId'] = $orderId;
 
         // Redirect to order confirmation page
-        header("Location: " . $baseUrl . "/UMP-Order-System/order_confirmation.php");
+        header("Location: " . $_ENV["WEBSITE_LINK"] . "/UMP-Order-System/order_confirmation.php");
         exit();
     } else {
         throw new Exception("Invalid payment method.");
     }
 } catch (Exception $e) {
     error_log("Error occurred: " . $e->getMessage());
-    handleError($e->getMessage(), $baseUrl);
+    handleError($e->getMessage(), $_ENV["WEBSITE_LINK"]);
 }

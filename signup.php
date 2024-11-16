@@ -64,7 +64,7 @@ session_start();
                                 </div>
                                 <div class="col-12 col-md-6">
                                     <label for="phone" class="form-label">Phone</label>
-                                    <input type="tel" class="form-control" id="phone" name="phone" placeholder="Enter Phone">
+                                    <input type="text" class="form-control" id="phone" name="phone" placeholder="Enter Phone">
                                     <div id="phoneError" class="text-danger mt-2"></div>
                                 </div>
                             </div>

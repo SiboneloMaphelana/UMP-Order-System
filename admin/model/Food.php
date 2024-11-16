@@ -64,7 +64,7 @@ class Food
             $this->checkDbConnection();
 
             // Prepare the query
-            $query = "SELECT * FROM category";
+            $query = "SELECT * FROM category ORDER BY name ASC";
 
             // Prepare the statement
             if (!$stmt = mysqli_prepare($this->conn, $query)) {
@@ -286,7 +286,7 @@ class Food
             $query .= " AND F.category_id = '" . mysqli_real_escape_string($this->conn, $category) . "'";
         }
 
-        $query .= " ORDER BY Category ASC";
+        $query .= " ORDER BY F.name ASC";
 
         $result = mysqli_query($this->conn, $query);
         $foodItems = [];
@@ -339,7 +339,7 @@ class Food
         // Sanitize the input
         $foodItemId = intval($this->sanitizeInput($foodItemId));
 
-        $select_sql = "SELECT * FROM food_items WHERE id=?";
+        $select_sql = "SELECT * FROM food_items WHERE id=? ORDER BY name ASC";
         $select_stmt = mysqli_prepare($this->conn, $select_sql);
         mysqli_stmt_bind_param($select_stmt, "i", $foodItemId);
         mysqli_stmt_execute($select_stmt);
@@ -357,7 +357,7 @@ class Food
         $categoryId = intval($this->sanitizeInput($categoryId));
 
         // SQL query with  WHERE clause for quantity > 10
-        $select_sql = "SELECT * FROM food_items WHERE category_id=? AND quantity > 10";
+        $select_sql = "SELECT * FROM food_items WHERE category_id=? AND quantity > 10 ORDER BY name ASC";
         $select_stmt = mysqli_prepare($this->conn, $select_sql);
         mysqli_stmt_bind_param($select_stmt, "i", $categoryId);
         mysqli_stmt_execute($select_stmt);

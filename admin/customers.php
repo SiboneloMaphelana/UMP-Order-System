@@ -19,6 +19,18 @@ require_once 'model/Admin.php';
 
 $admin = new Admin($conn);
 $customers = $admin->getAllCustomers();
+
+// Function to format the phone number
+function formatPhoneNumber($phone) {
+    if (strpos($phone, '+27') === 0) {
+        // Replace +27 with 0
+        $phone = '0' . substr($phone, 3);
+        
+        // Format the phone number by adding spaces between the digits
+        $phone = implode(' ', str_split($phone, 3));
+    }
+    return $phone;
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -60,12 +72,12 @@ $customers = $admin->getAllCustomers();
                                     <td><?php echo htmlspecialchars($customer['name']); ?></td>
                                     <td><?php echo htmlspecialchars($customer['surname']); ?></td>
                                     <td><?php echo htmlspecialchars($customer['email']); ?></td>
-                                    <td><?php echo htmlspecialchars($customer['phone']); ?></td>
+                                    <td><?php echo formatPhoneNumber($customer['phone']); ?></td>
                                     <td>
                                         <!--
-                            <a href="update_customer.php?id=<?php echo $customer['id']; ?>" class="btn btn-sm btn-primary">
-                                <i class="fas fa-edit"></i>
-                            </a> -->
+                                        <a href="update_customer.php?id=<?php echo $customer['id']; ?>" class="btn btn-sm btn-primary">
+                                            <i class="fas fa-edit"></i>
+                                        </a> -->
                                         <form action="model/delete_customer.php" method="POST" style="display: inline-block;">
                                             <input type="hidden" name="id" value="<?php echo $customer['id']; ?>">
                                             <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure you want to delete this customer?')">

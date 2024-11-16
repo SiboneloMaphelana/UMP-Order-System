@@ -33,7 +33,7 @@ $isLoggedIn = isset($_SESSION['id']);
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Cart</title>
+    <title>Cart</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
@@ -73,11 +73,11 @@ $isLoggedIn = isset($_SESSION['id']);
             <?php include_once("partials/navigation.php"); ?>
             <div class="col d-flex flex-column h-sm-100">
                 <main class="row overflow-auto main-content">
-                    <h2 class="text-center">My Cart</h2>
-                    <?php if (isset($_SESSION['error'])) : ?>
+                    <h2 class="text-center">MY CART</h2>
+                    <?php if (isset($_SESSION['order_error'])) : ?>
                         <div class="alert alert-danger" role="alert">
-                            <?php echo $_SESSION['error'];
-                            unset($_SESSION['error']); ?>
+                            <?php echo $_SESSION['order_error'];
+                            unset($_SESSION['order_error']); ?>
                         </div>
                     <?php endif; ?>
                     <div class="row">
@@ -85,11 +85,11 @@ $isLoggedIn = isset($_SESSION['id']);
                             <div class="cart-container">
                                 <?php if (!empty($cartItems)) : ?>
                                     <span class="text-muted">
-                                        <a href="index.php" class="card-link text-decoration-none text-success">
-                                            <i class="fas fa-arrow-left"></i>Continue Shopping
+                                        <a href="index.php" class="card-link text-decoration-none text-dark">
+                                            Back to menu
                                         </a>
                                     </span><br>
-                                    <h5 class="text-end">Please select 10 items per product or less</h5>
+                                    <h5 class="text-end">Please select 10 items per item or less</h5>
                                     <?php foreach ($cartItems as $index => $item) : ?>
                                         <div class="card mb-3">
                                             <div class="card-body bg-light">
@@ -126,7 +126,7 @@ $isLoggedIn = isset($_SESSION['id']);
                                             <i class="fas fa-shopping-cart empty-cart-icon"></i><i class="fas fa-times"></i><i class="fas fa-french-fries"></i>
 
                                             <p class="empty-cart-text">Your cart is currently empty!</p>
-                                            <a href="index.php" class="btn btn-success rounded-pill empty-cart-button">Start Shopping <i class="bi bi-cart"></i></a>
+                                            <a href="index.php" class="btn btn-outline-success empty-cart-button">Start Shopping <i class="bi bi-cart"></i></a>
                                         </div>
                                     </div>
                                 <?php endif; ?>

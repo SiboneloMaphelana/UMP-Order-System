@@ -15,6 +15,16 @@ if (!$userDetails) {
   header("Location: login.php");
   exit;
 }
+
+// Format the phone number
+$phone = $userDetails['phone'];
+if (strpos($phone, '+27') === 0) {
+  // Replace +27 with 0
+  $phone = '0' . substr($phone, 3);
+
+  // Format the phone number by adding spaces between the digits
+  $phone = implode(' ', str_split($phone, 3));
+}
 ?>
 
 <!DOCTYPE html>
@@ -83,10 +93,10 @@ if (!$userDetails) {
                 </div>
                 <div class="row mb-3">
                   <div class="col-md-3 d-flex align-items-center">
-                    <label for="role" class="form-label me-3">Phone</label>
+                    <label for="phone" class="form-label me-3">Phone</label>
                   </div>
                   <div class="col-md-9">
-                    <span class="form-control-static" id="role"><?php echo htmlspecialchars($userDetails['phone']); ?></span>
+                    <span class="form-control-static" id="phone"><?php echo htmlspecialchars($phone); ?></span>
                   </div>
                 </div>
               </div>

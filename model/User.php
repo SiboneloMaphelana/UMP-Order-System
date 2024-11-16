@@ -150,46 +150,46 @@ class User
     }
 
     public function reactivateAccount($email): bool
-{
-    $stmt = $this->conn->prepare('SELECT id, is_deleted FROM users WHERE email = ?');
-    $stmt->bind_param('s', $email);
-    $stmt->execute();
-    $result = $stmt->get_result();
-    $row = $result->fetch_assoc();
+    {
+        $stmt = $this->conn->prepare('SELECT id, is_deleted FROM users WHERE email = ?');
+        $stmt->bind_param('s', $email);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $row = $result->fetch_assoc();
 
-    // Check if the account exists and is deleted
-    if ($row && $row['is_deleted'] == 1) {
-        // Begin transaction
-        $this->conn->begin_transaction();
+        // Check if the account exists and is deleted
+        if ($row && $row['is_deleted'] == 1) {
+            // Begin transaction
+            $this->conn->begin_transaction();
 
-        try {
-            // Reactivate the user account
-            $stmt = $this->conn->prepare('UPDATE users SET is_deleted = 0, is_active = 1 WHERE email = ?');
-            $stmt->bind_param('s', $email);
-            $stmt->execute();
+            try {
+                // Reactivate the user account
+                $stmt = $this->conn->prepare('UPDATE users SET is_deleted = 0, is_active = 1 WHERE email = ?');
+                $stmt->bind_param('s', $email);
+                $stmt->execute();
 
-            // Set is_deleted to false for orders related to this user
-            $userId = $row['id'];
-            $stmtOrders = $this->conn->prepare('UPDATE orders SET is_deleted = 0 WHERE user_id = ?');
-            $stmtOrders->bind_param('i', $userId);
-            $stmtOrders->execute();
+                // Set is_deleted to false for orders related to this user
+                $userId = $row['id'];
+                $stmtOrders = $this->conn->prepare('UPDATE orders SET is_deleted = 0 WHERE user_id = ?');
+                $stmtOrders->bind_param('i', $userId);
+                $stmtOrders->execute();
 
-            // Commit transaction
-            $this->conn->commit();
-            return true;
-        } catch (mysqli_sql_exception $e) {
-            // Rollback transaction on error
-            $this->conn->rollback();
-            error_log("Error reactivating account and updating orders: " . $e->getMessage());
-            return false;
+                // Commit transaction
+                $this->conn->commit();
+                return true;
+            } catch (mysqli_sql_exception $e) {
+                // Rollback transaction on error
+                $this->conn->rollback();
+                error_log("Error reactivating account and updating orders: " . $e->getMessage());
+                return false;
+            }
         }
+        return false; // Account not found or already active
     }
-    return false; // Account not found or already active
-}
 
 
 
-    public function updateUser($id, $name = null, $surname = null, $email = null)
+    public function updateUser($id, $name = null, $surname = null, $email = null, $phone = null)
     {
         $id = intval($id); // Sanitize the ID as an integer
 
@@ -205,22 +205,24 @@ class User
         $name = $name ?: $existingDetails['name'];
         $surname = $surname ?: $existingDetails['surname'];
         $email = $email ?: $existingDetails['email'];
+        $phone = $phone ?: $existingDetails['phone']; // Ensure phone is updated if provided
 
         // Sanitize parameters
-        $sanitizedDetails = $this->sanitizeUserDetails(['name' => $name, 'surname' => $surname, 'email' => $email]);
+        $sanitizedDetails = $this->sanitizeUserDetails(['name' => $name, 'surname' => $surname, 'email' => $email, 'phone' => $phone]);
         $name = $sanitizedDetails['name'];
         $surname = $sanitizedDetails['surname'];
         $email = $sanitizedDetails['email'];
+        $phone = $sanitizedDetails['phone'];
 
         // Prepare SQL query
-        $update_sql = "UPDATE users SET name = ?, surname = ?, email = ? WHERE id = ?";
+        $update_sql = "UPDATE users SET name = ?, surname = ?, email = ?, phone = ? WHERE id = ?";
 
         // Prepare and bind parameters
         $stmt = $this->conn->prepare($update_sql);
         if (!$stmt) {
             return "Error preparing statement: " . $this->conn->error;
         }
-        $stmt->bind_param('sssi', $name, $surname, $email, $id);
+        $stmt->bind_param('ssssi', $name, $surname, $email, $phone, $id);
 
         // Execute the update query
         if ($stmt->execute()) {
@@ -233,6 +235,7 @@ class User
             return "Error updating user: " . $this->conn->error;
         }
     }
+
 
     private function emailExists($id, $email): bool
     {

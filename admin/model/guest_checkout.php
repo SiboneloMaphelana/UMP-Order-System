@@ -11,10 +11,9 @@ require '../../vendor/autoload.php';
 $dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
 $dotenv->load();
 // Define global variables for the base URL
-$baseUrl = "https://3439-196-21-175-1.ngrok-free.app";
-$payfastNotifyUrl = $baseUrl . "/UMP-Order-System/admin/model/notify.php";
-$payfastReturnUrl = $baseUrl . "/UMP-Order-System/order_confirmation.php";
-$payfastCancelUrl = $baseUrl . "/UMP-Order-System/index.php";
+$payfastNotifyUrl = $_ENV["WEBSITE_LINK"] . "/UMP-Order-System/admin/model/notify.php";
+$payfastReturnUrl = $_ENV["WEBSITE_LINK"] . "/UMP-Order-System/order_confirmation.php";
+$payfastCancelUrl = $_ENV["WEBSITE_LINK"] . "/UMP-Order-System/index.php";
 
 // Function to handle errors
 function handleError($message, $baseUrl)
@@ -247,11 +246,11 @@ try {
         $_SESSION['orderId'] = $orderId;
 
         // Redirect to order confirmation page
-        header("Location: $baseUrl/UMP-Order-System/order_confirmation.php");
+        header("Location: " . $_ENV["WEBSITE_LINK"]. "/UMP-Order-System/order_confirmation.php");
         exit();
     } else {
         throw new Exception("Invalid payment method.");
     }
 } catch (Exception $e) {
-    handleError($e->getMessage(), $baseUrl);
+    handleError($e->getMessage(), $_ENV["WEBSITE_LINK"]);
 }

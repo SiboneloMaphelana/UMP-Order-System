@@ -6,8 +6,11 @@ if (session_status() == PHP_SESSION_NONE) {
 include_once("Food.php");
 include_once("../UMP-Order-System/connection/connection.php");
 
-// Global variable for the base URL
-$baseUrl = "https://3439-196-21-175-1.ngrok-free.app";
+require '../UMP-Order-System/vendor/autoload.php';
+$dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
+$dotenv->load();
+
+
 
 try {
     // Initialize variables to store order details
@@ -114,7 +117,7 @@ try {
     error_log('Exception caught: ' . $e->getMessage());
 
     // Use the global base URL variable in the header redirection
-    header("Location: " . $baseUrl . "/UMP-Order-System/cart.php");
+    header("Location: " . $_ENV["WEBSITE_LINK"] . "/UMP-Order-System/cart.php");
     exit();
 } finally {
     if (isset($orderQuery)) {
