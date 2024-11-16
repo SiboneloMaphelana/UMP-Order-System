@@ -44,7 +44,6 @@ $order = new Order($conn);
 
         .orders {
             font-size: 1.2rem;
-            /* Smaller orders number */
             font-weight: bold;
         }
 

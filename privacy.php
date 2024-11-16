@@ -22,7 +22,6 @@
 <body>
   <div class="container-fluid overflow-hidden">
     <div class="row vh-100 overflow-auto">
-      <!-- Include your navigation here -->
       <?php include_once("partials/navigation.php"); ?>
       
       <div class="col d-flex flex-column h-sm-100">

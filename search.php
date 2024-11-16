@@ -11,10 +11,8 @@ $foodItems = [];
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['search'])) {
     $searchTerm = $_POST['search'];
 
-    // Initialize the Food model
     $food = new Food($conn);
 
-    // Perform the search
     $foodItems = $food->searchFoodItems($searchTerm);
 }
 ?>

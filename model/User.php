@@ -37,6 +37,7 @@ class User
             }
         } catch (NumberParseException $e) {
             // Handle parsing error
+            return null;
         }
         return null; // Return null if phone number is not valid
     }
