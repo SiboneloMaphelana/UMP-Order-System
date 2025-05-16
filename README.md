@@ -1,3 +1,7 @@
+HELLO EVERYONE
+The project enables students to order food online from the school cafeteria without waiting in a queue. This reduces wait time and enables students to collect food straight from the cafeteria without waiting in queues
+
+
 Database Setup
 To set up the database for this project, follow these steps:
 
